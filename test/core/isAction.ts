@@ -2,7 +2,7 @@
  * Created by tushar on 01/07/18
  */
 
-import {action, isAction} from '../../modules/action/index'
+import {action, isAction} from '../../modules/core/index'
 import {describe, it} from 'mocha'
 import * as assert from 'assert'
 

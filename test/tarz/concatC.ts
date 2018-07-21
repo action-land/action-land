@@ -3,10 +3,10 @@
  */
 
 import * as assert from 'assert'
-import {concatC} from '../../modules/snabbdom/src/concatC'
+import {concatC} from '../../modules/tarz/src/concatC'
 import {curry2} from 'ts-curry'
-import {zeroC} from '../../modules/snabbdom/src/zeroC'
-import {action, List, Nil} from '../../modules/action'
+import {zeroC} from '../../modules/tarz/src/zeroC'
+import {action, List, Nil} from '../../modules/core/index'
 
 describe('concatC', () => {
   const P = (a: number, b: number) => action('+', a + b)

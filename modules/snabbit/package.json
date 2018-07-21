@@ -1,11 +1,9 @@
 {
+  "name": "@action-land/snabbdom",
   "version": "0.0.0-development",
-  "name": "@action-land/match",
+  "description": "Snabbdom based functional components",
   "main": "index.js",
-  "description": "Switch case for actions",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "ts-curry": "^1.0.3"
-  }
+  "dependencies": {}
 }

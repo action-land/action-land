@@ -4,8 +4,8 @@
 import {curry2} from 'ts-curry'
 import {action, Action} from 'action-type'
 import * as assert from 'assert'
-import {concatR} from '../../modules/snabbdom/src/concatR'
-import {zeroR} from '../../modules/snabbdom/src/zeroR'
+import {concatR} from '../../modules/tarz/src/concatR'
+import {zeroR} from '../../modules/tarz/src/zeroR'
 
 describe('concatR', () => {
   const TEST_ACTION = action('SAMPLE', 100)

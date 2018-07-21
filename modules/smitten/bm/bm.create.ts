@@ -2,7 +2,7 @@
  * Created by tushar on 15/01/17.
  */
 import * as Benchmark from 'benchmark'
-import {create} from '../hoe'
+import {create} from '../index'
 var suite = new Benchmark.Suite()
 
 function pass() {}

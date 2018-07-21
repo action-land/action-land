@@ -2,7 +2,7 @@
  * Created by tushar on 15/01/17.
  */
 
-import {action} from 'action-type'
+import {action} from '@action-land/action'
 
 export interface Hoe {
   of(type: string | number): Hoe

@@ -4,7 +4,7 @@
 
 import * as assert from 'assert'
 import {action} from 'action-type'
-import {create} from '../../modules/emit/hoe'
+import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
   const actions: Array<any> = []

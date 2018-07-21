@@ -1,6 +1,6 @@
 {
   "name": "action-land",
-  "preview": true,
+  "private": true,
   "description": "Utilities and libraries for actions",
   "main": "index.js",
   "scripts": {
@@ -36,5 +36,8 @@
     "ts-curry": "^1.0.4",
     "ts-node": "^7.0.0",
     "typescript": "^2.9.2"
-  }
+  },
+  "workspaces": [
+    "modules/*"
+  ]
 }

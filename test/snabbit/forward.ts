@@ -2,9 +2,9 @@ import * as assert from 'assert'
 import {matchR, matchC} from 'update-function-types'
 import {action} from 'action-type'
 import * as R from 'ramda'
-import {forward, Component} from '../../modules/snabbdom/index'
+import {forward, Component} from '../../modules/snabbit/index'
 import {Hoe} from 'hoe'
-import {FORWARD_KEY_NAME} from '../../modules/snabbdom/src/forward'
+import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
 
 describe('forward', () => {
   /**

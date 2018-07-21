@@ -3,7 +3,7 @@
  */
 
 import * as assert from 'assert'
-import {matchC} from '../../modules/snabbdom/src/matchC'
+import {matchC} from '../../modules/tarz/src/matchC'
 import {action, isNil} from 'action-type'
 
 describe('matchC', () => {

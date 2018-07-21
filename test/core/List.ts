@@ -4,7 +4,7 @@
 
 import * as assert from 'assert'
 import {describe, it} from 'mocha'
-import {List, action, isList, Nil, isNil} from '../../modules/action/index'
+import {List, action, isList, Nil, isNil} from '../../modules/core/index'
 
 describe('List', () => {
   it('should return true if the obj is a List', () => {

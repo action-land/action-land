@@ -1,0 +1,8 @@
+{
+  "name": "@action-land/emit",
+  "version": "0.0.0-development",
+  "description": "Higher order event emitter",
+  "main": "hoe.js",
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC"
+}

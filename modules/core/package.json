@@ -1,11 +1,11 @@
 {
+  "name": "@action-land/action",
   "version": "0.0.0-development",
-  "name": "@action-land/match",
+  "description": "Typeclass for action",
   "main": "index.js",
-  "description": "Switch case for actions",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "ts-curry": "^1.0.3"
+    "ts-curry": "^1.0.4"
   }
 }
