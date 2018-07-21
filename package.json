@@ -1,0 +1,39 @@
+{
+  "name": "action-land",
+  "preview": true,
+  "description": "Utilities and libraries for actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require=ts-node/register test/*.ts",
+    "prepublishOnly": "tsc -d",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once",
+    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
+  },
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "keywords": [
+    "action"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/action-land/action-land.git"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.5.2",
+    "cz-conventional-changelog": "^2.1.0",
+    "mocha": "^5.2.0",
+    "prettier": "^1.13.7",
+    "semantic-release": "^15.8.1",
+    "travis-deploy-once": "^5.0.1",
+    "ts-curry": "^1.0.4",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  }
+}

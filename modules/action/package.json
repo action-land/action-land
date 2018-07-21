@@ -1,0 +1,27 @@
+{
+  "name": "@action-land/action",
+  "version": "0.0.0-development",
+  "description": "Typeclass for action",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require=ts-node/register test/*.ts",
+    "prepublishOnly": "tsc -d",
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once --pro",
+    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ts-curry": "^1.0.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tusharmath/action-type.git"
+  }
+}
