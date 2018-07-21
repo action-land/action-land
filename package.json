@@ -7,7 +7,7 @@
     "test": "mocha --require=ts-node/register test/**/*.ts",
     "prepublishOnly": "tsc -d",
     "semantic-release": "semantic-release -e semantic-release-monorepo",
-    "travis-deploy-once": "travis-deploy-once",
+    "travis-deploy-once": "travis-deploy-once --pro",
     "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
   },
   "author": "Tushar Mathur <tusharmath@gmail.com>",
@@ -42,5 +42,6 @@
   },
   "workspaces": [
     "modules/*"
-  ]
+  ],
+  "version": "0.0.0-development"
 }
