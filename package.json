@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "mocha --require=ts-node/register test/**/*.ts",
+    "prepublishOnly": "tsc -d",
+    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
+  },
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC",
+  "keywords": [
+    "action"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/action-land/action-land.git"
+  },
+  "devDependencies": {
+    "@types/benchmark": "^1.0.31",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.5.2",
+    "@types/ramda": "^0.25.35",
+    "benchmark": "^2.1.4",
+    "cz-lerna-changelog": "^1.2.1",
+    "lerna": "^2.11.0",
+    "mocha": "^5.2.0",
+    "prettier": "^1.13.7",
+    "ramda": "^0.25.0",
+    "ts-curry": "^1.0.4",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  },
+  "workspaces": [
+    "modules/*"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
+    }
+  }
+}

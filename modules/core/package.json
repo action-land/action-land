@@ -1,0 +1,14 @@
+{
+  "name": "@action-land/core",
+  "description": "Typeclass for action",
+  "main": "index.js",
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ts-curry": "^1.0.4"
+  },
+  "version": "0.0.1-6",
+  "publishConfig": {
+    "access": "public"
+  }
+}

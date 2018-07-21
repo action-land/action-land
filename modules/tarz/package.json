@@ -1,0 +1,15 @@
+{
+  "name": "@action-land/tarz",
+  "description": "Functional utils for performing logical operations on Action",
+  "main": "index.js",
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC",
+  "version": "0.0.1-6",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@action-land/core": "^0.0.1-6",
+    "ts-curry": "^1.0.4"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@action-land/match",
+  "main": "index.js",
+  "description": "Switch case for actions",
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@action-land/core": "^0.0.1-6",
+    "ts-curry": "^1.0.4"
+  },
+  "version": "0.0.1-6",
+  "publishConfig": {
+    "access": "public"
+  }
+}
