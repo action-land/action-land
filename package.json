@@ -4,9 +4,9 @@
   "description": "Utilities and libraries for actions",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require=ts-node/register test/*.ts",
+    "test": "mocha --require=ts-node/register test/**/*.ts",
     "prepublishOnly": "tsc -d",
-    "semantic-release": "semantic-release",
+    "semantic-release": "semantic-release -e semantic-release-monorepo",
     "travis-deploy-once": "travis-deploy-once",
     "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
   },
@@ -31,6 +31,7 @@
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
     "semantic-release": "^15.8.1",
+    "semantic-release-monorepo": "^6.0.3",
     "travis-deploy-once": "^5.0.1",
     "ts-curry": "^1.0.4",
     "ts-node": "^7.0.0",
