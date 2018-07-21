@@ -1,6 +1,6 @@
 {
-  "version": "0.0.0-development",
   "name": "@action-land/match",
+  "version": "0.0.0-development",
   "main": "index.js",
   "description": "Switch case for actions",
   "author": "Tushar Mathur <tusharmath@gmail.com>",

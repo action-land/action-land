@@ -1,5 +1,5 @@
 {
-  "name": "@action-land/emit",
+  "name": "@action-land/smitten",
   "version": "0.0.0-development",
   "description": "Higher order event emitter",
   "main": "hoe.js",

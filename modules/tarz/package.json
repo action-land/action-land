@@ -1,11 +1,8 @@
 {
-  "name": "tarz",
+  "name": "@action-land/tarz",
   "version": "1.0.0",
-  "description": "",
+  "description": "Functional utils for performing logical operations on Action",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC"
 }
