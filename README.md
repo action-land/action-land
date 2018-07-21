@@ -11,7 +11,7 @@ Utilities and libraries for actions
 | [Core]    | The core `Action` module                                                   |
 | [Match]   | Switch case for `Action`s.                                                 |
 | [Smitten] | An action emitter library for the DOM.                                     |
-| [Snabbit] | Snabbdom based component library                                           |
+| [Snabbit] | [Snabbdom] based component library                                           |
 | [Tarz]    | Helps write and compose complex logical operations on `Action` and `State` |
 
 [core]: https://github.com/action-land/action-land/blob/master/modules/core/README.md
@@ -19,6 +19,8 @@ Utilities and libraries for actions
 [smitten]: https://github.com/action-land/action-land/blob/master/modules/smitten/README.md
 [snabbit]: https://github.com/action-land/action-land/blob/master/modules/snabbit/README.md
 [tarz]: https://github.com/action-land/action-land/blob/master/modules/tarz/README.md
+
+[snabbdom]: https://github.com/snabbdom/snabbdom
 
 # Getting Started
 
