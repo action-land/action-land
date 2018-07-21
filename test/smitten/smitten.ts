@@ -50,7 +50,7 @@ describe('hoe', () => {
     f.emit.call(null, 200)
     assert.deepEqual(actions, [100, action('F', 200)])
   })
-  it('should be stack safe', () => {
+  it.skip('should be stack safe', () => {
     const {listener} = testListener()
     let e = create(listener)
     assert.doesNotThrow(() => {
