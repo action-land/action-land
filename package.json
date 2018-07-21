@@ -1,5 +1,6 @@
 {
   "name": "action-land",
+  "version": "0.0.0-development",
   "private": true,
   "description": "Utilities and libraries for actions",
   "main": "index.js",
@@ -42,21 +43,5 @@
   },
   "workspaces": [
     "modules/*"
-  ],
-  "version": "0.0.0-development",
-  "release": {
-    "monorepo": {
-      "analyzeCommits": {
-        "format": "atom"
-      },
-      "generateNotes": "myNotesGenerator"
-    },
-    "prepare": [
-      "@semantic-release/npm",
-      "@semantic-release/git"
-    ],
-    "verifyConditions": [
-      "@semantic-release/git"
-    ]
-  }
+  ]
 }
