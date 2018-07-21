@@ -14,11 +14,11 @@ Utilities and libraries for actions
 | [Snabbit] | Snabbdom based component library                                           |
 | [Tarz]    | Helps write and compose complex logical operations on `Action` and `State` |
 
-[core]: https://github.com/action-land/core
-[match]: https://github.com/action-land/match
-[smitten]: https://github.com/action-land/smitten
-[snabbit]: https://github.com/action-land/snabbit
-[tarz]: https://github.com/action-land/tarz
+[core]: https://github.com/action-land/action-land/blob/master/modules/core/README.md
+[match]: https://github.com/action-land/action-land/blob/master/modules/match/README.md
+[smitten]: https://github.com/action-land/action-land/blob/master/modules/smitten/README.md
+[snabbit]: https://github.com/action-land/action-land/blob/master/modules/snabbit/README.md
+[tarz]: https://github.com/action-land/action-land/blob/master/modules/tarz/README.md
 
 # Getting Started
 
