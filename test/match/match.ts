@@ -1,6 +1,6 @@
 import {describe, it} from 'mocha'
 import {match} from '../../modules/match/index'
-import {action} from 'action-type'
+import {action} from '@action-land/core'
 import * as assert from 'assert'
 
 describe('match', () => {

@@ -2,7 +2,7 @@
  * Created by tushar on 26/06/18
  */
 
-import {Action, isList, isNil, List, Nil} from 'action-type'
+import {Action, isList, isNil, List, Nil} from '@action-land/core'
 import {CommandFunction} from './CommandFunction'
 import {CurriedFunction2, curry2} from 'ts-curry'
 

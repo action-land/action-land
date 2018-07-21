@@ -4,7 +4,7 @@
 
 import * as assert from 'assert'
 import {matchC} from '../../modules/tarz/src/matchC'
-import {action, isNil} from 'action-type'
+import {action, isNil} from '@action-land/core'
 
 describe('matchC', () => {
   it('should call the matching command function', () => {

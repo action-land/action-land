@@ -1,5 +1,5 @@
-import {Action} from 'action-type'
-import {Hoe} from 'hoe'
+import {Action} from '@action-land/core'
+import {Hoe} from '@action-land/smitten'
 
 export interface Component<State, Params, VNode> {
   init(p?: Partial<State>): State

@@ -4,7 +4,7 @@
 
 import * as assert from 'assert'
 import {matchR} from '../../modules/tarz/src/matchR'
-import {action} from 'action-type'
+import {action} from '@action-land/core'
 
 describe('matchR', () => {
   it('should call the matching update function', () => {

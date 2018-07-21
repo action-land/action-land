@@ -2,7 +2,7 @@
  * Created by tushar on 05/07/18
  */
 
-import {Action, Nil} from 'action-type'
+import {Action, Nil} from '@action-land/core'
 import {curry2} from 'ts-curry'
 
 export const zeroC: {

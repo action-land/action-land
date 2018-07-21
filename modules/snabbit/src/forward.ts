@@ -1,6 +1,6 @@
 import {Component} from './component'
-import {Action, Nil, action} from 'action-type'
-import {concatR, concatC} from 'update-function-types'
+import {Action, Nil, action} from '@action-land/core'
+import {concatR, concatC} from '@action-land/tarz'
 
 export const FORWARD_KEY_NAME = '@@forward'
 export const forward = <VNode>(spec: {

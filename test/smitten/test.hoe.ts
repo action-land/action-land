@@ -3,7 +3,7 @@
  */
 
 import * as assert from 'assert'
-import {action} from 'action-type'
+import {action} from '@action-land/core'
 import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
