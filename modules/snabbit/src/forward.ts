@@ -1,6 +1,6 @@
 import {Component} from './component'
-import {Action, Nil, action} from '@action-land/core'
-import {concatR, concatC} from '@action-land/tarz'
+import {Action, action, Nil} from '@action-land/core'
+import {concatC, concatR} from '@action-land/tarz'
 
 export const FORWARD_KEY_NAME = '@@forward'
 export const forward = <VNode>(spec: {

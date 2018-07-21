@@ -1,8 +1,8 @@
 import * as assert from 'assert'
-import {matchR, matchC} from '@action-land/tarz'
+import {matchC, matchR} from '@action-land/tarz'
 import {action} from '@action-land/core'
 import * as R from 'ramda'
-import {forward, Component} from '../../modules/snabbit/index'
+import {Component, forward} from '../../modules/snabbit/index'
 import {Hoe} from '@action-land/smitten'
 import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
 

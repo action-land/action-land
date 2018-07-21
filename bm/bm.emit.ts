@@ -3,6 +3,7 @@
  */
 import * as Benchmark from 'benchmark'
 import {create} from '../modules/smitten/index'
+
 var suite = new Benchmark.Suite()
 
 function pass() {}

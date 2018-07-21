@@ -1,6 +1,6 @@
 import {describe, it} from 'mocha'
 import * as assert from 'assert'
-import {action, Nil, isNil} from '../../modules/core/index'
+import {action, isNil, Nil} from '../../modules/core/index'
 
 describe('action', () => {
   it('should return an action', () => {

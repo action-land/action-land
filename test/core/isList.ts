@@ -1,4 +1,4 @@
-import {isList, action} from '../../modules/core/index'
+import {action, isList} from '../../modules/core/index'
 import * as assert from 'assert'
 
 describe('isList', () => {
