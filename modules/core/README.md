@@ -1,10 +1,9 @@
-# Action-Type [![Build Status](https://travis-ci.com/tusharmath/action-type.svg?branch=master)](https://travis-ci.com/tusharmath/action-type)
+# @action-type/core 
 
-Type class specification for actions.
+Core library for action.
 
 # Index
 
-- [Ecosystem](#ecosystem)
 - [Specification](#specification)
 - [Action](#action-type)
 - [API](#api)
@@ -15,19 +14,6 @@ Type class specification for actions.
   - [isList](#islist)
 - [Related Libraries](#related-libraries)
 
-# Ecosystem
-
-| Project                 | Description                                                                    |
-| :---------------------- | :----------------------------------------------------------------------------- |
-| [Hoe]                   | An action emitter library for the DOM.                                         |
-| [Update Function Types] | Utilities for doing more complex operations based on `Action` and some `State` |
-| [Match Action]          | Switch-case for Actions                                                        |
-| [Action Component]      | A library to create components with `Action` and `State`                       |
-
-[hoe]: https://github.com/tusharmath/hoe
-[update function types]: https://github.com/tusharmath/update-function-types
-[match action]: https://github.com/tusharmath/match-action
-[action component]: https://github.com/tusharmath/action-component
 
 # Specification
 
@@ -54,7 +40,7 @@ interface Action<T> {
 A utility that helps in creating a new object of action type. The function is curried by default and provides type guarantee.
 
 ```ts
-import {action} from 'action-type'
+import {action} from '@action-land/core'
 
 action('click', {x: 10, y: 20})
 
@@ -66,7 +52,7 @@ action('click')({x: 10, y: 20}) // curried version
 A utility function that detects if the object is of `Action` type.
 
 ```ts
-import {isAction} from 'action-type'
+import {isAction} from '@action-land/core'
 
 isAction({}) // returns false
 isAction(action('WWW', null)) // returns true
@@ -77,7 +63,7 @@ isAction(action('WWW', null)) // returns true
 A default action that represents nothingness.
 
 ```ts
-import {Nil} from 'action-type'
+import {Nil} from '@action-land/core'
 
 function logic(a: number) {
   if (a > 10) return action('greater', a - 10)
@@ -91,7 +77,7 @@ function logic(a: number) {
 A utility function that creates an `Action` from a list of `Action[]`.
 
 ```ts
-import {List} from 'action-type'
+import {List} from '@action-land/core'
 
 const list = List(action('A', 1), action('B', 2))
 ```
@@ -101,7 +87,7 @@ const list = List(action('A', 1), action('B', 2))
 A utility function that checks if the action is of list type
 
 ```ts
-import {isList} from 'action-type'
+import {isList} from '@action-land/core'
 
 const list = List(action('A', 1), action('B', 2))
 
@@ -113,7 +99,7 @@ isList(list) //true
 A utility function that checks if the action is of `Nil`
 
 ```ts
-import {isNil, Nil} from 'action-type'
+import {isNil, Nil} from '@action-land/core'
 
 isNil(Nil) // true
 isNil({type: '@@NIL', value: {}}) // true

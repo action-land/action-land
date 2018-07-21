@@ -1,4 +1,4 @@
-# Match Action [![Build Status](https://travis-ci.com/tusharmath/match-action.svg?branch=master)](https://travis-ci.com/tusharmath/match-action)
+# @action-land/match
 
 A switch case for actions.
 
@@ -11,8 +11,8 @@ Exposes a single `match()` function that —
 3.  `spec` is an object where key is `action.type` and value is a function.
 
 ```ts
-import {action} from 'action-types'
-import {match} from 'match-action'
+import {action} from '@action-land/core'
+import {match} from '@action-land/match'
 
 const fn = match(i => i, {
   inc: i => i + 1,

@@ -1,4 +1,4 @@
-# Update Function Types [![Build Status](https://travis-ci.com/tusharmath/update-function-types.svg?branch=master)](https://travis-ci.com/tusharmath/update-function-types)
+# @action-land/tarz
 
 Provides a specification and basic type classes for update function.
 Essentially there are two kinds of update functions —
