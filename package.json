@@ -43,5 +43,20 @@
   "workspaces": [
     "modules/*"
   ],
-  "version": "0.0.0-development"
+  "version": "0.0.0-development",
+  "release": {
+    "monorepo": {
+      "analyzeCommits": {
+        "format": "atom"
+      },
+      "generateNotes": "myNotesGenerator"
+    },
+    "prepare": [
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "verifyConditions": [
+      "@semantic-release/git"
+    ]
+  }
 }
