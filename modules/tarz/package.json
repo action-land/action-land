@@ -7,5 +7,9 @@
   "version": "0.0.1-5",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@action-land/core": "^0.0.1-5",
+    "ts-curry": "^1.0.4"
   }
 }
