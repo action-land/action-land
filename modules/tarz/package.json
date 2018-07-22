@@ -4,5 +4,8 @@
   "main": "index.js",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "version": "0.0.1-1"
+  "version": "0.0.1-1",
+  "publishConfig": {
+    "access": "public"
+  }
 }
