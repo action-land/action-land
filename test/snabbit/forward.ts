@@ -2,9 +2,10 @@ import * as assert from 'assert'
 import {matchC, matchR} from '@action-land/tarz'
 import {action} from '@action-land/core'
 import * as R from 'ramda'
-import {Component, forward} from '../../modules/snabbit/index'
+import {forward} from '../../modules/snabbit/index'
 import {Hoe} from '@action-land/smitten'
 import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
+import {Component} from '../../modules/component'
 
 describe('forward', () => {
   /**
