@@ -7,14 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [1.0.0](https://github.com/action-land/action-land/compare/v0.1.1...v1.0.0) (2018-07-22)
 
 
-
-
-**Note:** Version bump only for package @action-land/smitten
-
-<a name="0.1.0"></a>
-# 0.1.0 (2018-07-22)
-
-
 ### Features
 
-* **git:** initial commit ([23de209](https://github.com/action-land/action-land/commit/23de209))
+* **component:** add new module ([bd74d3d](https://github.com/action-land/action-land/commit/bd74d3d))
