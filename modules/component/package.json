@@ -22,5 +22,8 @@
     "@action-land/core": "^1.0.0",
     "@action-land/smitten": "^1.0.0",
     "@action-land/tarz": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
