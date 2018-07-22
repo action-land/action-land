@@ -2,6 +2,12 @@
 
 A switch case for actions.
 
+# Installation
+
+```
+npm i @action-land/match
+```
+
 # Usage
 
 Exposes a single `match()` function that —
