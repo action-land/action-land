@@ -3,7 +3,7 @@
   "description": "Higher order event emitter",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "version": "0.0.1-4",
+  "version": "0.0.1-5",
   "publishConfig": {
     "access": "public"
   }
