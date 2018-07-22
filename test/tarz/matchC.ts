@@ -5,6 +5,7 @@
 import * as assert from 'assert'
 import {matchC} from '../../modules/tarz/src/matchC'
 import {action, isNil} from '@action-land/core'
+import {CommandFunction} from '../../modules/tarz/src/CommandFunction'
 
 describe('matchC', () => {
   it('should call the matching command function', () => {
@@ -33,5 +34,10 @@ describe('matchC', () => {
     })(action('add', 10))(20)
     const expected = action('added', 30)
     assert.deepEqual(actual, expected)
+  })
+
+  it('should skip non-action type values', () => {
+    const actual = matchC({})(1000, 20)
+    assert.ok(isNil(actual))
   })
 })

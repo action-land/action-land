@@ -35,4 +35,9 @@ describe('matchR', () => {
     const expected = 30
     assert.strictEqual(actual, expected)
   })
+
+  it('should skip non-action args', () => {
+    const actual = matchR({})(10, 200)
+    assert.strictEqual(actual, 200)
+  })
 })
