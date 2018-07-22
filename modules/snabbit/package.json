@@ -3,5 +3,5 @@
   "description": "Snabbdom based functional components",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "dependencies": {}
+  "version": "0.0.1-0"
 }
