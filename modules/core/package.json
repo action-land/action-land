@@ -1,6 +1,5 @@
 {
   "name": "@action-land/core",
-  "version": "0.0.0-development",
   "description": "Typeclass for action",
   "main": "index.js",
   "author": "Tushar Mathur <tusharmath@gmail.com>",

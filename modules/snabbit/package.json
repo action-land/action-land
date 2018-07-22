@@ -1,8 +1,6 @@
 {
   "name": "@action-land/snabbit",
-  "version": "0.0.0-development",
   "description": "Snabbdom based functional components",
-  "main": "index.js",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
   "dependencies": {}
