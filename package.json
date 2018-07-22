@@ -1,8 +1,5 @@
 {
-  "name": "action-land",
   "private": true,
-  "description": "Utilities and libraries for actions",
-  "main": "index.js",
   "scripts": {
     "test": "mocha --require=ts-node/register test/**/*.ts",
     "prepublishOnly": "tsc -d",
