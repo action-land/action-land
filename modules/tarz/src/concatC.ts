@@ -6,9 +6,9 @@ import {Action, isList, isNil, List, Nil} from '@action-land/core'
 import {CommandFunction} from './CommandFunction'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
-export const concatC = <Input, State, Output>(
-  ...t: Array<CommandFunction<Input, State, Output>>
-): CurriedFunction2<Input, State, Action<any>> =>
+export const concatC = <State, Input, Output>(
+  ...t: Array<CommandFunction<State, Input, Output>>
+) =>
   curry2((input: Input, state: State) => {
     const result: Array<Action<Output>> = []
     for (let i = 0; i < t.length; i++) {

@@ -11,6 +11,6 @@ import {Action} from '@action-land/core'
  * @return action
  */
 
-export type CommandFunction<Input, State, Output> = {
+export type CommandFunction<State, Input = {}, Output = {}> = {
   (input: Input, state: State): Action<Output>
 }

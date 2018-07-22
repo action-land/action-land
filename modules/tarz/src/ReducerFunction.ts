@@ -8,6 +8,6 @@
  * @param  state
  * @return state
  */
-export type ReducerFunction<Input, State> = {
+export type ReducerFunction<State, Input = {}> = {
   (input: Input, state: State): State
 }
