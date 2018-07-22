@@ -1,9 +1,10 @@
-# @action-type/core 
+# @action-type/core
 
 Core library for action.
 
 # Index
 
+- [Installation](#installation)
 - [Specification](#specification)
 - [Action](#action-type)
 - [API](#api)
@@ -14,6 +15,11 @@ Core library for action.
   - [isList](#islist)
 - [Related Libraries](#related-libraries)
 
+# Installation
+
+```
+npm i @action-land/core
+```
 
 # Specification
 
