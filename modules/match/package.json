@@ -5,10 +5,10 @@
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@action-land/core": "^1.0.3",
+    "@action-land/core": "^1.0.4",
     "ts-curry": "^1.0.4"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publishConfig": {
     "access": "public"
   }

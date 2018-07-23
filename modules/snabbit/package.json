@@ -3,13 +3,13 @@
   "description": "Snabbdom based functional components",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@action-land/core": "^1.0.3",
-    "@action-land/smitten": "^1.0.3",
-    "@action-land/tarz": "^1.0.3"
+    "@action-land/core": "^1.0.4",
+    "@action-land/smitten": "^1.0.4",
+    "@action-land/tarz": "^1.0.4"
   }
 }
