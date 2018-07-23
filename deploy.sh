@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ ${TRAVIS_BRANCH} == 'master' ]]
-   then lerna publish --conventional-commits --yes
+then
+    yarn tsc -d
+    lerna publish --conventional-commits --yes
 fi
