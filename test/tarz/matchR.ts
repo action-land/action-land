@@ -2,9 +2,9 @@
  * Created by tushar on 26/06/18
  */
 
+import {action} from '@action-land/core'
 import * as assert from 'assert'
 import {matchR} from '../../modules/tarz/src/matchR'
-import {action} from '@action-land/core'
 
 describe('matchR', () => {
   it('should call the matching update function', () => {

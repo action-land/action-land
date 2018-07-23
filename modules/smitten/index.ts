@@ -16,8 +16,8 @@ class DefaultEmitter implements Hoe {
   ) {}
 
   emit = (value: any) => {
-    var node: DefaultEmitter | RootEmitter = this
-    var act = value
+    let node: DefaultEmitter | RootEmitter = this
+    let act = value
     while (node instanceof DefaultEmitter) {
       act = action(node.type, act)
       node = node.parent

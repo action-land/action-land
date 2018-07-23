@@ -3,8 +3,8 @@
  */
 
 import {Action, isList, isNil, List, Nil} from '@action-land/core'
-import {CommandFunction} from './CommandFunction'
 import {CurriedFunction2, curry2} from 'ts-curry'
+import {CommandFunction} from './CommandFunction'
 
 export const concatC = <State>(
   ...t: Array<CommandFunction<State>>

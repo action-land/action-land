@@ -2,10 +2,10 @@
  * Created by tushar on 26/06/18
  */
 
-import * as assert from 'assert'
-import {matchC} from '../../modules/tarz/src/matchC'
 import {action, isNil} from '@action-land/core'
+import * as assert from 'assert'
 import {CommandFunction} from '../../modules/tarz/src/CommandFunction'
+import {matchC} from '../../modules/tarz/src/matchC'
 
 describe('matchC', () => {
   it('should call the matching command function', () => {

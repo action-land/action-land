@@ -1,7 +1,7 @@
-import {describe, it} from 'mocha'
-import {match} from '../../modules/match/index'
 import {action} from '@action-land/core'
 import * as assert from 'assert'
+import {describe, it} from 'mocha'
+import {match} from '../../modules/match/index'
 
 describe('match', () => {
   it('should match based on action.type', () => {

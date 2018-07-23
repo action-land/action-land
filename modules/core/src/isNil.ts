@@ -1,6 +1,6 @@
 import {Action} from './action'
-import {NIL_TYPE} from './Nil'
 import {isAction} from './isAction'
+import {NIL_TYPE} from './Nil'
 
 /**
  * Checks if the object is {Nil} or not

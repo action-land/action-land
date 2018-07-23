@@ -2,8 +2,8 @@
  * Created by tushar on 15/01/17.
  */
 
-import * as assert from 'assert'
 import {action} from '@action-land/core'
+import * as assert from 'assert'
 import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
@@ -54,7 +54,7 @@ describe('hoe', () => {
     const {listener} = testListener()
     let e = create(listener)
     assert.doesNotThrow(() => {
-      for (var i = 0; i < 1e6; i++) {
+      for (let i = 0; i < 1e6; i++) {
         e = e.of(i.toString())
       }
       e.emit(null)

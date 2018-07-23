@@ -1,9 +1,9 @@
 /**
  * Created by tushar on 25/06/18
  */
-import {curry2} from 'ts-curry'
 import {action, Action} from '@action-land/core'
 import * as assert from 'assert'
+import {curry2} from 'ts-curry'
 import {concatR} from '../../modules/tarz/src/concatR'
 import {zeroR} from '../../modules/tarz/src/zeroR'
 

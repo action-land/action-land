@@ -1,11 +1,11 @@
-import * as assert from 'assert'
-import {matchC, matchR} from '@action-land/tarz'
 import {action} from '@action-land/core'
-import * as R from 'ramda'
-import {forward} from '../../modules/snabbit/index'
 import {Hoe} from '@action-land/smitten'
-import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
+import {matchC, matchR} from '@action-land/tarz'
+import * as assert from 'assert'
+import * as R from 'ramda'
 import {Component} from '../../modules/component'
+import {forward} from '../../modules/snabbit/index'
+import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
 
 describe('forward', () => {
   /**

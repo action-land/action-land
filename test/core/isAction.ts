@@ -2,9 +2,9 @@
  * Created by tushar on 01/07/18
  */
 
-import {action, isAction} from '../../modules/core/index'
-import {describe, it} from 'mocha'
 import * as assert from 'assert'
+import {describe, it} from 'mocha'
+import {action, isAction} from '../../modules/core/index'
 
 describe('isAction', () => {
   it('should return true if obj is an action', () => {
