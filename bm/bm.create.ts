@@ -4,21 +4,21 @@
 import * as Benchmark from 'benchmark'
 import {create} from '../modules/smitten/index'
 
-var suite = new Benchmark.Suite()
+let suite = new Benchmark.Suite()
 
 function pass() {}
 suite
 
   .add('create-1e3-times', function() {
-    var e = create(pass)
+    let e = create(pass)
 
-    for (var i = 0; i < 1e3; ++i) {
+    for (let i = 0; i < 1e3; ++i) {
       e = e.of(i.toString())
     }
     e.emit(0)
   })
 
   .on('cycle', function(event: any) {
-    console.log(String(event.target))
+    console.log(String(event.target)) // tslint:disable-line
   })
   .run()
