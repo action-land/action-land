@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.6"></a>
+## [1.0.6](https://github.com/action-land/action-land/compare/v1.0.5...v1.0.6) (2018-07-23)
+
+
+### Bug Fixes
+
+* **lint:** update files with lint fixes ([bee060d](https://github.com/action-land/action-land/commit/bee060d))
+* **tarz:** add proper return types for functions ([4ca3b1d](https://github.com/action-land/action-land/commit/4ca3b1d))
+
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/action-land/action-land/compare/v1.0.3...v1.0.4) (2018-07-23)
 
