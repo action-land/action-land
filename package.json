@@ -3,7 +3,9 @@
   "scripts": {
     "test": "mocha --require=ts-node/register test/**/*.ts",
     "prepare": "tsc -d",
-    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc"
+    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc",
+    "lint": "git ls-files | grep '.ts$' | xargs yarn tslint",
+    "lint:fix": "git ls-files | grep '.ts$' | xargs yarn tslint --fix"
   },
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
