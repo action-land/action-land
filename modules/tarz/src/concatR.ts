@@ -2,14 +2,16 @@
  * Created by tushar on 25/06/18
  */
 import {ReducerFunction} from './ReducerFunction'
-import {curry2} from 'ts-curry'
+import {CurriedFunction2, curry2} from 'ts-curry'
 
 /**
  * Concatenates 2 or more ReducerFunction(s) and returns a new ReducerFunction.
  * @param t ReducerFunction[]
  * @return ReducerFunction
  */
-export const concatR = <State>(...t: Array<ReducerFunction<State>>) =>
+export const concatR = <State>(
+  ...t: Array<ReducerFunction<State>>
+): CurriedFunction2<any, State, State> =>
   curry2(
     (a: any, b: State): State => {
       let result: State = b

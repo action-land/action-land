@@ -2,7 +2,7 @@
  * Created by tushar on 25/06/18
  */
 
-import {action, Action} from '@action-land/core'
+import {Action} from '@action-land/core'
 
 /**
  * A function that takes in an Action and a State and returns a new Action

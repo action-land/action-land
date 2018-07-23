@@ -3,14 +3,16 @@
  */
 
 import {isAction} from '@action-land/core'
-import {curry2} from 'ts-curry'
+import {CurriedFunction2, curry2} from 'ts-curry'
 import {ReducerFunction} from './ReducerFunction'
 
 export type MatchActionRSpec<State> = {
   [key: string]: ReducerFunction<State>
 }
 
-export const matchR = <State>(spec: MatchActionRSpec<State>) =>
+export const matchR = <State>(
+  spec: MatchActionRSpec<State>
+): CurriedFunction2<any, State, State> =>
   curry2(
     (action: any, state: State): State =>
       isAction(action) && spec[action.type]

@@ -4,9 +4,11 @@
 
 import {Action, isList, isNil, List, Nil} from '@action-land/core'
 import {CommandFunction} from './CommandFunction'
-import {curry2} from 'ts-curry'
+import {CurriedFunction2, curry2} from 'ts-curry'
 
-export const concatC = <State>(...t: Array<CommandFunction<State>>) =>
+export const concatC = <State>(
+  ...t: Array<CommandFunction<State>>
+): CurriedFunction2<any, State, Action<any>> =>
   curry2(
     (input: any, state: State): Action<{}> => {
       const result: Array<Action<any>> = []
