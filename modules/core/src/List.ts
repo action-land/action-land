@@ -11,12 +11,12 @@ export const LIST_ACTION_TYPE = '@@LIST'
 /**
  * Creates a new Action from a list of actions
  * @function
- * @param  {... Action} nActions
+ * @param  {... Action} actions
  * @returns {Action}
  */
 export function List<T>(
   ...actions: Array<Action<T>>
-): Action<Array<Action<T>> | T> {
+): Action<Array<Action<T>> | T | {}> {
   const nActions: Array<Action<T>> = []
   for (var i = 0; i < actions.length; i++)
     if (!isNil(actions[i])) nActions.push(actions[i])

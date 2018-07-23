@@ -1,4 +1,4 @@
-import {action} from './action'
+import {Action, action} from './action'
 
 /**
  * Action type for {Nil}
@@ -12,6 +12,6 @@ export const NIL_TYPE = '@@NIL'
  * @function
  * @returns {Action}
  */
-export function Nil() {
-  return action<any>(NIL_TYPE, {})
+export function Nil(): Action<{}> {
+  return action(NIL_TYPE, {})
 }
