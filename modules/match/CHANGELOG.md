@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/action-land/action-land/compare/v1.0.7...v2.0.0) (2018-07-25)
+
+
+### Features
+
+* **match:** pass complete value to the default function ([2a2416e](https://github.com/action-land/action-land/commit/2a2416e))
+
+
+### BREAKING CHANGES
+
+* **match:** default case for match() now gets the complete value instead of picking the action.value only
+
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/action-land/action-land/compare/v1.0.5...v1.0.6) (2018-07-23)
 
