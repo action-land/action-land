@@ -1,4 +1,4 @@
-import {Action} from '@action-land/core'
+import {Action, isAction} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
 export type MatchActionSpec = {
@@ -11,5 +11,7 @@ export const match: CurriedFunction2<
   any
 > = curry2(
   (base: (t: any) => any, spec: MatchActionSpec) => (action: Action<any>) =>
-    spec[action.type] ? spec[action.type](action.value) : base(action.value)
+    isAction(action) && spec[action.type]
+      ? spec[action.type](action.value)
+      : base(action)
 )
