@@ -28,8 +28,8 @@ export interface Component<State, Params, VNode> {
 
 ## init()
 
-1.  Takes in one argument which contains a partial version of the `State`, ie. all properties are optional.
-2.  Returns a new version of the `State`.
+1.  Returns a new version of the `State`.
+2.  It may or may not take a single argument.
 
 ```ts
 function init(p?: Partial<State>): State
