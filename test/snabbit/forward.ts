@@ -1,5 +1,5 @@
 import {action} from '@action-land/core'
-import {Hoe} from '@action-land/smitten'
+import {Smitten} from '@action-land/smitten'
 import {matchC, matchR} from '@action-land/tarz'
 import * as assert from 'assert'
 import * as R from 'ramda'
@@ -18,7 +18,7 @@ describe('forward', () => {
     init: () => ({C: 3}),
     update: matchR({set: R.assoc('C')}),
     command: matchC({set: action('bananas')}),
-    view: (e: Hoe, m: Child, p: {}) => {
+    view: (e: Smitten, m: Child, p: {}) => {
       return 'CHILD'
     }
   }
@@ -34,7 +34,7 @@ describe('forward', () => {
     init: (): Parent => ({A: 1, child: child.init()}),
     update: matchR({get: R.prop('A')}),
     command: matchC({get: action('bananas')}),
-    view: (e: Hoe, m: Parent, p: {}) => {
+    view: (e: Smitten, m: Parent, p: {}) => {
       return 'PARENT' + child.view(e.of('child'), m.child, {})
     }
   }
