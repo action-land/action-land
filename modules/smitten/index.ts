@@ -4,12 +4,12 @@
 
 import {action} from '@action-land/core'
 
-export interface Hoe {
-  of(type: string | number): Hoe
+export interface Smitten {
+  of(type: string | number): Smitten
   emit(obj: any): void
 }
 
-class DefaultEmitter implements Hoe {
+class DefaultEmitter implements Smitten {
   constructor(
     readonly type: string | number,
     readonly parent: DefaultEmitter | RootEmitter
@@ -24,19 +24,19 @@ class DefaultEmitter implements Hoe {
     }
     node.emit(act)
   }
-  of(type: string | number): Hoe {
+  of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }
 }
 
-class RootEmitter implements Hoe {
+class RootEmitter implements Smitten {
   constructor(public readonly emit: (obj: any) => void) {}
 
-  of(type: string | number): Hoe {
+  of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }
 }
 
-export const create = (listener: (obj: any) => any): Hoe => {
+export const create = (listener: (obj: any) => any): Smitten => {
   return new RootEmitter(listener)
 }
