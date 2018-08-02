@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/action-land/action-land/compare/v2.0.1...v3.0.0) (2018-08-02)
+
+
+### Code Refactoring
+
+* **component:** make all the generics optional ([31ee224](https://github.com/action-land/action-land/commit/31ee224))
+* **component:** update typings for `init()` ([2e0503f](https://github.com/action-land/action-land/commit/2e0503f))
+
+
+### BREAKING CHANGES
+
+* **component:** `init()` is not a unary function any more
+* **component:** 1. `init` may or may not take any arguments
+2. All the generics are optional now
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/action-land/action-land/compare/v2.0.0...v2.0.1) (2018-07-26)
 

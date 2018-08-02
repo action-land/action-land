@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/action-land/action-land/compare/v2.0.1...v3.0.0) (2018-08-02)
+
+
+### Code Refactoring
+
+* **smitten:** rename Hoe to Smitten ([a498627](https://github.com/action-land/action-land/commit/a498627))
+
+
+### BREAKING CHANGES
+
+* **smitten:** `Hoe` has been deprecated use `Smitten` instead
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/action-land/action-land/compare/v2.0.0...v2.0.1) (2018-07-26)
 

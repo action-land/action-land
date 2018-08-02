@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/action-land/action-land/compare/v2.0.1...v3.0.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* **package:** update typescript version ([cae494d](https://github.com/action-land/action-land/commit/cae494d))
+
+
+### Code Refactoring
+
+* **component:** make all the generics optional ([31ee224](https://github.com/action-land/action-land/commit/31ee224))
+* **component:** update typings for `init()` ([2e0503f](https://github.com/action-land/action-land/commit/2e0503f))
+* **smitten:** rename Hoe to Smitten ([a498627](https://github.com/action-land/action-land/commit/a498627))
+
+
+### BREAKING CHANGES
+
+* **component:** `init()` is not a unary function any more
+* **smitten:** `Hoe` has been deprecated use `Smitten` instead
+* **component:** 1. `init` may or may not take any arguments
+2. All the generics are optional now
+
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/action-land/action-land/compare/v2.0.0...v2.0.1) (2018-07-26)
 
