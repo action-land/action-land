@@ -5,7 +5,8 @@
     "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc",
     "lint": "git ls-files | grep '.ts$' | xargs yarn tslint",
     "lint:fix": "git ls-files | grep '.ts$' | xargs yarn tslint --fix",
-    "preversion": "tsc -d"
+    "preversion": "tsc -d",
+    "lerna-publish": "lerna publish --conventional-commits"
   },
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
