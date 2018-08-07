@@ -12,7 +12,6 @@ Utilities and libraries for actions
 | [Component] | A framework agnostic component library                                     | ![npm (scoped)](https://img.shields.io/npm/v/@action-land/component.svg) | ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@action-land/component.svg) |
 | [Match]     | Switch case for `Action`s                                                  | ![npm (scoped)](https://img.shields.io/npm/v/@action-land/match.svg)     | ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@action-land/match.svg)     |
 | [Smitten]   | An action emitter library for the DOM                                      | ![npm (scoped)](https://img.shields.io/npm/v/@action-land/smitten.svg)   | ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@action-land/smitten.svg)   |
-| [Snabbit]   | [Snabbdom] based component library                                         | ![npm (scoped)](https://img.shields.io/npm/v/@action-land/snabbit.svg)   | ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@action-land/snabbit.svg)   |
 | [Tarz]      | Helps write and compose complex logical operations on `Action` and `State` | ![npm (scoped)](https://img.shields.io/npm/v/@action-land/tarz.svg)      | ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@action-land/tarz.svg)      |
 
 [core]: https://github.com/action-land/action-land/blob/master/modules/core/README.md
