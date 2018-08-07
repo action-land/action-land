@@ -4,6 +4,39 @@
 
 [action]: https://github.com/action-land/action-land
 
+# Installation
+
+```bash
+npm i @action-land/component
+```
+
+# Usage
+
+```ts
+import {Nil} from '@action-land/core'
+import {COM} from '@action-land/component'
+
+// component is created using the COM constructor function
+const component = COM(
+  () => ({count: 0}),
+  (a, s) => ({...s, count: count + 1}),
+  () => Nil(),
+  (s: Smitten, m: {count: 0}, p: {color: string}) => 'Hello World' + m.count
+)
+
+// component can be transformed using map()
+const crazyComponent = component.map(component =>
+  COM(
+    (...t) => Object.assign({crazy: true}, component.init(...t)),
+    component.update,
+    component.command,
+    component.view
+  )
+)
+```
+
+# API
+
 ## Component
 
 A component is set of 4 pure functions —
@@ -18,21 +51,24 @@ A component is set of 4 pure functions —
 [reducer function]: https://github.com/action-land/action-land/blob/master/modules/tarz/README.md#reducer-function
 
 ```ts
-export interface Component<State, Params, VNode> {
-  init(p?: Partial<State>): State
+export interface Component<State, Params, Args extends any[], VNode> {
+  init(...t: Args): State
   update<T>(action: Action<T>, state: State): State
   command<T, R>(action: Action<T>, state: State): Action<R>
   view(e: Hoe, m: State, p: Params): VNode
+  map<S, P, A, V>(
+    t: Component<State, Params, Args, VNode>
+  ): Component<S, P, A, V>
 }
 ```
 
 ## init()
 
-1.  Returns a new version of the `State`.
-2.  It may or may not take a single argument.
+1.  Can take in any number of arguments.
+2.  Returns the initial version of the `State`.
 
 ```ts
-function init(p?: Partial<State>): State
+function init(...t: any[]): State
 ```
 
 ## update()
