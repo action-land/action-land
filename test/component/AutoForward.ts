@@ -1,27 +1,25 @@
+import {AutoForward, COM} from '@action-land/component'
 import {action} from '@action-land/core'
 import {Smitten} from '@action-land/smitten'
 import {matchC, matchR} from '@action-land/tarz'
 import * as assert from 'assert'
 import * as R from 'ramda'
-import {Component} from '../../modules/component'
-import {forward} from '../../modules/snabbit/index'
-import {FORWARD_KEY_NAME} from '../../modules/snabbit/src/forward'
 
-describe('forward', () => {
+describe('AutoForward', () => {
   /**
    * Child Component
    */
   type Child = {
     C: number
   }
-  const child = {
-    init: () => ({C: 3}),
-    update: matchR({set: R.assoc('C')}),
-    command: matchC({set: action('bananas')}),
-    view: (e: Smitten, m: Child, p: {}) => {
+  const child = COM<Child, {}, [], string>(
+    (): Child => ({C: 3}),
+    matchR<Child>({set: R.assoc('C')}),
+    matchC<Child>({set: action('bananas')}),
+    (e: Smitten, m: Child, p: {}) => {
       return 'CHILD'
     }
-  }
+  )
 
   /**
    * Parent Component
@@ -30,16 +28,16 @@ describe('forward', () => {
     A: number
     child: Child
   }
-  const parent = {
-    init: (): Parent => ({A: 1, child: child.init()}),
-    update: matchR({get: R.prop('A')}),
-    command: matchC({get: action('bananas')}),
-    view: (e: Smitten, m: Parent, p: {}) => {
+  const parent = COM(
+    (): Parent => ({A: 1, child: child.init()}),
+    matchR<Parent>({get: R.prop('A')}),
+    matchC<Parent>({get: action('bananas')}),
+    (e: Smitten, m: Parent, p: {color: string}) => {
       return 'PARENT' + child.view(e.of('child'), m.child, {})
     }
-  }
+  )
 
-  const component = forward({child})(parent)
+  const component = parent.map(AutoForward({child: child}))
 
   it('should forward update to child components', () => {
     const actual = component.update(
@@ -50,7 +48,7 @@ describe('forward', () => {
     const expected = {
       A: 1,
       child: {C: 5},
-      [FORWARD_KEY_NAME]: {keys: ['child']}
+      '@@forward': {keys: ['child']}
     }
     assert.deepEqual(actual, expected)
   })
@@ -68,11 +66,10 @@ describe('forward', () => {
     const actual = component.init()
     const expected = {
       ...parent.init(),
-      [FORWARD_KEY_NAME]: {
+      '@@forward': {
         keys: ['child']
       }
     }
-
     assert.deepEqual(actual, expected)
   })
 })
