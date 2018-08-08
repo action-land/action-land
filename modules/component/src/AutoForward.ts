@@ -46,3 +46,29 @@ export const AutoForward = <T extends ComponentSpec>(spec: T) => <
     ),
     component.view as any
   )
+
+/**
+ * T Y P E S C R I P T
+ */
+
+declare function eq<T>(a: T, b: T): void
+declare const ChildComponent: Component<
+  {count: number},
+  {color: string},
+  [number, string, Date],
+  string
+>
+declare const ParentComponent: Component<
+  {name: string; child: {count: number}},
+  {color: string},
+  [number, string, Date],
+  string
+>
+declare const expected: Component<
+  {name: string; child: {count: number}; '@@forward': {keys: string[]}},
+  {color: string},
+  [number, string, Date],
+  string
+>
+const actual = AutoForward({child: ChildComponent})(ParentComponent)
+eq(actual, expected)
