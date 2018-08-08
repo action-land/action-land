@@ -12,7 +12,7 @@ import {CommandFunction, ReducerFunction} from '@action-land/tarz'
 export class Component<
   State = any,
   Params = any,
-  Init extends any[] = [],
+  Init extends any[] = any,
   VNode = any
 > {
   constructor(
