@@ -4,8 +4,8 @@
 
 import {action} from '@action-land/core'
 
-export interface Smitten {
-  of(type: string | number): Smitten
+export interface Smitten<T extends string | number = string | number> {
+  of<S extends string | number>(type: T): Smitten<S>
   emit(obj: any): void
 }
 
