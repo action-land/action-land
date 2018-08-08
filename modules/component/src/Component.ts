@@ -38,25 +38,3 @@ export const COM = <State, Params, Init extends any[], VNode>(
   command: CommandFunction<State>,
   view: (e: Smitten, m: State, p: Params) => VNode
 ) => new Component(init, update, command, view)
-
-/**
- * T Y P E S C R I P T
- */
-
-declare function eq<T>(a: T, b: T): void
-declare function init(a: string, b: number): {count: number}
-declare function update(a: string, b: {count: number}): {count: number}
-declare function command(a: string, b: {count: number}): Action<{}>
-declare function view(
-  e: Smitten,
-  m: {count: number},
-  p: {color: string}
-): string
-declare const expected: Component<
-  {count: number},
-  {color: string},
-  [string, number],
-  string
->
-const actual = COM(init, update, command, view)
-eq(actual, expected)

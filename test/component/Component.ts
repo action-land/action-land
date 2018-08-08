@@ -3,6 +3,7 @@
  */
 import {COM, Component} from '@action-land/component'
 import {isNil, Nil} from '@action-land/core'
+import {Action} from '@action-land/core'
 import {create, Smitten} from '@action-land/Smitten'
 import * as assert from 'assert'
 
@@ -113,3 +114,22 @@ describe('COM', () => {
     })
   })
 })
+
+/**
+ * T Y P E S C R I P T
+ */
+function test(
+  eq: <T>(a: T, b: T) => void,
+  init: (a: string, b: number) => {count: number},
+  update: (a: string, b: {count: number}) => {count: number},
+  command: (a: string, b: {count: number}) => Action<{}>,
+  view: (e: Smitten, m: {count: number}, p: {color: string}) => string,
+  expected: Component<
+    {count: number},
+    {color: string},
+    [string, number],
+    string
+  >
+) {
+  eq(COM(init, update, command, view), expected)
+}

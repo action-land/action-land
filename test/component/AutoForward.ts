@@ -1,4 +1,4 @@
-import {AutoForward, COM} from '@action-land/component'
+import {AutoForward, COM, Component} from '@action-land/component'
 import {action} from '@action-land/core'
 import {Smitten} from '@action-land/smitten'
 import {matchC, matchR} from '@action-land/tarz'
@@ -73,3 +73,31 @@ describe('AutoForward', () => {
     assert.deepEqual(actual, expected)
   })
 })
+
+/**
+ * T Y P E S C R I P T
+ */
+
+function test(
+  eq: <T>(a: T, b: T) => void,
+  ChildComponent: Component<
+    {count: number},
+    {color: string},
+    [number, string, Date],
+    string
+  >,
+  ParentComponent: Component<
+    {name: string; child: {count: number}},
+    {color: string},
+    [number, string, Date],
+    string
+  >,
+  expected: Component<
+    {name: string; child: {count: number}; '@@forward': {keys: string[]}},
+    {color: string},
+    [number, string, Date],
+    string
+  >
+) {
+  eq(AutoForward({child: ChildComponent})(ParentComponent), expected)
+}
