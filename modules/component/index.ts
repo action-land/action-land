@@ -5,7 +5,12 @@ import {CommandFunction, ReducerFunction} from '@action-land/tarz'
  * Component interface.
  */
 
-export class Component<State, Params, Init extends any[], VNode> {
+export class Component<
+  State = {},
+  Params = {},
+  Init extends any[] = [],
+  VNode = {}
+> {
   constructor(
     readonly init: (...t: Init) => State,
     readonly update: ReducerFunction<State>,
