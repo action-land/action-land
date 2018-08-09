@@ -1,0 +1,14 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "modules/component/package.json",
+        "modules/core/package.json",
+        "modules/match/package.json",
+        "modules/smitten/package.json",
+        "modules/tarz/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
