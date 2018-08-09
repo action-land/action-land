@@ -2,9 +2,8 @@
  * Created by tushar on 06/08/18
  */
 import {COM, Component} from '@action-land/component'
-import {isNil, Nil} from '@action-land/core'
-import {Action} from '@action-land/core'
-import {create, Smitten} from '@action-land/Smitten'
+import {Action, isNil, Nil} from '@action-land/core'
+import {create, Smitten} from '@action-land/smitten'
 import * as assert from 'assert'
 
 describe('COM', () => {
