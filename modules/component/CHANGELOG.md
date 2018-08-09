@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/action-land/action-land/compare/v3.0.0...v4.0.0) (2018-08-09)
+
+
+### Bug Fixes
+
+* **component:** default type of Component.Init has now become any ([39df7b8](https://github.com/action-land/action-land/commit/39df7b8))
+
+
+### Code Refactoring
+
+* **component:** add Component Class ([907873d](https://github.com/action-land/action-land/commit/907873d))
+
+
+### Features
+
+* **auto-forward:** add auto-forward HOC ([301bb09](https://github.com/action-land/action-land/commit/301bb09))
+* **component:** add default generic types to class ([5cf6854](https://github.com/action-land/action-land/commit/5cf6854))
+
+
+### BREAKING CHANGES
+
+* **component:** Component is now a class with map() method
+
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/action-land/action-land/compare/v2.0.1...v3.0.0) (2018-08-02)
 
