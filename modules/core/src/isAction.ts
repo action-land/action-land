@@ -12,6 +12,6 @@ export function isAction(obj: any): obj is Action<any> {
     obj !== null &&
     obj.hasOwnProperty('type') &&
     obj.hasOwnProperty('value') &&
-    typeof obj.type === 'string'
+    (typeof obj.type === 'string' || typeof obj.type === 'number')
   )
 }
