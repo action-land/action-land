@@ -23,7 +23,7 @@
     "@types/node": "^10.5.2",
     "@types/ramda": "^0.25.35",
     "benchmark": "^2.1.4",
-    "cz-lerna-changelog": "^1.2.1",
+    "cz-lerna-changelog": "^2.0.0",
     "lerna": "^2.11.0",
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
