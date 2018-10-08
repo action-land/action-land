@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.2",
+    "@types/node": "^10.11.5",
     "@types/ramda": "^0.25.35",
     "benchmark": "^2.1.4",
     "cz-lerna-changelog": "^1.2.1",
