@@ -123,7 +123,7 @@ reducer(action('add', 10), 1000) // returns 1010
 ```ts
 import {matchC} from 'update-function-type'
 
-const reducer = matchR({
+const reducer = matchC({
   add: (a, b) => action('added', a + b),
   mul: (a, b) => action('multiplied', a * b)
 })
