@@ -24,7 +24,7 @@
     "@types/ramda": "^0.25.35",
     "benchmark": "^2.1.4",
     "cz-lerna-changelog": "^1.2.1",
-    "lerna": "^2.11.0",
+    "lerna": "^3.10.4",
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
     "ramda": "^0.25.0",
