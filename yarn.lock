@@ -16,9 +16,10 @@
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
 
-"@types/node@^10.5.2":
-  version "10.5.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.2.tgz#f19f05314d5421fe37e74153254201a7bf00a707"
+"@types/node@^11.12.3":
+  version "11.12.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.12.4.tgz#e270e47bee41e5274bc583a683d4c2a3142f87b3"
+  integrity sha512-k7hiQFCBDQS3ku5ohqsRlqK5inx4Jfu4rX5/sOAhDP2q3+UX1sOEIg3BjxtE2PMoe90vjkdbcK/dFfltMMlxFA==
 
 "@types/ramda@^0.25.35":
   version "0.25.35"
