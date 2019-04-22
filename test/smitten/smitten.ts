@@ -60,4 +60,19 @@ describe('hoe', () => {
       e.emit(null)
     })
   })
+  describe('bindTo', () => {
+    it('should emit with arguments', () => {
+      const {actions, listener} = testListener()
+      const e = create(listener)
+      const f = e.of('A').bindTo(100)
+      f.emit(200)
+      assert.equal(actions[0].value, 100)
+    })
+    it('should not bind a value on root emitter', () => {
+      const {actions, listener} = testListener()
+      const e = create(listener).bindTo(100)
+      e.emit.call(null, 200)
+      assert.notStrictEqual(actions, [200])
+    })
+  })
 })
