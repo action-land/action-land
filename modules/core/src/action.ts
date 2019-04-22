@@ -11,7 +11,7 @@ export interface IAction<T> {
 }
 
 // TODO(tsc): Add overloads to show that NilAction input produces a NilAction
-function createAction<T>(type: string | number, value: T): IAction<T> {
+function createAction<T>(type: string | number, value: T): IAction<any> {
   return isNil(value) ? value : {type, value}
 }
 

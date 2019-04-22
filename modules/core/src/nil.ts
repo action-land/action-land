@@ -1,13 +1,16 @@
-import {action, IAction} from './action'
+import {IAction} from './action'
+
+export const NIL_TYPE = '@@NIL'
 
 /**
- * Action type for {Nil}
+ * INilAction is a specific Sub-Type of IAction<>
  */
-export const NIL_TYPE = '@@NIL'
+export interface INilAction extends IAction<{}> {
+  type: '@@NIL'
+  value: {}
+}
 
 /**
  * Returns a Nil object
  */
-export function Nil(): IAction<{}> {
-  return action(NIL_TYPE, {})
-}
+export const Nil = (): INilAction => ({type: NIL_TYPE, value: {}})

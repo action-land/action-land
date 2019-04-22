@@ -1,11 +1,10 @@
-import {IAction} from './action'
 import {isAction} from './isAction'
-import {NIL_TYPE} from './nil'
+import {INilAction, NIL_TYPE} from './Nil'
 
 /**
  * Checks if the object is {Nil} or not
  * @param: Object to test
  */
-export function isNil(obj: any): obj is IAction<any> {
+export function isNil(obj: any): obj is INilAction {
   return isAction(obj) && obj.type === NIL_TYPE
 }
