@@ -24,7 +24,7 @@ export const concatC = <State>(
       return result.length === 0
         ? Nil()
         : result.length === 1
-          ? result[0]
-          : List(...result)
+        ? result[0]
+        : List(...result)
     }
   )
