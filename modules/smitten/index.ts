@@ -10,10 +10,16 @@ export interface Smitten<T extends string | number = string | number> {
 }
 
 class DefaultEmitter implements Smitten {
+  private cache: {
+    [key: string]: DefaultEmitter
+  }
+
   constructor(
     readonly type: string | number,
     readonly parent: DefaultEmitter | RootEmitter
-  ) {}
+  ) {
+    this.cache = {}
+  }
 
   emit = (value: any) => {
     let node: DefaultEmitter | RootEmitter = this
@@ -24,8 +30,15 @@ class DefaultEmitter implements Smitten {
     }
     node.emit(act)
   }
+
   of(type: string | number): Smitten {
-    return new DefaultEmitter(type, this)
+    if (this.cache.hasOwnProperty(type)) {
+      return this.cache[type]
+    }
+
+    const newEmitter = new DefaultEmitter(type, this)
+    this.cache[type] = newEmitter
+    return newEmitter
   }
 }
 

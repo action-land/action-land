@@ -41,7 +41,6 @@ describe('hoe', () => {
       action('A', action('B', 200))
     ])
   })
-
   it('should persist arguments', () => {
     const {actions, listener} = testListener()
     const e = create(listener)
@@ -59,5 +58,14 @@ describe('hoe', () => {
       }
       e.emit(null)
     })
+  })
+  it('should memoize `e.of`', () => {
+    const {listener} = testListener()
+    const root = create(listener)
+    /* create emitter tree */
+    const e = root.of('1st_child')
+    const f = e.of('2nd_child')
+    const g = e.of('2nd_child')
+    assert.deepStrictEqual(f, g)
   })
 })
