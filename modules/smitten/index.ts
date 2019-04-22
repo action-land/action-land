@@ -6,7 +6,7 @@ import {action} from '@action-land/core'
 
 export interface Smitten<T extends string | number = string | number> {
   of<S extends string | number>(type: T): Smitten<S>
-  emit(obj: any): void
+  emit(value: any): void
   bindTo<S extends string | number>(value: any): Smitten<S>
 }
 
