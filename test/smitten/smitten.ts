@@ -66,6 +66,6 @@ describe('hoe', () => {
     const e = root.of('1st_child')
     const f = e.of('2nd_child')
     const g = e.of('2nd_child')
-    assert.deepStrictEqual(f, g)
+    assert.strictEqual(f, g)
   })
 })
