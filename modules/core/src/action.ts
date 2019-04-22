@@ -1,6 +1,7 @@
 import {curry2} from 'ts-curry'
 
 import {isNil} from './isNil'
+import {INilAction} from './nil'
 
 /**
  * Interface for Action
@@ -10,8 +11,9 @@ export interface IAction<T> {
   value: T
 }
 
-// TODO(tsc): Add overloads to show that NilAction input produces a NilAction
-function createAction<T>(type: string | number, value: T): IAction<T> {
+function createAction(type: string | number, value: INilAction): INilAction
+function createAction<T>(type: string | number, value: T): IAction<T>
+function createAction(type: string | number, value: unknown): IAction<unknown> {
   return isNil(value) ? value : {type, value}
 }
 
