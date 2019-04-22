@@ -8,6 +8,6 @@ import {NIL_TYPE} from './Nil'
  * @param {any} obj
  * @returns {boolean}
  */
-export function isNil(obj: any): obj is Action<any> {
+export function isNil(obj: any): obj is Action<any, any> {
   return isAction(obj) && obj.type === NIL_TYPE
 }

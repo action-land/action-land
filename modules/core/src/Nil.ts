@@ -3,7 +3,6 @@ import {Action, action} from './action'
 /**
  * Action type for {Nil}
  * @constant
- * @type {Action}
  */
 export const NIL_TYPE = '@@NIL'
 
@@ -12,6 +11,6 @@ export const NIL_TYPE = '@@NIL'
  * @function
  * @returns {Action}
  */
-export function Nil(): Action<{}> {
+export function Nil(): Action<string, {}> {
   return action(NIL_TYPE, {})
 }

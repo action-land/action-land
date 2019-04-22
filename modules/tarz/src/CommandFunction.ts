@@ -12,5 +12,5 @@ import {Action} from '@action-land/core'
  */
 
 export type CommandFunction<State, Input = any, Output = any> = {
-  (input: Input, state: State): Action<Output>
+  (input: Input, state: State): Action<any, Output>
 }

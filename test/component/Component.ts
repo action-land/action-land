@@ -121,7 +121,7 @@ function test(
   eq: <T>(a: T, b: T) => void,
   init: (a: string, b: number) => {count: number},
   update: (a: string, b: {count: number}) => {count: number},
-  command: (a: string, b: {count: number}) => Action<{}>,
+  command: (a: string, b: {count: number}) => Action<any, {}>,
   view: (e: Smitten, m: {count: number}, p: {color: string}) => string,
   expected: Component<
     {count: number},

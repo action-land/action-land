@@ -9,8 +9,8 @@ import {zeroR} from '../../modules/tarz/src/zeroR'
 
 describe('concatR', () => {
   const TEST_ACTION = action('SAMPLE', 100)
-  const P = (a: Action<number>, b: number) => a.value + b
-  const Q = (a: Action<number>, b: number) => a.value * b
+  const P = (a: Action<any, number>, b: number) => a.value + b
+  const Q = (a: Action<any, number>, b: number) => a.value * b
   it('should combine multiple reducers into one', () => {
     const r = concatR(P, Q)
     const actual = r(TEST_ACTION, 20)

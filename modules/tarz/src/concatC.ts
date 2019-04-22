@@ -8,10 +8,10 @@ import {CommandFunction} from './CommandFunction'
 
 export const concatC = <State>(
   ...t: Array<CommandFunction<State>>
-): CurriedFunction2<any, State, Action<any>> =>
+): CurriedFunction2<any, State, Action<any, any>> =>
   curry2(
-    (input: any, state: State): Action<{}> => {
-      const result: Array<Action<any>> = []
+    (input: any, state: State): Action<any, {}> => {
+      const result: Array<Action<any, any>> = []
       for (let i = 0; i < t.length; i++) {
         const item = t[i](input, state)
         if (isList(item))

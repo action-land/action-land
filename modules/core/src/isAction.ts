@@ -6,12 +6,11 @@ import {Action} from './action'
  * @param {any} obj
  * @returns {boolean}
  */
-export function isAction(obj: any): obj is Action<any> {
+export function isAction(obj: any): obj is Action<any, any> {
   return (
     typeof obj === 'object' &&
     obj !== null &&
     obj.hasOwnProperty('type') &&
-    obj.hasOwnProperty('value') &&
-    (typeof obj.type === 'string' || typeof obj.type === 'number')
+    obj.hasOwnProperty('value')
   )
 }
