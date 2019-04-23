@@ -13,6 +13,7 @@ type ChildStateSpec<T extends ComponentSpec> = {
   [k in keyof T]: ComponentState<T[k]>
 }
 
+// tslint:disable-next-line: typedef
 export const AutoForward = <T extends ComponentSpec>(spec: T) => <
   State extends ChildStateSpec<T>,
   Params,

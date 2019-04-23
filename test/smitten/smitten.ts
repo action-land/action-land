@@ -2,14 +2,17 @@
  * Created by tushar on 15/01/17.
  */
 
-import {action} from '@action-land/core'
+import {Action, action} from '@action-land/core'
 import * as assert from 'assert'
 
 import {create} from '../../modules/smitten/index'
 
-export const testListener = () => {
+export const testListener = <T>(): {
+  actions: Array<Action<T>>
+  listener(action: Action<T>): void
+} => {
   const actions: any[] = []
-  const listener = (action: any) => {
+  const listener = (action: any): void => {
     actions.push(action)
   }
 

@@ -1,6 +1,7 @@
 /**
  * Created by tushar on 06/08/18
  */
+// tslint:disable: typedef
 import {COM, Component} from '@action-land/component'
 import {Action, isNil, Nil} from '@action-land/core'
 import {create, Smitten} from '@action-land/smitten'
@@ -116,6 +117,6 @@ function test(
     [string, number],
     string
   >
-) {
+): void {
   eq(COM(init, update, command, view), expected)
 }

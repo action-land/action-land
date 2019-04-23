@@ -37,4 +37,5 @@ export const COM = <State, Params, Init extends any[], VNode>(
   update: ReducerFunction<State>,
   command: CommandFunction<State>,
   view: (e: Smitten, m: State, p: Params) => VNode
-) => new Component(init, update, command, view)
+): Component<State, Params, Init, VNode> =>
+  new Component(init, update, command, view)

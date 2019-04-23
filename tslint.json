@@ -24,29 +24,30 @@
       true,
       "allow-pascal-case"
     ],
-    "only-arrow-functions": false,
-    // TEMPORARY
-    "no-magic-numbers": false,
-    "no-any": false,
     "typedef": [
-      false,
+      true,
       "call-signature",
+      "arrow-call-signature",
       "parameter"
     ],
+    "only-arrow-functions": false,
+    "increment-decrement": false,
+    "no-null-keyword": false,
+    "no-magic-numbers": false,
+    // TEMPORARY
+    "no-any": false,
+    "no-unsafe-any": false,
     "file-name-casing": [
       false,
       "pascal-case"
     ],
-    "no-unsafe-any": false,
     "no-parameter-properties": false,
     "deprecation": false,
     "no-implicit-dependencies": false,
     "interface-name": false,
     "prefer-for-of": false,
-    "increment-decrement": false,
     "strict-boolean-expressions": false,
     "no-shadowed-variable": false,
-    "no-null-keyword": false,
     "no-this-assignment": false,
     "max-classes-per-file": false,
     "no-empty": false,

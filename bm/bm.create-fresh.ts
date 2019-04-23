@@ -7,10 +7,10 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
-function pass() {}
+function pass(): void {}
 const fresh = create(pass)
 suite
-  .add('create-1e3-times-fresh', function() {
+  .add('create-1e3-times-fresh', function(): void {
     let e = fresh
     for (let i = 0; i < 1e3; i += 1) {
       e = e.of(i.toString())
@@ -18,7 +18,7 @@ suite
     e.emit(0)
   })
 
-  .on('cycle', function(event: any) {
+  .on('cycle', function(event: any): void {
     console.log(String(event.target)) // tslint:disable-line
   })
 
