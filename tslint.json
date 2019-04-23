@@ -25,6 +25,10 @@
       "allow-pascal-case"
     ],
     "file-name-casing": [true, "camel-case"],
+    "no-implicit-dependencies": [
+      false, // Doesn't play well with mono-repo
+      "dev"
+    ],
     "only-arrow-functions": false,
     "increment-decrement": false,
     "no-null-keyword": false,
@@ -34,14 +38,12 @@
     "no-this-assignment": false,
     "max-classes-per-file": false,
     "strict-boolean-expressions": false,
-    "no-any": false,
     "typedef": [
       false,
       "call-signature",
       "parameter"
     ],
-    "no-unsafe-any": false,
-    "deprecation": false,
-    "no-implicit-dependencies": false
+    "no-any": false,
+    "no-unsafe-any": false
   }
 }

@@ -16,7 +16,7 @@ describe('List', () => {
   it('should return the passed action if args.length=1', () => {
     const input = action('A', 10)
     const actual = List(input)
-    assert.equal(actual, input)
+    assert.strictEqual(actual, input)
   })
 
   it('should return Nil if the arg is Nil', () => {
