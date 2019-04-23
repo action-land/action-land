@@ -7,7 +7,9 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
-function pass(): void {}
+function pass(): void {
+  return
+}
 suite
 
   .add('create-1e3-times', function(): void {

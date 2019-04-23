@@ -7,7 +7,9 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
-function pass(): void {}
+function pass(): void {
+  return
+}
 suite
   .add('emit-1e6-times', function(): void {
     const e = create(pass)
