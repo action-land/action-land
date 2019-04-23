@@ -43,11 +43,11 @@ describe('AutoForward', () => {
     )
 
     const expected = {
+      '@@forward': {keys: ['child']},
       A: 1,
-      child: {C: 5},
-      '@@forward': {keys: ['child']}
+      child: {C: 5}
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should call the corresponding commands of the given component', () => {
@@ -56,7 +56,7 @@ describe('AutoForward', () => {
       component.init()
     )
     const expected = action('child', action('bananas', 5))
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should update @@forward', () => {
@@ -67,7 +67,7 @@ describe('AutoForward', () => {
         keys: ['child']
       }
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 })
 

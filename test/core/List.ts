@@ -32,7 +32,7 @@ describe('List', () => {
   it('should skip Nil actions', () => {
     const actual = List(action('A', 0), Nil(), action('B', 1))
     const expected = List(action('A', 0), action('B', 1))
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should return Nil when multiple Nil actions are passed', () => {

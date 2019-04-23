@@ -1,11 +1,46 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:all", "tslint-config-prettier"],
+  "extends": [
+    "tslint:all",
+    "tslint-config-prettier"
+  ],
   "rules": {
     "completed-docs": false,
     "prefer-template": false,
-    "variable-name": [true, "allow-pascal-case"],
-    "file-name-casing": [true, "pascal-case"],
-    "typedef": [true, "call-signature", "parameter"]
+    "variable-name": [
+      true,
+      "allow-pascal-case"
+    ],
+    // TEMPORARY
+    "binary-expression-operand-order": false,
+    "no-magic-numbers": false,
+    "no-any": false,
+    "typedef": [
+      false,
+      "call-signature",
+      "parameter"
+    ],
+    "file-name-casing": [
+      false,
+      "pascal-case"
+    ],
+    "only-arrow-functions": false,
+    "no-unsafe-any": false,
+    "jsdoc-format": false,
+    "no-parameter-properties": false,
+    "no-redundant-jsdoc": false,
+    "deprecation": false,
+    "no-implicit-dependencies": false,
+    "interface-name": false,
+    "prefer-for-of": false,
+    "increment-decrement": false,
+    "strict-boolean-expressions": false,
+    "no-shadowed-variable": false,
+    "object-literal-sort-keys": false,
+    "no-null-keyword": false,
+    "no-this-assignment": false,
+    "max-classes-per-file": false,
+    "no-empty": false,
+    "no-inferred-empty-object-type": false
   }
 }

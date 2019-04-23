@@ -16,7 +16,7 @@ describe('matchC', () => {
     })(action('add', 10), 20)
     const expected = action('added', 30)
 
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should return Nil', () => {
@@ -34,7 +34,7 @@ describe('matchC', () => {
       mul: (a: number, b: number) => action('multiplied', a * b)
     })(action('add', 10))(20)
     const expected = action('added', 30)
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should skip non-action type values', () => {

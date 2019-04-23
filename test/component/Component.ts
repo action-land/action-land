@@ -14,7 +14,7 @@ describe('COM', () => {
 
     Nil,
 
-    (e, m, p: {color: string}) => 'Count:' + m.count + ':' + p.color
+    (e, m, p: {color: string}) => `Count:${m.count}:${p.color}`
   )
 
   describe('init', () => {

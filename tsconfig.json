@@ -2,6 +2,15 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "strict": true
+    "strict": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false,
+        "ignoreDefinitionFiles": true,
+        "suppressWhileTypeErrorsPresent": false,
+        "mockTypeScriptVersion": false
+      }
+    ]
   }
 }

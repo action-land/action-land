@@ -7,19 +7,19 @@ describe('action', () => {
   it('should return an action', () => {
     const actual = action('WONDER', {count: 10})
     const expected = {type: 'WONDER', value: {count: 10}}
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should be curried', () => {
     const actual = action('WONDER')({count: 10})
     const expected = {type: 'WONDER', value: {count: 10}}
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should accept type as number', () => {
     const actual = action(120)({count: 10})
     const expected = {type: 120, value: {count: 10}}
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should ignore Nil values', () => {
