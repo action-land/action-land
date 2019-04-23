@@ -2,9 +2,10 @@
  * Created by tushar on 15/01/17.
  */
 import * as Benchmark from 'benchmark'
+
 import {create} from '../modules/smitten/index'
 
-let suite = new Benchmark.Suite()
+const suite = new Benchmark.Suite()
 
 function pass() {}
 suite
@@ -12,7 +13,7 @@ suite
   .add('create-1e3-times', function() {
     let e = create(pass)
 
-    for (let i = 0; i < 1e3; ++i) {
+    for (let i = 0; i < 1e3; i += 1) {
       e = e.of(i.toString())
     }
     e.emit(0)

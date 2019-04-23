@@ -4,6 +4,7 @@
 
 import * as assert from 'assert'
 import {curry2} from 'ts-curry'
+
 import {action, List, Nil} from '../../modules/core/index'
 import {concatC} from '../../modules/tarz/src/concatC'
 import {zeroC} from '../../modules/tarz/src/zeroC'
@@ -16,31 +17,31 @@ describe('concatC', () => {
     const actual = concatC(curry2(P), curry2(M))(1, 2)
     const expected = List(action('+', 3), action('*', 2))
 
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should be curried', () => {
     const actual = concatC(P, M)(1)(2)
     const expected = List(action('+', 3), action('*', 2))
 
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should be associative (P + M) + D === P + (M + D)', () => {
     const a = concatC(concatC(P, M), D)
     const b = concatC(P, concatC(M, D))
-    assert.deepEqual(a(1, 2), b(1, 2))
+    assert.deepStrictEqual(a(1, 2), b(1, 2))
   })
 
   it('should satisfy additive identity P + Z === P', () => {
     const a = concatC(P, zeroC)
     const b = P
-    assert.deepEqual(a(1, 2), b(1, 2))
+    assert.deepStrictEqual(a(1, 2), b(1, 2))
   })
 
   it('should satisfy additive identity Z + Z === Z', () => {
     const actual = concatC(zeroC, zeroC)(1, 2)
     const expected = Nil()
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 })

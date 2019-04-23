@@ -18,8 +18,12 @@ export function List(
   ...actions: Array<Action<any>>
 ): Action<Array<Action<any>> | any> {
   const nActions: Array<Action<any>> = []
-  for (let i = 0; i < actions.length; i++)
-    if (!isNil(actions[i])) nActions.push(actions[i])
+  for (let i = 0; i < actions.length; i++) {
+    if (!isNil(actions[i])) {
+      nActions.push(actions[i])
+    }
+  }
+
   return nActions.length === 0
     ? Nil()
     : nActions.length === 1

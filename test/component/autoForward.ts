@@ -9,22 +9,20 @@ describe('AutoForward', () => {
   /**
    * Child Component
    */
-  type Child = {
+  interface Child {
     C: number
   }
   const child = COM<Child, {}, [], string>(
     (): Child => ({C: 3}),
     matchR<Child>({set: R.assoc('C')}),
     matchC<Child>({set: action('bananas')}),
-    (e: Smitten, m: Child, p: {}) => {
-      return 'CHILD'
-    }
+    (e: Smitten, m: Child, p: {}) => 'CHILD'
   )
 
   /**
    * Parent Component
    */
-  type Parent = {
+  interface Parent {
     A: number
     child: Child
   }
@@ -32,12 +30,11 @@ describe('AutoForward', () => {
     (): Parent => ({A: 1, child: child.init()}),
     matchR<Parent>({get: R.prop('A')}),
     matchC<Parent>({get: action('bananas')}),
-    (e: Smitten, m: Parent, p: {color: string}) => {
-      return 'PARENT' + child.view(e.of('child'), m.child, {})
-    }
+    (e: Smitten, m: Parent, p: {color: string}) =>
+      'PARENT' + child.view(e.of('child'), m.child, {})
   )
 
-  const component = parent.map(AutoForward({child: child}))
+  const component = parent.map(AutoForward({child}))
 
   it('should forward update to child components', () => {
     const actual = component.update(
@@ -46,11 +43,11 @@ describe('AutoForward', () => {
     )
 
     const expected = {
+      '@@forward': {keys: ['child']},
       A: 1,
-      child: {C: 5},
-      '@@forward': {keys: ['child']}
+      child: {C: 5}
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should call the corresponding commands of the given component', () => {
@@ -59,7 +56,7 @@ describe('AutoForward', () => {
       component.init()
     )
     const expected = action('child', action('bananas', 5))
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should update @@forward', () => {
@@ -70,7 +67,7 @@ describe('AutoForward', () => {
         keys: ['child']
       }
     }
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 })
 
@@ -87,13 +84,13 @@ function test(
     string
   >,
   ParentComponent: Component<
-    {name: string; child: {count: number}},
+    {child: {count: number}; name: string},
     {color: string},
     [number, string, Date],
     string
   >,
   expected: Component<
-    {name: string; child: {count: number}; '@@forward': {keys: string[]}},
+    {'@@forward': {keys: string[]}; child: {count: number}; name: string},
     {color: string},
     [number, string, Date],
     string

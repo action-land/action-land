@@ -5,17 +5,17 @@
 import {action} from '@action-land/core'
 
 export interface Smitten<T extends string | number = string | number> {
-  of<S extends string | number>(type: T): Smitten<S>
   emit(obj: any): void
+  of<S extends string | number>(type: T): Smitten<S>
 }
 
 class DefaultEmitter implements Smitten {
-  constructor(
-    readonly type: string | number,
-    readonly parent: DefaultEmitter | RootEmitter
+  public constructor(
+    public readonly type: string | number,
+    public readonly parent: DefaultEmitter | RootEmitter
   ) {}
 
-  emit = (value: any) => {
+  public emit = (value: any) => {
     let node: DefaultEmitter | RootEmitter = this
     let act = value
     while (node instanceof DefaultEmitter) {
@@ -24,19 +24,18 @@ class DefaultEmitter implements Smitten {
     }
     node.emit(act)
   }
-  of(type: string | number): Smitten {
+  public of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }
 }
 
 class RootEmitter implements Smitten {
-  constructor(public readonly emit: (obj: any) => void) {}
+  public constructor(public readonly emit: (obj: any) => void) {}
 
-  of(type: string | number): Smitten {
+  public of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }
 }
 
-export const create = (listener: (obj: any) => any): Smitten => {
-  return new RootEmitter(listener)
-}
+export const create = (listener: (obj: any) => any): Smitten =>
+  new RootEmitter(listener)

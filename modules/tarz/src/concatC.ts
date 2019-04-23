@@ -4,6 +4,7 @@
 
 import {Action, isList, isNil, List, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
+
 import {CommandFunction} from './commandFunction'
 
 export const concatC = <State>(
@@ -14,11 +15,15 @@ export const concatC = <State>(
       const result: Array<Action<any>> = []
       for (let i = 0; i < t.length; i++) {
         const item = t[i](input, state)
-        if (isList(item))
+        if (isList(item)) {
           for (let i = 0; i < item.value.length; i++) {
-            if (!isNil(item.value[i])) result.push(item.value[i])
+            if (!isNil(item.value[i])) {
+              result.push(item.value[i])
+            }
           }
-        else if (!isNil(item)) result.push(item)
+        } else if (!isNil(item)) {
+          result.push(item)
+        }
       }
 
       return result.length === 0

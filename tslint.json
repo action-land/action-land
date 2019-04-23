@@ -1,40 +1,43 @@
 {
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:all",
+    "tslint-config-prettier"
+  ],
   "rules": {
+    "completed-docs": false,
+    "prefer-template": false,
+    "variable-name": [
+      true,
+      "allow-pascal-case"
+    ],
     "file-name-casing": [true, "camel-case"],
-    "class-name": true,
-    "comment-format": [true, "check-space"],
-    "indent": [true, "spaces", 2],
-    "one-export": false,
-    "no-console": true,
-    "no-debugger": true,
-    "no-eval": true,
-    "no-internal-module": true,
-    "no-trailing-whitespace": true,
-    "no-unsafe-finally": true,
-    "no-var-keyword": true,
-    "one-line": [true, "check-open-brace", "check-whitespace"],
-    "quotemark": [true, "single", "avoid-escape"],
-    "semicolon": [true, "never"],
-    "triple-equals": [true, "allow-null-check"],
-    "typedef-whitespace": [
-      true,
-      {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
-      }
+    // TEMPORARY
+    "binary-expression-operand-order": false,
+    "no-magic-numbers": false,
+    "no-any": false,
+    "typedef": [
+      false,
+      "call-signature",
+      "parameter"
     ],
-    "variable-name": [true, "ban-keywords"],
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ],
-    "ordered-imports": true
+    "only-arrow-functions": false,
+    "no-unsafe-any": false,
+    "jsdoc-format": false,
+    "no-parameter-properties": false,
+    "no-redundant-jsdoc": false,
+    "deprecation": false,
+    "no-implicit-dependencies": false,
+    "interface-name": false,
+    "prefer-for-of": false,
+    "increment-decrement": false,
+    "strict-boolean-expressions": false,
+    "no-shadowed-variable": false,
+    "object-literal-sort-keys": false,
+    "no-null-keyword": false,
+    "no-this-assignment": false,
+    "max-classes-per-file": false,
+    "no-empty": false,
+    "no-inferred-empty-object-type": false
   }
 }

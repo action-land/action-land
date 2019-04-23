@@ -2,6 +2,7 @@
  * Created by tushar on 25/06/18
  */
 import {CurriedFunction2, curry2} from 'ts-curry'
+
 import {ReducerFunction} from './reducerFunction'
 
 /**
@@ -15,7 +16,10 @@ export const concatR = <State>(
   curry2(
     (a: any, b: State): State => {
       let result: State = b
-      for (let i = 0; i < t.length; i++) result = t[i](a, result)
+      for (let i = 0; i < t.length; i++) {
+        result = t[i](a, result)
+      }
+
       return result
     }
   )

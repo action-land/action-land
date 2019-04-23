@@ -16,14 +16,14 @@ export class Component<
   Init extends any[] = any,
   VNode = any
 > {
-  constructor(
-    readonly init: (...t: Init) => State,
-    readonly update: ReducerFunction<State>,
-    readonly command: CommandFunction<State>,
-    readonly view: (e: Smitten, m: State, p: Params) => VNode
+  public constructor(
+    public readonly init: (...t: Init) => State,
+    public readonly update: ReducerFunction<State>,
+    public readonly command: CommandFunction<State>,
+    public readonly view: (e: Smitten, m: State, p: Params) => VNode
   ) {}
 
-  map<S, P, I extends any[], V>(
+  public map<S, P, I extends any[], V>(
     fn: (
       component: Component<State, Params, Init, VNode>
     ) => Component<S, P, I, V>

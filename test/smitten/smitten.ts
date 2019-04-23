@@ -4,13 +4,15 @@
 
 import {action} from '@action-land/core'
 import * as assert from 'assert'
+
 import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
-  const actions: Array<any> = []
+  const actions: any[] = []
   const listener = (action: any) => {
     actions.push(action)
   }
+
   return {actions, listener}
 }
 
@@ -20,14 +22,14 @@ describe('hoe', () => {
     const e = create(listener)
     e.emit(100)
     e.emit(200)
-    assert.deepEqual(actions, [100, 200])
+    assert.deepStrictEqual(actions, [100, 200])
   })
   it('should emit nested action with type', () => {
     const {actions, listener} = testListener()
     const e = create(listener).of('T')
     e.emit(100)
     e.emit(200)
-    assert.deepEqual(actions, [action('T', 100), action('T', 200)])
+    assert.deepStrictEqual(actions, [action('T', 100), action('T', 200)])
   })
   it('should nested actions', () => {
     const {actions, listener} = testListener()
@@ -36,7 +38,7 @@ describe('hoe', () => {
       .of('B')
     e.emit(100)
     e.emit(200)
-    assert.deepEqual(actions, [
+    assert.deepStrictEqual(actions, [
       action('A', action('B', 100)),
       action('A', action('B', 200))
     ])
@@ -48,7 +50,7 @@ describe('hoe', () => {
     const f = e.of('F')
     e.emit.call(null, 100)
     f.emit.call(null, 200)
-    assert.deepEqual(actions, [100, action('F', 200)])
+    assert.deepStrictEqual(actions, [100, action('F', 200)])
   })
   it.skip('should be stack safe', () => {
     const {listener} = testListener()

@@ -8,21 +8,13 @@ import * as assert from 'assert'
 
 describe('COM', () => {
   const component = COM(
-    (count: string) => {
-      return {count: Number(count)}
-    },
+    (count: string) => ({count: Number(count)}),
 
-    (action, state) => {
-      return {...state, count: state.count + 1}
-    },
+    (action, state) => ({...state, count: state.count + 1}),
 
-    () => {
-      return Nil()
-    },
+    Nil,
 
-    (e, m, p: {color: string}) => {
-      return 'Count:' + m.count + ':' + p.color
-    }
+    (e, m, p: {color: string}) => `Count:${m.count}:${p.color}`
   )
 
   describe('init', () => {
@@ -66,7 +58,9 @@ describe('COM', () => {
     >(
       component: Component<State, Params, Init, VNode>
     ) => {
-      type Crazy = {crazy: boolean}
+      interface Crazy {
+        crazy: boolean
+      }
 
       const InitType = <Args extends any[], R>(
         fn0: (...t: Args) => R
@@ -78,16 +72,9 @@ describe('COM', () => {
         s: S & Crazy
       ): S & Crazy => fn(a, s) as S & Crazy
 
-      const CommandType = <A, B, S>(fn: (a: A, s: S) => B) => (
-        a: A,
-        s: S & Crazy
-      ): B => fn(a, s)
+      const CommandType = <A, B, S>(fn: (a: A, s: S) => B) => fn
 
-      const ViewType = <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) => (
-        e: Smitten,
-        m: S & Crazy,
-        p: P
-      ): VNode => fn(e, m, p)
+      const ViewType = <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) => fn
 
       return COM(
         InitType(component.init),

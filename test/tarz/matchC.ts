@@ -3,8 +3,8 @@
  */
 
 import {action, isNil} from '@action-land/core'
-import {CommandFunction} from '@action-land/tarz/src/commandFunction'
 import * as assert from 'assert'
+
 import {matchC} from '../../modules/tarz/src/matchC'
 
 describe('matchC', () => {
@@ -15,7 +15,7 @@ describe('matchC', () => {
     })(action('add', 10), 20)
     const expected = action('added', 30)
 
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should return Nil', () => {
@@ -33,7 +33,7 @@ describe('matchC', () => {
       mul: (a: number, b: number) => action('multiplied', a * b)
     })(action('add', 10))(20)
     const expected = action('added', 30)
-    assert.deepEqual(actual, expected)
+    assert.deepStrictEqual(actual, expected)
   })
 
   it('should skip non-action type values', () => {
