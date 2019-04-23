@@ -48,7 +48,6 @@
     "prefer-for-of": false,
     "strict-boolean-expressions": false,
     "no-shadowed-variable": false,
-    "max-classes-per-file": false,
-    "no-inferred-empty-object-type": false
+    "max-classes-per-file": false
   }
 }

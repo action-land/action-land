@@ -38,7 +38,7 @@ describe('matchR', () => {
   })
 
   it('should skip non-action args', () => {
-    const actual = matchR({})(10, 200)
+    const actual = matchR<number>({})(10)(200)
     assert.strictEqual(actual, 200)
   })
 })
