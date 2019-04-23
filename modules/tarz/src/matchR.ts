@@ -14,7 +14,7 @@ export interface MatchActionRSpec<State> {
   [key: string]: ReducerFunction<State>
 }
 
-export const matchR = <State>(
+export const matchR = <State = unknown>(
   spec: MatchActionRSpec<State>
 ): CurriedFunction2<any, State, State> =>
   curry2(
