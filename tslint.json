@@ -29,7 +29,10 @@
     "increment-decrement": false,
     "no-null-keyword": false,
     "no-magic-numbers": false,
+    "no-parameter-properties": false,
     // TEMPORARY
+    "no-this-assignment": false,
+    "strict-boolean-expressions": false,
     "no-any": false,
     "typedef": [
       false,
@@ -37,12 +40,9 @@
       "parameter"
     ],
     "no-unsafe-any": false,
-    "no-parameter-properties": false,
     "deprecation": false,
     "no-implicit-dependencies": false,
     "interface-name": false,
-    "strict-boolean-expressions": false,
-    "no-this-assignment": false,
     "max-classes-per-file": false
   }
 }
