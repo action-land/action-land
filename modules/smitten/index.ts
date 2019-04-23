@@ -6,7 +6,6 @@ import {action} from '@action-land/core'
 
 /**
  * Class that emits your view-actions
- * @name Smitten
  */
 export interface Smitten<T extends string | number = string | number> {
   emit(obj: any): void

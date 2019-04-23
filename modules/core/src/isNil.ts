@@ -4,9 +4,7 @@ import {NIL_TYPE} from './Nil'
 
 /**
  * Checks if the object is {Nil} or not
- * @function
- * @param {any} obj
- * @returns {boolean}
+ * @param: Object to test
  */
 export function isNil(obj: any): obj is Action<any> {
   return isAction(obj) && obj.type === NIL_TYPE

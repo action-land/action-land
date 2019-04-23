@@ -9,7 +9,6 @@ import {CommandFunction} from './CommandFunction'
 
 /**
  * Spec of Thunks for each Command that needs to be handled
- * @name: MatchActionCSpec
  */
 export interface MatchActionCSpec<State> {
   [key: string]: CommandFunction<State>

@@ -4,15 +4,12 @@ import {Nil} from './Nil'
 
 /**
  * Action type for Nil
- * @constant
  */
 export const LIST_ACTION_TYPE = '@@LIST'
 
 /**
  * Creates a new Action from a list of actions
- * @function
- * @param  {... Action} actions
- * @returns {Action}
+ * @param: List of Actions
  */
 export function List(
   ...actions: Array<Action<any>>

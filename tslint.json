@@ -38,9 +38,7 @@
       "pascal-case"
     ],
     "no-unsafe-any": false,
-    "jsdoc-format": false,
     "no-parameter-properties": false,
-    "no-redundant-jsdoc": false,
     "deprecation": false,
     "no-implicit-dependencies": false,
     "interface-name": false,
