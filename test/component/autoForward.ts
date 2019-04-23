@@ -1,36 +1,36 @@
 import {AutoForward, COM, Component} from '@action-land/component'
 import {action} from '@action-land/core'
-import {Smitten} from '@action-land/smitten'
+import {ISmitten} from '@action-land/smitten'
 import {matchC, matchR} from '@action-land/tarz'
 import * as assert from 'assert'
 import * as R from 'ramda'
 
 describe('AutoForward', () => {
   /**
-   * Child Component
+   * IChild Component
    */
-  interface Child {
+  interface IChild {
     C: number
   }
-  const child = COM<Child, {}, [], string>(
-    (): Child => ({C: 3}),
-    matchR<Child>({set: R.assoc('C')}),
-    matchC<Child>({set: action('bananas')}),
-    (e: Smitten, m: Child, p: {}) => 'CHILD'
+  const child = COM<IChild, {}, [], string>(
+    (): IChild => ({C: 3}),
+    matchR<IChild>({set: R.assoc('C')}),
+    matchC<IChild>({set: action('bananas')}),
+    (e: ISmitten, m: IChild, p: {}) => 'CHILD'
   )
 
   /**
-   * Parent Component
+   * IParent Component
    */
-  interface Parent {
+  interface IParent {
     A: number
-    child: Child
+    child: IChild
   }
   const parent = COM(
-    (): Parent => ({A: 1, child: child.init()}),
-    matchR<Parent>({get: R.prop('A')}),
-    matchC<Parent>({get: action('bananas')}),
-    (e: Smitten, m: Parent, p: {color: string}) =>
+    (): IParent => ({A: 1, child: child.init()}),
+    matchR<IParent>({get: R.prop('A')}),
+    matchC<IParent>({get: action('bananas')}),
+    (e: ISmitten, m: IParent, p: {color: string}) =>
       `PARENT ${child.view(e.of('child'), m.child, {})}`
   )
 

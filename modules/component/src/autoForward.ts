@@ -3,17 +3,17 @@ import {action, isAction, Nil} from '@action-land/core'
 import {concatC, concatR} from '@action-land/tarz'
 
 type NState<T> = T & {'@@forward': {keys: string[]}}
-interface ComponentSpec {
+interface IComponentSpec {
   [key: string]: Component
 }
 type ComponentState<T extends Component> = T extends Component<infer State>
   ? State
   : unknown
-type ChildStateSpec<T extends ComponentSpec> = {
+type ChildStateSpec<T extends IComponentSpec> = {
   [k in keyof T]: ComponentState<T[k]>
 }
 
-export const AutoForward = <T extends ComponentSpec>(spec: T) => <
+export const AutoForward = <T extends IComponentSpec>(spec: T) => <
   State extends ChildStateSpec<T>,
   Params,
   Init extends any[],

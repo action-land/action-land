@@ -32,6 +32,7 @@
     "no-parameter-properties": false,
     // TEMPORARY
     "no-this-assignment": false,
+    "max-classes-per-file": false,
     "strict-boolean-expressions": false,
     "no-any": false,
     "typedef": [
@@ -41,8 +42,6 @@
     ],
     "no-unsafe-any": false,
     "deprecation": false,
-    "no-implicit-dependencies": false,
-    "interface-name": false,
-    "max-classes-per-file": false
+    "no-implicit-dependencies": false
   }
 }

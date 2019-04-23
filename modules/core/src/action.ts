@@ -5,7 +5,7 @@ import {isNil} from './isNil'
 /**
  * Interface for Action
  */
-export interface Action<T> {
+export interface IAction<T> {
   type: string | number
   value: T
 }
@@ -20,6 +20,6 @@ function createAction<T>(type: string | number, value: T) {
  * @param: Action Payload
  */
 export const action: {
-  <T>(type: string | number, value: T): Action<T>
-  <T>(type: string | number): (value: T) => Action<T>
+  <T>(type: string | number, value: T): IAction<T>
+  <T>(type: string | number): (value: T) => IAction<T>
 } = curry2(createAction)

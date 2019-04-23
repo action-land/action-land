@@ -10,12 +10,12 @@ import {ReducerFunction} from './reducerFunction'
 /**
  * Spec of Reducers for each Action that needs to be handled
  */
-export interface MatchActionRSpec<State> {
+export interface IMatchActionRSpec<State> {
   [key: string]: ReducerFunction<State>
 }
 
 export const matchR = <State = unknown>(
-  spec: MatchActionRSpec<State>
+  spec: IMatchActionRSpec<State>
 ): CurriedFunction2<any, State, State> =>
   curry2(
     (action: any, state: State): State =>
