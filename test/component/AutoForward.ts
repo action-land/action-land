@@ -9,22 +9,20 @@ describe('AutoForward', () => {
   /**
    * Child Component
    */
-  type Child = {
+  interface Child {
     C: number
   }
   const child = COM<Child, {}, [], string>(
     (): Child => ({C: 3}),
     matchR<Child>({set: R.assoc('C')}),
     matchC<Child>({set: action('bananas')}),
-    (e: Smitten, m: Child, p: {}) => {
-      return 'CHILD'
-    }
+    (e: Smitten, m: Child, p: {}) => 'CHILD'
   )
 
   /**
    * Parent Component
    */
-  type Parent = {
+  interface Parent {
     A: number
     child: Child
   }
@@ -32,12 +30,11 @@ describe('AutoForward', () => {
     (): Parent => ({A: 1, child: child.init()}),
     matchR<Parent>({get: R.prop('A')}),
     matchC<Parent>({get: action('bananas')}),
-    (e: Smitten, m: Parent, p: {color: string}) => {
-      return 'PARENT' + child.view(e.of('child'), m.child, {})
-    }
+    (e: Smitten, m: Parent, p: {color: string}) =>
+      'PARENT' + child.view(e.of('child'), m.child, {})
   )
 
-  const component = parent.map(AutoForward({child: child}))
+  const component = parent.map(AutoForward({child}))
 
   it('should forward update to child components', () => {
     const actual = component.update(
@@ -87,13 +84,13 @@ function test(
     string
   >,
   ParentComponent: Component<
-    {name: string; child: {count: number}},
+    {child: {count: number}; name: string},
     {color: string},
     [number, string, Date],
     string
   >,
   expected: Component<
-    {name: string; child: {count: number}; '@@forward': {keys: string[]}},
+    {'@@forward': {keys: string[]}; child: {count: number}; name: string},
     {color: string},
     [number, string, Date],
     string

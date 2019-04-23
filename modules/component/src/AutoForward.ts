@@ -2,8 +2,8 @@ import {COM, Component} from '@action-land/component'
 import {action, isAction, Nil} from '@action-land/core'
 import {concatC, concatR} from '@action-land/tarz'
 
-type NState<T> = T & {'@@forward': {keys: Array<string>}}
-type ComponentSpec = {
+type NState<T> = T & {'@@forward': {keys: string[]}}
+interface ComponentSpec {
   [key: string]: Component
 }
 type ComponentState<T extends Component> = T extends Component<infer State>
@@ -22,19 +22,17 @@ export const AutoForward = <T extends ComponentSpec>(spec: T) => <
   component: Component<State, Params, Init, VNode>
 ): Component<NState<State>, Params, Init, VNode> =>
   COM(
-    (...t: Init) => {
-      return Object.assign(
-        {'@@forward': {keys: Object.keys(spec)}},
-        component.init(...t)
-      )
-    },
+    (...t: Init) => ({
+      '@@forward': {keys: Object.keys(spec)},
+      ...component.init(...t)
+    }),
     concatR(
-      (action, state: any) =>
-        Object.assign({}, state, {
-          [action.type]: spec[action.type]
-            ? spec[action.type].update(action.value, state[action.type])
-            : state[action.type]
-        }),
+      (action, state: any) => ({
+        ...state,
+        [action.type]: spec[action.type]
+          ? spec[action.type].update(action.value, state[action.type])
+          : state[action.type]
+      }),
       component.update as any
     ),
     concatC(

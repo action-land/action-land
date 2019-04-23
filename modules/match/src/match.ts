@@ -1,8 +1,8 @@
 import {Action, isAction} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
-export type MatchActionSpec = {
-  [key: string]: {(value: any): any}
+export interface MatchActionSpec {
+  [key: string]: (value: any) => any
 }
 
 export const match: CurriedFunction2<

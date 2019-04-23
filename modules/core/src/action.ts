@@ -1,4 +1,5 @@
 import {curry2} from 'ts-curry'
+
 import {isNil} from './isNil'
 
 /**
@@ -23,5 +24,5 @@ function createAction<T>(type: string | number, value: T) {
  */
 export const action: {
   <T>(type: string | number, value: T): Action<T>
-  <T>(type: string | number): {(value: T): Action<T>}
+  <T>(type: string | number): (value: T) => Action<T>
 } = curry2(createAction)

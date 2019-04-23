@@ -1,4 +1,5 @@
 import * as assert from 'assert'
+
 import {action, isList} from '../../modules/core/index'
 
 describe('isList', () => {

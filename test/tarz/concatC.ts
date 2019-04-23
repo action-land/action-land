@@ -4,6 +4,7 @@
 
 import * as assert from 'assert'
 import {curry2} from 'ts-curry'
+
 import {action, List, Nil} from '../../modules/core/index'
 import {concatC} from '../../modules/tarz/src/concatC'
 import {zeroC} from '../../modules/tarz/src/zeroC'

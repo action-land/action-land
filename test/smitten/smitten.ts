@@ -4,13 +4,15 @@
 
 import {action} from '@action-land/core'
 import * as assert from 'assert'
+
 import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
-  const actions: Array<any> = []
+  const actions: any[] = []
   const listener = (action: any) => {
     actions.push(action)
   }
+
   return {actions, listener}
 }
 

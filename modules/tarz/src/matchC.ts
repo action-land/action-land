@@ -4,9 +4,10 @@
 
 import {Action, isAction, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
+
 import {CommandFunction} from './CommandFunction'
 
-export type MatchActionCSpec<State> = {
+export interface MatchActionCSpec<State> {
   [key: string]: CommandFunction<State>
 }
 
