@@ -43,7 +43,6 @@
     "increment-decrement": false,
     "strict-boolean-expressions": false,
     "no-shadowed-variable": false,
-    "object-literal-sort-keys": false,
     "no-null-keyword": false,
     "no-this-assignment": false,
     "max-classes-per-file": false,
