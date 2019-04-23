@@ -21,7 +21,8 @@ suite
   })
 
   .on('cycle', function(event: any) {
-    console.log(String(event.target)) // tslint:disable-line
+    // tslint:disable-next-line: no-console
+    console.log(String(event.target))
   })
 
   .run()
