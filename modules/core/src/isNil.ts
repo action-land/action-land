@@ -1,6 +1,6 @@
 import {IAction} from './action'
 import {isAction} from './isAction'
-import {NIL_TYPE} from './Nil'
+import {NIL_TYPE} from './nil'
 
 /**
  * Checks if the object is {Nil} or not

@@ -5,7 +5,7 @@
 import {IAction, isList, isNil, List, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
-import {CommandFunction} from './CommandFunction'
+import {CommandFunction} from './commandFunction'
 
 export const concatC = <State>(
   ...t: Array<CommandFunction<State>>

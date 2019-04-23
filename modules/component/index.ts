@@ -1,2 +1,2 @@
-export {AutoForward} from './src/AutoForward'
-export {Component, COM} from './src/Component'
+export {AutoForward} from './src/autoForward'
+export {Component, COM} from './src/component'

@@ -3,7 +3,7 @@
  */
 import {CurriedFunction2, curry2} from 'ts-curry'
 
-import {ReducerFunction} from './ReducerFunction'
+import {ReducerFunction} from './reducerFunction'
 
 /**
  * Concatenates 2 or more ReducerFunction(s) and returns a new ReducerFunction.

@@ -30,6 +30,10 @@
       "arrow-call-signature",
       "parameter"
     ],
+    "file-name-casing": [
+      true,
+      "camel-case"
+    ],
     "no-implicit-dependencies": [
       false, // Doesn't play well with mono-repo
       "dev"
@@ -42,10 +46,6 @@
     // TEMPORARY
     "strict-boolean-expressions": false,
     "no-any": false,
-    "no-unsafe-any": false,
-    "file-name-casing": [
-      false,
-      "pascal-case"
-    ]
+    "no-unsafe-any": false
   }
 }
