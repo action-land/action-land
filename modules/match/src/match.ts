@@ -3,7 +3,6 @@ import {CurriedFunction2, curry2} from 'ts-curry'
 
 /**
  * Defines structure of the spec that represents handlers for each action
- * @name: MatchActionSpec
  */
 export interface MatchActionSpec {
   [key: string]: (value: any) => any

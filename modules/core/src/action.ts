@@ -4,7 +4,6 @@ import {isNil} from './isNil'
 
 /**
  * Interface for Action
- * @interface
  */
 export interface Action<T> {
   type: string | number
@@ -17,10 +16,8 @@ function createAction<T>(type: string | number, value: T) {
 
 /**
  * Creates a new Action type object
- * @function
- * @param {string|number} type
- * @param {any} value
- * @returns {Action}
+ * @param: Action Type
+ * @param: Action Payload
  */
 export const action: {
   <T>(type: string | number, value: T): Action<T>

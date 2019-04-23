@@ -4,9 +4,8 @@
 
 /**
  * A function that takes in a Value and a State and returns a new state
- * @param  action
- * @param  state
- * @return state
+ * @param: action
+ * @param: Old state
  */
 export type ReducerFunction<State, Input = any> = (
   input: Input,

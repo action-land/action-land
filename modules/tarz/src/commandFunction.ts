@@ -6,9 +6,8 @@ import {Action} from '@action-land/core'
 
 /**
  * A function that takes in an Action and a State and returns a new Action
- * @param  action
- * @param  state
- * @return action
+ * @param: action
+ * @param: state
  */
 
 export type CommandFunction<State, Input = any, Output = any> = (

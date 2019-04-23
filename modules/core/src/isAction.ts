@@ -2,9 +2,8 @@ import {Action} from './action'
 
 /**
  * Checks if the object is of Action type
- * @function
- * @param {any} obj
- * @returns {boolean}
+ * TODO(tsc): Improve typings with overrides
+ * @param: Any Object
  */
 export function isAction(obj: any): obj is Action<any> {
   return (
