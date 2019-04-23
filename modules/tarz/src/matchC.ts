@@ -4,7 +4,7 @@
 
 import {Action, isAction, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
-import {CommandFunction} from './CommandFunction'
+import {CommandFunction} from './commandFunction'
 
 export type MatchActionCSpec<State> = {
   [key: string]: CommandFunction<State>

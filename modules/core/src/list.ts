@@ -1,6 +1,6 @@
 import {Action, action} from './action'
 import {isNil} from './isNil'
-import {Nil} from './Nil'
+import {Nil} from './nil'
 
 /**
  * Action type for Nil

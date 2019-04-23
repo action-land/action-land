@@ -4,7 +4,7 @@
 
 import {action, isNil} from '@action-land/core'
 import * as assert from 'assert'
-import {CommandFunction} from '../../modules/tarz/src/CommandFunction'
+import {CommandFunction} from '../../modules/tarz/src/commandFunction'
 import {matchC} from '../../modules/tarz/src/matchC'
 
 describe('matchC', () => {
