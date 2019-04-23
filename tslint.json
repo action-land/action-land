@@ -30,6 +30,10 @@
       "arrow-call-signature",
       "parameter"
     ],
+    "no-implicit-dependencies": [
+      false, // Doesn't play well with mono-repo
+      "dev"
+    ],
     "only-arrow-functions": false,
     "increment-decrement": false,
     "no-null-keyword": false,
@@ -42,8 +46,6 @@
     "file-name-casing": [
       false,
       "pascal-case"
-    ],
-    "deprecation": false,
-    "no-implicit-dependencies": false
+    ]
   }
 }
