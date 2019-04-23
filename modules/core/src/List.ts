@@ -1,4 +1,4 @@
-import {Action, action} from './action'
+import {action, IAction} from './action'
 import {isNil} from './isNil'
 import {Nil} from './Nil'
 
@@ -12,9 +12,9 @@ export const LIST_ACTION_TYPE = '@@LIST'
  * @param: List of Actions
  */
 export function List(
-  ...actions: Array<Action<any>>
-): Action<Array<Action<any>> | any> {
-  const nActions: Array<Action<any>> = []
+  ...actions: Array<IAction<any>>
+): IAction<Array<IAction<any>> | any> {
+  const nActions: Array<IAction<any>> = []
   for (const act of actions) {
     if (!isNil(act)) {
       nActions.push(act)

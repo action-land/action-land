@@ -3,8 +3,8 @@
  */
 // tslint:disable: typedef
 import {COM, Component} from '@action-land/component'
-import {Action, isNil, Nil} from '@action-land/core'
-import {create, Smitten} from '@action-land/smitten'
+import {IAction, isNil, Nil} from '@action-land/core'
+import {create, ISmitten} from '@action-land/smitten'
 import * as assert from 'assert'
 
 describe('COM', () => {
@@ -61,23 +61,23 @@ describe('COM', () => {
     >(
       crazyComponent: Component<State, Params, Init, VNode>
     ) => {
-      interface Crazy {
+      interface ICrazy {
         crazy: boolean
       }
 
       const InitType = <Args extends any[], R>(
         fn0: (...t: Args) => R
-      ): ((...t: Args) => R & Crazy) => (...t: Args): R & Crazy =>
+      ): ((...t: Args) => R & ICrazy) => (...t: Args): R & ICrazy =>
         Object.assign(fn0(...t), {crazy: val})
 
       const UpdateType = <A, S>(fn: (a: A, s: S) => S) => (
         a: A,
-        s: S & Crazy
-      ): S & Crazy => fn(a, s) as S & Crazy
+        s: S & ICrazy
+      ): S & ICrazy => fn(a, s) as S & ICrazy
 
       const CommandType = <A, B, S>(fn: (a: A, s: S) => B) => fn
 
-      const ViewType = <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) => fn
+      const ViewType = <A, S, P>(fn: (e: ISmitten, m: S, p: P) => VNode) => fn
 
       return COM(
         InitType(crazyComponent.init),
@@ -111,8 +111,8 @@ function test(
   eq: <T>(a: T, b: T) => void,
   init: (a: string, b: number) => {count: number},
   update: (a: string, b: {count: number}) => {count: number},
-  command: (a: string, b: {count: number}) => Action<{}>,
-  view: (e: Smitten, m: {count: number}, p: {color: string}) => string,
+  command: (a: string, b: {count: number}) => IAction<{}>,
+  view: (e: ISmitten, m: {count: number}, p: {color: string}) => string,
   expected: Component<
     {count: number},
     {color: string},

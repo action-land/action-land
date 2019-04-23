@@ -2,7 +2,7 @@
  * Created by tushar on 25/06/18
  */
 
-import {Action} from '@action-land/core'
+import {IAction} from '@action-land/core'
 
 /**
  * A function that takes in an Action and a State and returns a new Action
@@ -13,4 +13,4 @@ import {Action} from '@action-land/core'
 export type CommandFunction<State, Input = any, Output = any> = (
   input: Input,
   state: State
-) => Action<Output>
+) => IAction<Output>

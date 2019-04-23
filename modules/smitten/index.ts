@@ -7,12 +7,12 @@ import {action} from '@action-land/core'
 /**
  * Class that emits your view-actions
  */
-export interface Smitten<T extends string | number = string | number> {
+export interface ISmitten<T extends string | number = string | number> {
   emit(obj: any): void
-  of<S extends string | number>(type: T): Smitten<S>
+  of<S extends string | number>(type: T): ISmitten<S>
 }
 
-class DefaultEmitter implements Smitten {
+class DefaultEmitter implements ISmitten {
   public constructor(
     public readonly type: string | number,
     public readonly parent: DefaultEmitter | RootEmitter
@@ -28,19 +28,19 @@ class DefaultEmitter implements Smitten {
     }
     node.emit(act)
   }
-  public of(type: string | number): Smitten {
+  public of(type: string | number): ISmitten {
     return new DefaultEmitter(type, this)
   }
 }
 
 // tslint:disable-next-line: max-classes-per-file
-class RootEmitter implements Smitten {
+class RootEmitter implements ISmitten {
   public constructor(public readonly emit: (obj: any) => void) {}
 
-  public of(type: string | number): Smitten {
+  public of(type: string | number): ISmitten {
     return new DefaultEmitter(type, this)
   }
 }
 
-export const create = (listener: (obj: any) => any): Smitten =>
+export const create = (listener: (obj: any) => any): ISmitten =>
   new RootEmitter(listener)
