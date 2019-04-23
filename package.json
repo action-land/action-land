@@ -3,8 +3,7 @@
   "scripts": {
     "test": "mocha --require=ts-node/register test/**/*.ts",
     "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc",
-    "lint": "git ls-files | grep '.ts$' | xargs yarn tslint",
-    "lint:fix": "git ls-files | grep '.ts$' | xargs yarn tslint --fix",
+    "lint": "tslint --project .",
     "preversion": "tsc -d",
     "lerna-publish": "lerna publish --conventional-commits"
   },
@@ -20,7 +19,7 @@
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.13.6",
+    "@types/node": "^11.13.7",
     "@types/ramda": "^0.26.8",
     "benchmark": "^2.1.4",
     "cz-lerna-changelog": "^2.0.2",
