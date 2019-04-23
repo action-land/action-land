@@ -28,11 +28,11 @@ export const AutoForward = <T extends ComponentSpec>(spec: T) => <
       ...component.init(...t)
     }),
     concatR(
-      (action, state: any) => ({
+      (act, state: any) => ({
         ...state,
-        [action.type]: spec[action.type]
-          ? spec[action.type].update(action.value, state[action.type])
-          : state[action.type]
+        [act.type]: spec[act.type]
+          ? spec[act.type].update(act.value, state[act.type])
+          : state[act.type]
       }),
       component.update as any
     ),

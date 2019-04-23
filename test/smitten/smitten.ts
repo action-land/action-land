@@ -12,8 +12,8 @@ export const testListener = <T>(): {
   listener(action: Action<T>): void
 } => {
   const actions: any[] = []
-  const listener = (action: any): void => {
-    actions.push(action)
+  const listener = (act: any): void => {
+    actions.push(act)
   }
 
   return {actions, listener}

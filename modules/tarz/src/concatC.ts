@@ -13,16 +13,16 @@ export const concatC = <State>(
   curry2(
     (input: any, state: State): Action<{}> => {
       const result: Array<Action<any>> = []
-      for (let i = 0; i < t.length; i++) {
-        const item = t[i](input, state)
-        if (isList(item)) {
-          for (let i = 0; i < item.value.length; i++) {
-            if (!isNil(item.value[i])) {
-              result.push(item.value[i])
+      for (const item of t) {
+        const act = item(input, state)
+        if (isList(act)) {
+          for (const value of act.value) {
+            if (!isNil(value)) {
+              result.push(value)
             }
           }
-        } else if (!isNil(item)) {
-          result.push(item)
+        } else if (!isNil(act)) {
+          result.push(act)
         }
       }
 

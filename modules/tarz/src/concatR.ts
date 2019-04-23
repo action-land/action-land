@@ -16,9 +16,9 @@ export const concatR = <State>(
   curry2(
     (a: any, b: State): State => {
       let result: State = b
-      for (let i = 0; i < t.length; i++) {
-        result = t[i](a, result)
-      }
+      t.forEach(reducer => {
+        result = reducer(a, result)
+      })
 
       return result
     }
