@@ -9,8 +9,8 @@ import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
   const actions: any[] = []
-  const listener = (action: any) => {
-    actions.push(action)
+  const listener = (act: any) => {
+    actions.push(act)
   }
 
   return {actions, listener}

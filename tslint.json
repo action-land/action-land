@@ -41,9 +41,7 @@
     "deprecation": false,
     "no-implicit-dependencies": false,
     "interface-name": false,
-    "prefer-for-of": false,
     "strict-boolean-expressions": false,
-    "no-shadowed-variable": false,
     "no-this-assignment": false,
     "max-classes-per-file": false
   }

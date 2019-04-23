@@ -58,7 +58,7 @@ describe('COM', () => {
       Init extends any[],
       VNode
     >(
-      component: Component<State, Params, Init, VNode>
+      crazyComponent: Component<State, Params, Init, VNode>
     ) => {
       interface Crazy {
         crazy: boolean
@@ -79,15 +79,15 @@ describe('COM', () => {
       const ViewType = <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) => fn
 
       return COM(
-        InitType(component.init),
-        UpdateType(component.update),
-        CommandType(component.command),
-        ViewType(component.view)
+        InitType(crazyComponent.init),
+        UpdateType(crazyComponent.update),
+        CommandType(crazyComponent.command),
+        ViewType(crazyComponent.view)
       )
     }
 
     it('should keep the component as is', () => {
-      const newComponent = component.map(component => component)
+      const newComponent = component.map(child => child)
       const state = newComponent.init('100')
       assert.deepStrictEqual(state, {count: 100})
     })
