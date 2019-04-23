@@ -34,18 +34,17 @@
     "increment-decrement": false,
     "no-null-keyword": false,
     "no-magic-numbers": false,
+    "no-parameter-properties": false,
     // TEMPORARY
+    "strict-boolean-expressions": false,
     "no-any": false,
     "no-unsafe-any": false,
     "file-name-casing": [
       false,
       "pascal-case"
     ],
-    "no-parameter-properties": false,
     "deprecation": false,
     "no-implicit-dependencies": false,
-    "interface-name": false,
-    "strict-boolean-expressions": false,
-    "max-classes-per-file": false
+    "interface-name": false
   }
 }

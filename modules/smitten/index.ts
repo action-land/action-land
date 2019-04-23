@@ -33,6 +33,7 @@ class DefaultEmitter implements Smitten {
   }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 class RootEmitter implements Smitten {
   public constructor(public readonly emit: (obj: any) => void) {}
 
