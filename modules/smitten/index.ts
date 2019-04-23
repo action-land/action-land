@@ -19,6 +19,7 @@ class DefaultEmitter implements Smitten {
   ) {}
 
   public emit = (value: any): void => {
+    // tslint:disable-next-line: no-this-assignment
     let node: DefaultEmitter | RootEmitter = this
     let act = value
     while (node instanceof DefaultEmitter) {
