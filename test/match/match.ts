@@ -8,7 +8,7 @@ describe('match', () => {
   it('should match based on action.type', () => {
     const actual = match((i: number) => i, {
       inc: (i: number) => i + 1,
-      greet: (i: string) => 'hi ' + i
+      greet: (i: string) => `hi ${i}`
     })(action('inc', 10))
     const expected = 11
     assert.strictEqual(actual, expected)

@@ -31,7 +31,7 @@ describe('AutoForward', () => {
     matchR<Parent>({get: R.prop('A')}),
     matchC<Parent>({get: action('bananas')}),
     (e: Smitten, m: Parent, p: {color: string}) =>
-      'PARENT' + child.view(e.of('child'), m.child, {})
+      `PARENT ${child.view(e.of('child'), m.child, {})}`
   )
 
   const component = parent.map(AutoForward({child}))

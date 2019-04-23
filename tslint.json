@@ -20,7 +20,6 @@
         }
       }
     ],
-    "prefer-template": false,
     "variable-name": [
       true,
       "allow-pascal-case"
