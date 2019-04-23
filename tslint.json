@@ -5,7 +5,21 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "completed-docs": false,
+    "completed-docs": [
+      true,
+      {
+        "interfaces": {
+          "visibilities": [
+            "exported"
+          ]
+        },
+        "classes": {
+          "visibilities": [
+            "exported"
+          ]
+        }
+      }
+    ],
     "prefer-template": false,
     "variable-name": [
       true,

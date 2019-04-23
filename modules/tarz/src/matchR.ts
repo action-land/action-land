@@ -7,6 +7,10 @@ import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {ReducerFunction} from './reducerFunction'
 
+/**
+ * Spec of Reducers for each Action that needs to be handled
+ * @name: MatchActionRSpec
+ */
 export interface MatchActionRSpec<State> {
   [key: string]: ReducerFunction<State>
 }

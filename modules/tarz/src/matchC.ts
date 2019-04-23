@@ -7,6 +7,10 @@ import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {CommandFunction} from './commandFunction'
 
+/**
+ * Spec of Thunks for each Command that needs to be handled
+ * @name: MatchActionCSpec
+ */
 export interface MatchActionCSpec<State> {
   [key: string]: CommandFunction<State>
 }
