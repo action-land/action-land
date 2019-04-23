@@ -1,15 +1,8 @@
 {
   "rules": {
     "class-name": true,
-    "comment-format": [
-      true,
-      "check-space"
-    ],
-    "indent": [
-      true,
-      "spaces",
-      2
-    ],
+    "comment-format": [true, "check-space"],
+    "indent": [true, "spaces", 2],
     "one-export": false,
     "no-console": true,
     "no-debugger": true,
@@ -18,24 +11,10 @@
     "no-trailing-whitespace": true,
     "no-unsafe-finally": true,
     "no-var-keyword": true,
-    "one-line": [
-      true,
-      "check-open-brace",
-      "check-whitespace"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "semicolon": [
-      true,
-      "never"
-    ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
+    "one-line": [true, "check-open-brace", "check-whitespace"],
+    "quotemark": [true, "single", "avoid-escape"],
+    "semicolon": [true, "never"],
+    "triple-equals": [true, "allow-null-check"],
     "typedef-whitespace": [
       true,
       {
@@ -46,10 +25,7 @@
         "variable-declaration": "nospace"
       }
     ],
-    "variable-name": [
-      true,
-      "ban-keywords"
-    ],
+    "variable-name": [true, "ban-keywords"],
     "whitespace": [
       true,
       "check-branch",
