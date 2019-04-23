@@ -42,7 +42,9 @@ describe('COM', () => {
 
   describe('view', () => {
     it('should return Nil() on calling command', () => {
-      const e = create(() => {})
+      const e = create(() => {
+        return
+      })
       const iState = component.init('10')
       const value = component.view(e, iState, {color: 'red'})
       assert.strictEqual(value, 'Count:10:red')

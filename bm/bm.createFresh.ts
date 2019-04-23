@@ -7,7 +7,9 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
-function pass() {}
+function pass() {
+  return
+}
 const fresh = create(pass)
 suite
   .add('create-1e3-times-fresh', function() {
