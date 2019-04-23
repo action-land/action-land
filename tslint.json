@@ -24,8 +24,8 @@
       true,
       "allow-pascal-case"
     ],
+    "only-arrow-functions": false,
     // TEMPORARY
-    "binary-expression-operand-order": false,
     "no-magic-numbers": false,
     "no-any": false,
     "typedef": [
@@ -37,7 +37,6 @@
       false,
       "pascal-case"
     ],
-    "only-arrow-functions": false,
     "no-unsafe-any": false,
     "jsdoc-format": false,
     "no-parameter-properties": false,

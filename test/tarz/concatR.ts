@@ -15,7 +15,7 @@ describe('concatR', () => {
   it('should combine multiple reducers into one', () => {
     const r = concatR(P, Q)
     const actual = r(TEST_ACTION, 20)
-    const expected = 100 * (100 + 20)
+    const expected = (100 + 20) * 100
     assert.equal(actual, expected)
   })
   it('should combine multiple curried reducers into one', () => {
@@ -23,7 +23,7 @@ describe('concatR', () => {
     const r1 = curry2(Q)
     const r = concatR(r0, r1)
     const actual = r(TEST_ACTION, 20)
-    const expected = 100 * (100 + 20)
+    const expected = (100 + 20) * 100
     assert.equal(actual, expected)
   })
   it('should return a curried function', () => {
@@ -31,7 +31,7 @@ describe('concatR', () => {
     const r1 = curry2(Q)
     const r = concatR(r0, r1)
     const actual = r(TEST_ACTION)(20)
-    const expected = 100 * (100 + 20)
+    const expected = (100 + 20) * 100
     assert.equal(actual, expected)
   })
 
