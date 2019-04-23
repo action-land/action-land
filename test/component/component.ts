@@ -129,6 +129,6 @@ function test(
     [string, number],
     string
   >
-) {
+): void {
   eq(COM(init, update, command, view), expected)
 }

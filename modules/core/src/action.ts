@@ -10,7 +10,7 @@ export interface Action<T> {
   value: T
 }
 
-function createAction<T>(type: string | number, value: T) {
+function createAction<T>(type: string | number, value: T): Action<T> {
   return isNil(value) ? value : {type, value}
 }
 

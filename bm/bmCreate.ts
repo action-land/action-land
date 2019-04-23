@@ -6,10 +6,10 @@ import {create} from '../modules/smitten/index'
 
 let suite = new Benchmark.Suite()
 
-function pass() {}
+function pass(): void {}
 suite
 
-  .add('create-1e3-times', function() {
+  .add('create-1e3-times', function(): void {
     let e = create(pass)
 
     for (let i = 0; i < 1e3; ++i) {
@@ -18,7 +18,7 @@ suite
     e.emit(0)
   })
 
-  .on('cycle', function(event: any) {
+  .on('cycle', function(event: any): void {
     console.log(String(event.target)) // tslint:disable-line
   })
   .run()
