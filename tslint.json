@@ -1,4 +1,5 @@
 {
+  "defaultSeverity": "error",
   "rules": {
     "class-name": true,
     "comment-format": [true, "check-space"],
@@ -25,7 +26,7 @@
         "variable-declaration": "nospace"
       }
     ],
-    "variable-name": [true, "ban-keywords"],
+    "variable-name": [true, "ban-keywords", "allow-pascal-case"],
     "whitespace": [
       true,
       "check-branch",
@@ -34,6 +35,10 @@
       "check-separator",
       "check-type"
     ],
-    "ordered-imports": true
+    "ordered-imports": true,
+    "completed-docs": false,
+    "prefer-template": false,
+    "file-name-casing": [true, "camel-case"],
+    "typedef": [true, "call-signature", "parameter"]
   }
 }
