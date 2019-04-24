@@ -1,7 +1,6 @@
 /**
  * Created by tushar on 06/08/18
  */
-// tslint:disable: typedef
 import {COM, Component} from '@action-land/component'
 import {IAction, isNil, Nil} from '@action-land/core'
 import {create, ISmitten} from '@action-land/smitten'
@@ -9,13 +8,17 @@ import * as assert from 'assert'
 
 describe('COM', () => {
   const component = COM(
-    (count: string) => ({count: Number(count)}),
+    (count: string): {count: number} => ({count: Number(count)}),
 
-    (action, state) => ({...state, count: state.count + 1}),
+    <T>(action: IAction<T>, state: {count: number}) => ({
+      ...state,
+      count: state.count + 1
+    }),
 
     Nil,
 
-    (e, m, p: {color: string}) => `Count:${m.count}:${p.color}`
+    (e: ISmitten, m: {count: number}, p: {color: string}) =>
+      `Count:${m.count}:${p.color}`
   )
 
   describe('init', () => {
@@ -88,7 +91,8 @@ describe('COM', () => {
     }
 
     it('should keep the component as is', () => {
-      const newComponent = component.map(child => child)
+      const newComponent = component.map((child: any) => child)
+      // tslint:disable-next-line: no-inferred-empty-object-type
       const state = newComponent.init('100')
       assert.deepStrictEqual(state, {count: 100})
     })

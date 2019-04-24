@@ -13,9 +13,8 @@ describe('match', () => {
     const expected = 11
     assert.strictEqual(actual, expected)
   })
-
   it('should call default with action if nothing matches', () => {
-    const actual = match(i => i.value, {
+    const actual = match((i: any) => i.value, {
       dec: (i: number): number => i - 1,
       inc: (i: number): number => i + 1
     })(action('otherwise', 10))
@@ -23,7 +22,7 @@ describe('match', () => {
     assert.strictEqual(actual, expected)
   })
   it('should be curried', () => {
-    const actual = match(i => i.value)({
+    const actual = match((i: any) => i.value)({
       dec: (i: number): number => i - 1,
       inc: (i: number): number => i + 1
     })(action('otherwise', 10))

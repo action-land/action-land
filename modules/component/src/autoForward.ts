@@ -13,7 +13,6 @@ type ChildStateSpec<T extends IComponentSpec> = {
   [k in keyof T]: ComponentState<T[k]>
 }
 
-// tslint:disable-next-line: typedef
 export const AutoForward = <T extends IComponentSpec>(spec: T) => <
   State extends ChildStateSpec<T>,
   Params,
@@ -28,7 +27,7 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
       ...component.init(...t)
     }),
     concatR(
-      (act, state: any) => ({
+      (act: any, state: any) => ({
         ...state,
         [act.type]: spec[act.type]
           ? spec[act.type].update(act.value, state[act.type])
@@ -37,7 +36,7 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
       component.update as any
     ),
     concatC(
-      (act, state: any) =>
+      (act: any, state: any) =>
         isAction(act) && spec[act.type]
           ? action(act.type, spec[act.type].command(act.value, state[act.type]))
           : Nil(),

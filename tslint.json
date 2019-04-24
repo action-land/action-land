@@ -27,8 +27,8 @@
     "typedef": [
       true,
       "call-signature",
-      "arrow-call-signature",
-      "parameter"
+      "parameter",
+      "arrow-parameter"
     ],
     "file-name-casing": [
       true,
