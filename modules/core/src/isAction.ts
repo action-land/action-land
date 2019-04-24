@@ -1,10 +1,6 @@
-import {IAction} from './action'
+import {hasOwnProperty} from '../../utils'
 
-const hasOwnProperty = <K extends string>(
-  k: K,
-  a: unknown
-): a is {[s in K]: unknown} =>
-  typeof a === 'object' && a !== null && a.hasOwnProperty(k)
+import {IAction} from './action'
 
 /**
  * Checks if the object is of Action type

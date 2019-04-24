@@ -26,7 +26,6 @@
     "no-magic-numbers": false,
     "no-parameter-properties": false,
     // TEMPORARY
-    "strict-boolean-expressions": false,
     "no-any": false
   }
 }

@@ -8,6 +8,8 @@ import {
 } from '@action-land/tarz'
 import {type} from 'os'
 
+import {hasOwnProperty} from '../../utils'
+
 // tslint:disable:no-unsafe-any
 type NState<T> = T & {'@@forward': {keys: string[]}}
 interface IComponentSpec {
@@ -35,7 +37,7 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
     }),
     concatR(
       (act: unknown, state: any) =>
-        isAction(act) && spec[act.type]
+        isAction(act) && hasOwnProperty(act.type, spec)
           ? {
               ...state,
               [act.type]: spec[act.type].update(act.value, state[act.type])
@@ -45,7 +47,7 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
     ),
     concatC(
       (act: unknown, state: any) =>
-        isAction(act) && spec[act.type]
+        isAction(act) && hasOwnProperty(act.type, spec)
           ? action(act.type, spec[act.type].command(act.value, state[act.type]))
           : Nil(),
       component.command as CommandFunction<any>
