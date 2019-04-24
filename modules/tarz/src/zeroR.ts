@@ -5,6 +5,6 @@
 import {curry2} from 'ts-curry'
 
 export const zeroR: {
-  <T>(action: any, state: T): T
-  <T>(action: any): (state: T) => T
-} = curry2((a: any, b: unknown) => b)
+  <T>(action: unknown, state: T): T
+  <T>(action: unknown): (state: T) => T
+} = curry2((a: unknown, b: unknown) => b)

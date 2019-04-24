@@ -14,7 +14,7 @@
       }
     ],
     "variable-name": [true, "allow-pascal-case"],
-    "typedef": [true, "call-signature", "parameter"],
+    "typedef": [true, "call-signature"],
     "file-name-casing": [true, "camel-case"],
     "no-implicit-dependencies": [
       false, // Doesn't play well with mono-repo
@@ -27,7 +27,6 @@
     "no-parameter-properties": false,
     // TEMPORARY
     "no-this-assignment": false,
-    "max-classes-per-file": false,
-    "no-any": false
+    "max-classes-per-file": false
   }
 }

@@ -12,9 +12,9 @@ import {ReducerFunction} from './reducerFunction'
  */
 export const concatR = <State>(
   ...t: Array<ReducerFunction<State>>
-): CurriedFunction2<any, State, State> =>
+): CurriedFunction2<unknown, State, State> =>
   curry2(
-    (a: any, b: State): State => {
+    (a: unknown, b: State): State => {
       let result: State = b
       t.forEach((reducer: ReducerFunction<State>) => {
         result = reducer(a, result)

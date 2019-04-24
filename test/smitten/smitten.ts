@@ -8,8 +8,8 @@ import * as assert from 'assert'
 import {create} from '../../modules/smitten/index'
 
 export const testListener = () => {
-  const actions: any[] = []
-  const listener = (act: any) => {
+  const actions: unknown[] = []
+  const listener = (act: unknown) => {
     actions.push(act)
   }
 

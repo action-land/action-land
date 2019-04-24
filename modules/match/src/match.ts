@@ -3,6 +3,7 @@ import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {hasOwnProperty} from '../../utils'
 
+// tslint:disable:no-any no-unsafe-any
 /**
  * Defines structure of the spec that represents handlers for each action
  */
@@ -16,7 +17,6 @@ export const match: CurriedFunction2<
   any
 > = curry2(
   (base: (t: unknown) => unknown, spec: IMatchActionSpec) => (action: IAction<any>) =>
-    // tslint:disable:no-unsafe-any
     isAction(action) && hasOwnProperty(action.type, spec)
       ? spec[action.type](action.value)
       : base(action)

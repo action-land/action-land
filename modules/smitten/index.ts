@@ -8,7 +8,7 @@ import {action} from '@action-land/core'
  * Class that emits your view-actions
  */
 export interface ISmitten<T extends string | number = string | number> {
-  emit(obj: any): void
+  emit(obj: unknown): void
   of<S extends string | number>(type: T): ISmitten<S>
 }
 
@@ -18,7 +18,7 @@ class DefaultEmitter implements ISmitten {
     public readonly parent: DefaultEmitter | RootEmitter
   ) {}
 
-  public emit = (value: any) => {
+  public emit = (value: unknown) => {
     let node: DefaultEmitter | RootEmitter = this
     let act = value
     while (node instanceof DefaultEmitter) {
@@ -33,12 +33,13 @@ class DefaultEmitter implements ISmitten {
 }
 
 class RootEmitter implements ISmitten {
-  public constructor(public readonly emit: (obj: any) => void) {}
+  public constructor(public readonly emit: (obj: unknown) => void) {}
 
   public of(type: string | number): ISmitten {
     return new DefaultEmitter(type, this)
   }
 }
 
+// tslint:disable-next-line: no-any
 export const create = (listener: (obj: any) => any): ISmitten =>
   new RootEmitter(listener)

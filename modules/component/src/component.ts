@@ -1,15 +1,14 @@
 /**
  * Created by tushar on 08/08/18
  */
-
-import {IAction} from '@action-land/core'
 import {ISmitten} from '@action-land/smitten'
 import {CommandFunction, ReducerFunction} from '@action-land/tarz'
+
+// tslint:disable:no-any
 
 /**
  * Component interface.
  */
-
 export class Component<
   State = any,
   Params = any,

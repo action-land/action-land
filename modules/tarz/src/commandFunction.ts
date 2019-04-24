@@ -10,6 +10,7 @@ import {IAction} from '@action-land/core'
  * @param: current state
  */
 
+// tslint:disable-next-line: no-any
 export type CommandFunction<State, Input = any, Output = any> = (
   input: Input,
   state: State
