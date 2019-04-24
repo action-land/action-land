@@ -91,7 +91,7 @@ describe('COM', () => {
     }
 
     it('should keep the component as is', () => {
-      const newComponent = component.map((child: any) => child)
+      const newComponent = component.map(child => child)
       // tslint:disable-next-line: no-inferred-empty-object-type
       const state = newComponent.init('100')
       assert.deepStrictEqual(state, {count: 100})

@@ -2,7 +2,7 @@
  * Created by tushar on 26/06/18
  */
 
-import {IAction, isList, isNil, List, Nil} from '@action-land/core'
+import {IAction, isAction, isList, isNil, List, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {CommandFunction} from './commandFunction'
@@ -17,7 +17,8 @@ export const concatC = <State>(
         const act = item(input, state)
         if (isList(act)) {
           for (const value of act.value) {
-            if (!isNil(value)) {
+            // TODO(isNil): Remove isAction check once IAction has the `type` typed.
+            if (isAction(value) && !isNil(value)) {
               result.push(value)
             }
           }

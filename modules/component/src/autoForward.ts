@@ -1,7 +1,14 @@
 import {COM, Component} from '@action-land/component'
 import {action, isAction, Nil} from '@action-land/core'
-import {concatC, concatR} from '@action-land/tarz'
+import {
+  CommandFunction,
+  concatC,
+  concatR,
+  ReducerFunction
+} from '@action-land/tarz'
+import {type} from 'os'
 
+// tslint:disable:no-unsafe-any
 type NState<T> = T & {'@@forward': {keys: string[]}}
 interface IComponentSpec {
   [key: string]: Component
@@ -27,20 +34,21 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
       ...component.init(...t)
     }),
     concatR(
-      (act: any, state: any) => ({
-        ...state,
-        [act.type]: spec[act.type]
-          ? spec[act.type].update(act.value, state[act.type])
-          : state[act.type]
-      }),
-      component.update as any
+      (act: unknown, state: any) =>
+        isAction(act) && spec[act.type]
+          ? {
+              ...state,
+              [act.type]: spec[act.type].update(act.value, state[act.type])
+            }
+          : state,
+      component.update
     ),
     concatC(
-      (act: any, state: any) =>
+      (act: unknown, state: any) =>
         isAction(act) && spec[act.type]
           ? action(act.type, spec[act.type].command(act.value, state[act.type]))
           : Nil(),
-      component.command as any
+      component.command as CommandFunction<any>
     ),
     component.view as any
   )

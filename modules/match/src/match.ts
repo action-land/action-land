@@ -13,9 +13,10 @@ export const match: CurriedFunction2<
   IMatchActionSpec,
   any
 > = curry2(
-  (base: (t: any) => any, spec: IMatchActionSpec) => (
+  (base: (t: unknown) => unknown, spec: IMatchActionSpec) => (
     action: IAction<any>
   ): IMatchActionSpec =>
+    // tslint:disable:no-unsafe-any
     isAction(action) && spec[action.type]
       ? spec[action.type](action.value)
       : base(action)
