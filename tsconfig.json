@@ -3,5 +3,15 @@
     "target": "es6",
     "module": "commonjs",
     "strict": true
+  },
+  "typedocOptions": {
+    "mode": "file",
+    "out": "docs",
+    "externalPattern": "**/node_modules",
+    "excludeExternals": true,
+    "excludeNotExported": true,
+    "name": "@action-land",
+    "readme": "./README.md",
+    "toc": true
   }
 }
