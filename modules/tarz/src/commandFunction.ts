@@ -7,7 +7,7 @@ import {IAction} from '@action-land/core'
 /**
  * A function that takes in an Action and a State and returns a new Action
  * @param: action
- * @param: state
+ * @param: current state
  */
 
 export type CommandFunction<State, Input = any, Output = any> = (
