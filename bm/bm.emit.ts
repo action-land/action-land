@@ -7,17 +7,17 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
-function pass() {
+function pass(): void {
   return
 }
 suite
-  .add('emit-1e6-times', function() {
+  .add('emit-1e6-times', function(): void {
     const e = create(pass)
     for (let i = 0; i < 1e6; i += 1) {
       e.emit(i)
     }
   })
-  .on('cycle', function(event: any) {
+  .on('cycle', function(event: any): void {
     // tslint:disable-next-line: no-console
     console.log(String(event.target))
   })

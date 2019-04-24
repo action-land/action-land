@@ -95,6 +95,6 @@ function test(
     [number, string, Date],
     string
   >
-) {
+): void {
   eq(AutoForward({child: ChildComponent})(ParentComponent), expected)
 }
