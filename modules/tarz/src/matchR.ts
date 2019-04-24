@@ -5,6 +5,8 @@
 import {isAction} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
+import {hasOwnProperty} from '../../utils'
+
 import {ReducerFunction} from './reducerFunction'
 
 /**
@@ -19,7 +21,7 @@ export const matchR = <State = unknown>(
 ): CurriedFunction2<any, State, State> =>
   curry2(
     (action: any, state: State): State =>
-      isAction(action) && spec[action.type]
+      isAction(action) && hasOwnProperty(action.type, spec)
         ? spec[action.type](action.value, state)
         : state
   )

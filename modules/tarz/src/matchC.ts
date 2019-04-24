@@ -5,6 +5,8 @@
 import {IAction, isAction, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
+import {hasOwnProperty} from '../../utils'
+
 import {CommandFunction} from './commandFunction'
 
 /**
@@ -19,7 +21,7 @@ export const matchC = <State>(
 ): CurriedFunction2<any, State, IAction<any>> =>
   curry2(
     (action: any, state: State): IAction<{}> =>
-      isAction(action) && spec[action.type]
+      isAction(action) && hasOwnProperty(action.type, spec)
         ? spec[action.type](action.value, state)
         : Nil()
   )

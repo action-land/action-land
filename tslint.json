@@ -28,7 +28,6 @@
     // TEMPORARY
     "no-this-assignment": false,
     "max-classes-per-file": false,
-    "strict-boolean-expressions": false,
     "no-any": false
   }
 }
