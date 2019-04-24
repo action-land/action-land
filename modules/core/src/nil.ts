@@ -3,7 +3,8 @@ import {IAction} from './action'
 export const NIL_TYPE = '@@NIL'
 
 /**
- * INilAction is a specific Sub-Type of IAction<>
+ * INilAction is a specific Sub-Type of IAction
+ * Useful to denote a `No-Op`
  */
 export interface INilAction extends IAction<{}> {
   type: '@@NIL'

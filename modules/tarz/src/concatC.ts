@@ -2,7 +2,7 @@
  * Created by tushar on 26/06/18
  */
 
-import {IAction, isList, isNil, List, Nil} from '@action-land/core'
+import {IAction, isAction, isList, isNil, List, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {CommandFunction} from './commandFunction'
@@ -16,11 +16,11 @@ export const concatC = <State>(
       for (const item of t) {
         const act = item(input, state)
         if (isList(act)) {
-          for (const value of act.value) {
-            if (!isNil(value)) {
-              result.push(value)
+          act.value.forEach(val => {
+            if (isAction(val) && !isNil(val)) {
+              result.push(val)
             }
-          }
+          })
         } else if (!isNil(act)) {
           result.push(act)
         }

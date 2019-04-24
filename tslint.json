@@ -1,36 +1,21 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:all",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:all", "tslint-config-prettier"],
   "rules": {
     "completed-docs": [
       true,
       {
         "interfaces": {
-          "visibilities": [
-            "exported"
-          ]
+          "visibilities": ["exported"]
         },
         "classes": {
-          "visibilities": [
-            "exported"
-          ]
+          "visibilities": ["exported"]
         }
       }
     ],
-    "variable-name": [
-      true,
-      "allow-pascal-case"
-    ],
+    "variable-name": [true, "allow-pascal-case"],
+    "typedef": [true, "call-signature", "parameter"],
     "file-name-casing": [true, "camel-case"],
-    "typedef": [
-      true,
-      "call-signature",
-      "parameter",
-      "arrow-parameter"
-    ],
     "no-implicit-dependencies": [
       false, // Doesn't play well with mono-repo
       "dev"
@@ -44,7 +29,6 @@
     "no-this-assignment": false,
     "max-classes-per-file": false,
     "strict-boolean-expressions": false,
-    "no-any": false,
-    "no-unsafe-any": false
+    "no-any": false
   }
 }

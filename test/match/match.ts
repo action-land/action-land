@@ -4,6 +4,7 @@ import {describe, it} from 'mocha'
 
 import {match} from '../../modules/match/index'
 
+// tslint:disable: no-unsafe-any
 describe('match', () => {
   it('should match based on action.type', () => {
     const actual = match((i: number) => i, {
@@ -29,7 +30,6 @@ describe('match', () => {
     const expected = 10
     assert.strictEqual(actual, expected)
   })
-
   it('should handle non-action types', () => {
     const actual = match(() => 1000, {
       dec: (i: number) => i - 1,
