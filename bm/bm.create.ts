@@ -3,9 +3,9 @@
  */
 import * as Benchmark from 'benchmark'
 
-import {create} from '../modules/smitten/index'
+import {create, ISmitten} from '../modules/smitten/index'
 
-const suite = new Benchmark.Suite()
+const suite: Benchmark.Suite = new Benchmark.Suite()
 
 function pass(): void {
   return
@@ -13,7 +13,7 @@ function pass(): void {
 suite
 
   .add('create-1e3-times', function(): void {
-    let e = create(pass)
+    let e: ISmitten = create(pass)
 
     for (let i = 0; i < 1e3; i += 1) {
       e = e.of(i.toString())
@@ -21,8 +21,8 @@ suite
     e.emit(0)
   })
 
-  .on('cycle', function(event: any): void {
-    // tslint:disable-next-line: no-console no-unsafe-any
+  .on('cycle', function(event: {target: unknown}): void {
+    // tslint:disable-next-line: no-console
     console.log(String(event.target))
   })
   .run()

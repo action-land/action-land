@@ -6,6 +6,7 @@ import {IAction, isNil, Nil} from '@action-land/core'
 import {create, ISmitten} from '@action-land/smitten'
 import * as assert from 'assert'
 
+// tslint:disable:no-any
 describe('COM', () => {
   const component = COM(
     (count: string): {count: number} => ({count: Number(count)}),

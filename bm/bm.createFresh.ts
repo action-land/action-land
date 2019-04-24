@@ -20,8 +20,8 @@ suite
     e.emit(0)
   })
 
-  .on('cycle', function(event: any): void {
-    // tslint:disable-next-line: no-console no-unsafe-any
+  .on('cycle', function(event: {target: unknown}): void {
+    // tslint:disable-next-line: no-console
     console.log(String(event.target))
   })
 

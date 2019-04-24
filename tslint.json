@@ -14,7 +14,7 @@
       }
     ],
     "variable-name": [true, "allow-pascal-case"],
-    "typedef": [true, "call-signature", "parameter"],
+    "typedef": [true, "call-signature"],
     "file-name-casing": [true, "camel-case"],
     "no-implicit-dependencies": [
       false, // Doesn't play well with mono-repo
@@ -24,8 +24,6 @@
     "increment-decrement": false,
     "no-null-keyword": false,
     "no-magic-numbers": false,
-    "no-parameter-properties": false,
-    // TEMPORARY
-    "no-any": false
+    "no-parameter-properties": false
   }
 }

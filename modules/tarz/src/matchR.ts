@@ -18,9 +18,9 @@ export interface IMatchActionRSpec<State> {
 
 export const matchR = <State>(
   spec: IMatchActionRSpec<State>
-): CurriedFunction2<any, State, State> =>
+): CurriedFunction2<unknown, State, State> =>
   curry2(
-    (action: any, state: State): State =>
+    (action: unknown, state: State): State =>
       isAction(action) && hasOwnProperty(action.type, spec)
         ? spec[action.type](action.value, state)
         : state

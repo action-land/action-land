@@ -1,6 +1,6 @@
 import {action, IAction} from './action'
 import {isNil} from './isNil'
-import {Nil} from './nil'
+import {INilAction, Nil} from './nil'
 
 /**
  * Action type for Nil
@@ -11,10 +11,10 @@ export const LIST_ACTION_TYPE = '@@LIST'
  * Creates a new Action from a list of actions
  * @param: List of Actions
  */
-export function List(
-  ...actions: Array<IAction<any>>
-): IAction<Array<IAction<any>> | any> {
-  const nActions: Array<IAction<any>> = []
+export function List<T>(
+  ...actions: Array<IAction<T>>
+): IAction<Array<IAction<T>>> | IAction<T> | INilAction {
+  const nActions = []
   for (const act of actions) {
     if (!isNil(act)) {
       nActions.push(act)

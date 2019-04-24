@@ -8,11 +8,11 @@ import * as assert from 'assert'
 import {create} from '../../modules/smitten/index'
 
 export const testListener = <T>(): {
-  actions: Array<IAction<T>>
-  listener(action: IAction<T>): void
+  actions: T[]
+  listener(action: T): void
 } => {
-  const actions: any[] = []
-  const listener = (act: any): void => {
+  const actions: T[] = []
+  const listener = (act: T): void => {
     actions.push(act)
   }
 

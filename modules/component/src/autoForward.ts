@@ -10,7 +10,7 @@ import {type} from 'os'
 
 import {hasOwnProperty} from '../../utils'
 
-// tslint:disable:no-unsafe-any
+// tslint:disable:no-unsafe-any no-any
 type NState<T> = T & {'@@forward': {keys: string[]}}
 interface IComponentSpec {
   [key: string]: Component

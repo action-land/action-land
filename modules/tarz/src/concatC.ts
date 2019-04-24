@@ -7,6 +7,7 @@ import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {CommandFunction} from './commandFunction'
 
+// tslint:disable:no-any
 export const concatC = <State>(
   ...t: Array<CommandFunction<State>>
 ): CurriedFunction2<any, State, IAction<any>> =>
