@@ -14,7 +14,19 @@ script:
   - yarn lint
   - yarn tsc
   - yarn test
+  if: branch = master
+  - yarn build:docs
 before_install: yarn global add greenkeeper-lockfile@2
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 after_success: ./deploy.sh
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: './docs'
+  keep_history: true
+  project_name: '@action-land'
+  github_token: $GH_TOKEN
+  verbose: true
+  on:
+    branch: master
