@@ -2,24 +2,22 @@
  * Created by tushar on 26/06/18
  */
 
-import {IAction, isAction, isList, isNil, List, Nil} from '@action-land/core'
+import {IAction, IActionType, isList, isNil, List, Nil} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
 
 import {CommandFunction} from './commandFunction'
 
-// tslint:disable:no-any
 export const concatC = <State>(
   ...t: Array<CommandFunction<State>>
-): CurriedFunction2<any, State, IAction<any>> =>
+): CurriedFunction2<unknown, State, IAction<IActionType, unknown>> =>
   curry2(
-    (input: any, state: State): IAction<{}> => {
-      const result: Array<IAction<any>> = []
+    (input: unknown, state: State): IAction<IActionType, unknown> => {
+      const result = []
       for (const item of t) {
         const act = item(input, state)
         if (isList(act)) {
           for (const value of act.value) {
-            // TODO(isNil): Remove isAction check once IAction has the `type` typed.
-            if (isAction(value) && !isNil(value)) {
+            if (!isNil(value)) {
               result.push(value)
             }
           }

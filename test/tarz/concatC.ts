@@ -10,9 +10,13 @@ import {concatC} from '../../modules/tarz/src/concatC'
 import {zeroC} from '../../modules/tarz/src/zeroC'
 
 describe('concatC', () => {
-  const P = (a: number, b: number): IAction<number> => action('+', a + b)
-  const M = (a: number, b: number): IAction<number> => action('*', a * b)
-  const D = (a: number, b: number): IAction<number> => action('/', a / b)
+  type OutputActions = '+' | '*' | '/'
+  const P = (a: number, b: number): IAction<OutputActions, number> =>
+    action('+', a + b)
+  const M = (a: number, b: number): IAction<OutputActions, number> =>
+    action('*', a * b)
+  const D = (a: number, b: number): IAction<OutputActions, number> =>
+    action('/', a / b)
   it('should combine multiple command functions into one', () => {
     const actual = concatC(curry2(P), curry2(M))(1, 2)
     const expected = List(action('+', 3), action('*', 2))

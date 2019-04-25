@@ -7,6 +7,7 @@ import {ReducerFunction} from './reducerFunction'
 
 /**
  * Concatenates 2 or more ReducerFunction(s) and returns a new ReducerFunction.
+ * TODO(action): Add a Type Parameter of all the actions that this Reducer accepts
  * @param t ReducerFunction[]
  * @return ReducerFunction
  */

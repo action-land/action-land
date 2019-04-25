@@ -1,4 +1,4 @@
-export {action, IAction} from './src/action'
+export {action, IAction, IActionType} from './src/action'
 export {isAction} from './src/isAction'
 export {Nil, INilAction} from './src/nil'
 export {isNil} from './src/isNil'

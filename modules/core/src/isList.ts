@@ -1,11 +1,13 @@
-import {IAction} from './action'
+import {IAction, IActionType} from './action'
 import {isAction} from './isAction'
-import {LIST_ACTION_TYPE} from './list'
+import {IListAction, LIST} from './list'
 
 /**
- * Checks if the object is of type List
+ * Checks if input is of type IListAction
  * @param: Object to test
  */
-export function isList(obj: unknown): obj is IAction<unknown[]> {
-  return isAction(obj) && obj.type === LIST_ACTION_TYPE
-}
+export const isList = (obj: unknown): obj is IListAction =>
+  isAction(obj) &&
+  obj.type === LIST &&
+  Array.isArray(obj.value) &&
+  obj.value.every(isAction)

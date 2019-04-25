@@ -11,7 +11,7 @@ describe('COM', () => {
   const component = COM(
     (count: string): {count: number} => ({count: Number(count)}),
 
-    <T>(action: IAction<T>, state: {count: number}) => ({
+    <T>(action: IAction<string, T>, state: {count: number}) => ({
       ...state,
       count: state.count + 1
     }),
@@ -116,7 +116,7 @@ function test(
   eq: <T>(a: T, b: T) => void,
   init: (a: string, b: number) => {count: number},
   update: (a: string, b: {count: number}) => {count: number},
-  command: (a: string, b: {count: number}) => IAction<{}>,
+  command: (a: string, b: {count: number}) => IAction<string, unknown>,
   view: (e: ISmitten, m: {count: number}, p: {color: string}) => string,
   expected: Component<
     {count: number},
