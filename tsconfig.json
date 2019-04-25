@@ -9,7 +9,9 @@
         "alwaysShowRuleFailuresAsWarnings": false,
         "ignoreDefinitionFiles": true,
         "suppressWhileTypeErrorsPresent": false,
-        "mockTypeScriptVersion": false
+        "mockTypeScriptVersion": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
       }
     ]
   }
