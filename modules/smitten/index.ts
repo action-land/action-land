@@ -29,13 +29,11 @@ class DefaultEmitter implements Smitten {
   }
 
   of(type: string | number): Smitten {
-    if (this.cache.hasOwnProperty(type)) {
-      return this.cache[type]
+    if (!this.cache.hasOwnProperty(type)) {
+      this.cache[type] = new DefaultEmitter(type, this)
     }
 
-    const newEmitter = new DefaultEmitter(type, this)
-    this.cache[type] = newEmitter
-    return newEmitter
+    return this.cache[type]
   }
 }
 
