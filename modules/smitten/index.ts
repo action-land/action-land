@@ -14,7 +14,7 @@ class DefaultEmitter implements Smitten {
     readonly type: string | number,
     readonly parent: DefaultEmitter | RootEmitter,
     private readonly cache: {
-      [key: string]: DefaultEmitter
+      [key: string]: Smitten
     } = {}
   ) {}
 
@@ -38,10 +38,19 @@ class DefaultEmitter implements Smitten {
 }
 
 class RootEmitter implements Smitten {
-  constructor(public readonly emit: (obj: any) => void) {}
+  constructor(
+    public readonly emit: (obj: any) => void,
+    private readonly cache: {
+      [key: string]: Smitten
+    } = {}
+  ) {}
 
   of(type: string | number): Smitten {
-    return new DefaultEmitter(type, this)
+    if (!this.cache.hasOwnProperty(type)) {
+      this.cache[type] = new DefaultEmitter(type, this)
+    }
+
+    return this.cache[type]
   }
 }
 
