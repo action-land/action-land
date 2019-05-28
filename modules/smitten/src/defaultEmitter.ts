@@ -13,14 +13,17 @@ export class DefaultEmitter implements ISmitten {
     public readonly parent: DefaultEmitter | RootEmitter
   ) {}
   public emit = (value: EmitValue): void => {
-    // tslint:disable-next-line: no-this-assignment
-    let node: DefaultEmitter | RootEmitter = this
-    let act = value
-    while (node instanceof DefaultEmitter) {
-      act = action(node.type, act)
-      node = node.parent
+    if (this instanceof RootEmitter) {
+      this.emit(value)
+    } else {
+      let current = this.parent
+      let act = action(this.type, value)
+      while (current instanceof DefaultEmitter) {
+        act = action(current.type, act)
+        current = current.parent
+      }
+      current.emit(act)
     }
-    node.emit(act)
   }
   public of(type: string | number): ISmitten {
     return new DefaultEmitter(type, this)

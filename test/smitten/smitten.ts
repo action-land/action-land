@@ -16,7 +16,7 @@ export const testListener = () => {
   return {actions, listener}
 }
 
-describe('hoe', () => {
+describe('smitten', () => {
   it('should emit actions', () => {
     const {actions, listener} = testListener()
     const e = create(listener)

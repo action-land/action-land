@@ -25,8 +25,6 @@
     "no-null-keyword": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,
-    "no-unused-expression": true,
-    // TEMPORARY
-    "no-this-assignment": false
+    "no-unused-expression": true
   }
 }
