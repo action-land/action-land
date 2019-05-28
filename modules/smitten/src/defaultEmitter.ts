@@ -1,6 +1,6 @@
 import {action} from '@action-land/core'
 
-import {ISmitten} from '../index'
+import {EmitValue, ISmitten} from '../index'
 
 import {RootEmitter} from './rootEmitter'
 
@@ -12,7 +12,7 @@ export class DefaultEmitter implements ISmitten {
     public readonly type: string | number,
     public readonly parent: DefaultEmitter | RootEmitter
   ) {}
-  public emit = (value: unknown): void => {
+  public emit = (value: EmitValue): void => {
     // tslint:disable-next-line: no-this-assignment
     let node: DefaultEmitter | RootEmitter = this
     let act = value

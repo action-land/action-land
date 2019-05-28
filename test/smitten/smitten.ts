@@ -59,7 +59,7 @@ describe('hoe', () => {
       for (let i = 0; i < 1e6; i++) {
         e = e.of(i.toString())
       }
-      e.emit(null)
+      e.emit('value')
     })
   })
 })
