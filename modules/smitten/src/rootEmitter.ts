@@ -2,7 +2,7 @@ import {IAction} from '@action-land/core'
 
 import {EmitValue, ISmitten} from '../index'
 
-import {DefaultEmitter} from './DefaultEmitter'
+import {DefaultEmitter} from './defaultEmitter'
 
 /**
  * Class for an Emitter that is at Application Root
