@@ -1,9 +1,13 @@
 node_modules/
-*.d.ts
-!global.d.ts
 *.tgz
+*.log
+
+# Typescript Generated Files
 *.js
 *.map
+*.d.ts
+!global.d.ts
+
+# IDE's
 .idea/
-*.log
 .vscode/
