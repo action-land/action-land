@@ -27,7 +27,6 @@
     "no-parameter-properties": false,
     "no-unused-expression": true,
     // TEMPORARY
-    "no-this-assignment": false,
-    "max-classes-per-file": false
+    "no-this-assignment": false
   }
 }
