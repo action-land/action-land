@@ -3,8 +3,8 @@
  */
 
 import {action, isNil} from '@action-land/core'
+import {CommandFunction} from '@action-land/tarz/src/commandFunction'
 import * as assert from 'assert'
-import {CommandFunction} from '../../modules/tarz/src/CommandFunction'
 import {matchC} from '../../modules/tarz/src/matchC'
 
 describe('matchC', () => {

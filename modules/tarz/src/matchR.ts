@@ -4,7 +4,7 @@
 
 import {isAction} from '@action-land/core'
 import {CurriedFunction2, curry2} from 'ts-curry'
-import {ReducerFunction} from './ReducerFunction'
+import {ReducerFunction} from './reducerFunction'
 
 export type MatchActionRSpec<State> = {
   [key: string]: ReducerFunction<State>
