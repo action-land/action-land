@@ -6,7 +6,6 @@ import {IAction, isNil, Nil} from '@action-land/core'
 import {create, ISmitten} from '@action-land/smitten'
 import * as assert from 'assert'
 
-// tslint:disable:no-any
 describe('COM', () => {
   const component = COM(
     (count: string): {count: number} => ({count: Number(count)}),
@@ -60,7 +59,7 @@ describe('COM', () => {
     const AUTO_CRAZY = (val: boolean) => <
       State,
       Params,
-      Init extends any[],
+      Init extends unknown[],
       VNode
     >(
       crazyComponent: Component<State, Params, Init, VNode>
@@ -69,7 +68,7 @@ describe('COM', () => {
         crazy: boolean
       }
 
-      const InitType = <Args extends any[], R>(
+      const InitType = <Args extends unknown[], R>(
         fn0: (...t: Args) => R
       ): ((...t: Args) => R & ICrazy) => (...t: Args): R & ICrazy =>
         Object.assign(fn0(...t), {crazy: val})
@@ -93,7 +92,6 @@ describe('COM', () => {
 
     it('should keep the component as is', () => {
       const newComponent = component.map(child => child)
-      // tslint:disable-next-line: no-inferred-empty-object-type
       const state = newComponent.init('100')
       assert.deepStrictEqual(state, {count: 100})
     })

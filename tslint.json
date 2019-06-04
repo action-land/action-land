@@ -16,15 +16,13 @@
     "variable-name": [true, "allow-pascal-case"],
     "typedef": [true, "call-signature"],
     "file-name-casing": [true, "camel-case"],
-    "no-implicit-dependencies": [
-      false, // Doesn't play well with mono-repo
-      "dev"
-    ],
+    "no-implicit-dependencies": [false, "dev"],
     "only-arrow-functions": false,
     "increment-decrement": false,
     "no-null-keyword": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,
-    "no-unused-expression": true
+    "no-unused-expression": true,
+    "no-unbound-method": false
   }
 }
