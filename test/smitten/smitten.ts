@@ -56,7 +56,7 @@ describe('smitten', () => {
     const {listener} = testListener()
     let e = create(listener)
     assert.doesNotThrow(() => {
-      for (let i = 0; i < 1e6; i++) {
+      for (let i = 0; i < 1e6; i += 1) {
         e = e.of(i.toString())
       }
       e.emit('value')

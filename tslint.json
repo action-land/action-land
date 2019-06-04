@@ -18,7 +18,6 @@
     "file-name-casing": [true, "camel-case"],
     "no-implicit-dependencies": [false, "dev"],
     "only-arrow-functions": false,
-    "increment-decrement": false,
     "no-null-keyword": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,
