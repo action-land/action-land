@@ -26,6 +26,5 @@ deploy:
   local_dir: './docs'
   project_name: '@action-land'
   github_token: $GH_TOKEN
-  verbose: true
   on:
     branch: master
