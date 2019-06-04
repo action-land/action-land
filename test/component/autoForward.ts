@@ -70,31 +70,3 @@ describe('AutoForward', () => {
     assert.deepStrictEqual(actual, expected)
   })
 })
-
-/**
- * T Y P E S C R I P T
- */
-
-function test(
-  eq: <T>(a: T, b: T) => void,
-  ChildComponent: Component<
-    {count: number},
-    {color: string},
-    [number, string, Date],
-    string
-  >,
-  ParentComponent: Component<
-    {child: {count: number}; name: string},
-    {color: string},
-    [number, string, Date],
-    string
-  >,
-  expected: Component<
-    {'@@forward': {keys: string[]}; child: {count: number}; name: string},
-    {color: string},
-    [number, string, Date],
-    string
-  >
-): void {
-  eq(AutoForward({child: ChildComponent})(ParentComponent), expected)
-}

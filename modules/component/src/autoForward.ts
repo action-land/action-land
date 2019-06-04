@@ -39,7 +39,6 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
         isAction(act) && hasOwnProperty(act.type, spec)
           ? {
               ...state,
-              // tslint:disable-next-line: no-unsafe-any
               [act.type]: spec[act.type].update(act.value, state[act.type])
             }
           : state,
