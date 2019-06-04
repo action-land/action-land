@@ -26,4 +26,4 @@ deploy:
   project_name: '@action-land'
   github_token: $GH_TOKEN
   on:
-    branch: chore/add-typedoc
+    branch: master
