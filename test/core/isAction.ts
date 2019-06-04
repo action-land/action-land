@@ -7,6 +7,8 @@ import {describe, it} from 'mocha'
 
 import {action, isAction} from '../../modules/core/index'
 
+// tslint:disable: no-null-keyword
+
 describe('isAction', () => {
   describe('valid actions', () => {
     it('should return true if obj is an action', () => {

@@ -4,7 +4,8 @@ import {describe, it} from 'mocha'
 
 import {match} from '../../modules/match/index'
 
-// tslint:disable: no-unsafe-any
+// tslint:disable: no-unsafe-any no-null-keyword
+
 describe('match', () => {
   it('should match based on action.type', () => {
     const actual = match((i: number) => i, {

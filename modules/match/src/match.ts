@@ -16,7 +16,9 @@ export const match: CurriedFunction2<
   IMatchActionSpec,
   any
 > = curry2(
-  (base: (t: unknown) => unknown, spec: IMatchActionSpec) => (action: IAction<any>) =>
+  (base: (t: unknown) => unknown, spec: IMatchActionSpec) => (
+    action: IAction<any>
+  ) =>
     isAction(action) && hasOwnProperty(action.type, spec)
       ? spec[action.type](action.value)
       : base(action)
