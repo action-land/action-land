@@ -52,7 +52,7 @@ export const AutoForward = <T extends IComponentSpec>(spec: T) => <
         isAction(act) && hasOwnProperty(act.type, spec)
           ? action(act.type, spec[act.type].command(act.value, state[act.type]))
           : Nil(),
-      component.command
+      component.command.bind(component)
     ),
-    component.view
+    component.view.bind(component)
   )

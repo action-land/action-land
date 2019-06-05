@@ -20,7 +20,6 @@
     "only-arrow-functions": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,
-    "no-unused-expression": true,
-    "no-unbound-method": false
+    "no-unused-expression": true
   }
 }

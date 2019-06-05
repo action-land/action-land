@@ -82,12 +82,14 @@ describe('COM', () => {
 
       const ViewType = <A, S, P>(fn: (e: ISmitten, m: S, p: P) => VNode) => fn
 
+      // tslint:disable: no-unbound-method
       return COM(
         InitType(crazyComponent.init),
         UpdateType(crazyComponent.update),
         CommandType(crazyComponent.command),
         ViewType(crazyComponent.view)
       )
+      // tslint:enable: no-unbound-method
     }
 
     it('should keep the component as is', () => {
