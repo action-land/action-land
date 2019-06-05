@@ -17,7 +17,11 @@
     "typedef": [true, "call-signature"],
     "file-name-casing": [true, "camel-case"],
     "no-implicit-dependencies": [false, "dev"],
-    "only-arrow-functions": false,
+    "only-arrow-functions": [
+      true,
+      "allow-declarations",
+      "allow-named-functions"
+    ],
     "no-magic-numbers": false,
     "no-parameter-properties": false,
     "no-unused-expression": true

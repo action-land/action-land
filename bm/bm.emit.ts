@@ -7,6 +7,8 @@ import {create} from '../modules/smitten/index'
 
 const suite = new Benchmark.Suite()
 
+// tslint:disable: only-arrow-functions
+
 function pass(): void {
   return
 }
