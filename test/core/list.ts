@@ -7,6 +7,8 @@ import {describe, it} from 'mocha'
 
 import {action, isList, isNil, List, Nil} from '../../modules/core/index'
 
+// tslint:disable: no-magic-numbers
+
 describe('List', () => {
   it('should return true if the obj is a List', () => {
     const actual = List(action('A', 100), action('B', 100))

@@ -9,6 +9,8 @@ import {action, List, Nil} from '../../modules/core/index'
 import {concatC} from '../../modules/tarz/src/concatC'
 import {zeroC} from '../../modules/tarz/src/zeroC'
 
+// tslint:disable: no-magic-numbers
+
 describe('concatC', () => {
   const P = (a: number, b: number) => action('+', a + b)
   const M = (a: number, b: number) => action('*', a * b)

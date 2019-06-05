@@ -5,6 +5,8 @@ import {matchC, matchR} from '@action-land/tarz'
 import * as assert from 'assert'
 import * as R from 'ramda'
 
+// tslint:disable: no-magic-numbers
+
 describe('AutoForward', () => {
   /**
    * IChild Component

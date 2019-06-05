@@ -3,6 +3,8 @@ import {describe, it} from 'mocha'
 
 import {action, isNil, Nil} from '../../modules/core/index'
 
+// tslint:disable: no-magic-numbers
+
 describe('action', () => {
   it('should return an action', () => {
     const actual = action('WONDER', {count: 10})

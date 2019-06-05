@@ -7,6 +7,8 @@ import * as assert from 'assert'
 
 import {matchC} from '../../modules/tarz/src/matchC'
 
+// tslint:disable: no-magic-numbers
+
 describe('matchC', () => {
   it('should call the matching command function', () => {
     const actual = matchC({

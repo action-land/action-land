@@ -7,7 +7,7 @@ import * as assert from 'assert'
 
 import {create} from '../../modules/smitten/index'
 
-// tslint:disable: no-null-keyword
+// tslint:disable: no-null-keyword no-magic-numbers
 
 export const testListener = () => {
   const actions: unknown[] = []

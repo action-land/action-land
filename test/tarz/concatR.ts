@@ -8,6 +8,8 @@ import {curry2} from 'ts-curry'
 import {concatR} from '../../modules/tarz/src/concatR'
 import {zeroR} from '../../modules/tarz/src/zeroR'
 
+// tslint:disable: no-magic-numbers
+
 describe('concatR', () => {
   const TEST_ACTION = action('SAMPLE', 100)
   const P = (a: IAction<number>, b: number) => a.value + b

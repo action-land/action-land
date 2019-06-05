@@ -7,6 +7,8 @@ import * as assert from 'assert'
 
 import {matchR} from '../../modules/tarz/src/matchR'
 
+// tslint:disable: no-magic-numbers
+
 describe('matchR', () => {
   it('should call the matching update function', () => {
     const actual = matchR({

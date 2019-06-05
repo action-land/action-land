@@ -5,6 +5,8 @@ import * as Benchmark from 'benchmark'
 
 import {create} from '../modules/smitten/index'
 
+// tslint:disable: no-magic-numbers
+
 const suite = new Benchmark.Suite()
 
 function pass(): void {
