@@ -80,7 +80,7 @@ describe('COM', () => {
 
       const CommandType = <A, B, S>(fn: (a: A, s: S) => B) => fn
 
-      const ViewType = <A, S, P>(fn: (e: ISmitten, m: S, p: P) => VNode) => fn
+      const ViewType = <S, P>(fn: (e: ISmitten, m: S, p: P) => VNode) => fn
 
       // tslint:disable: no-unbound-method
       return COM(
@@ -112,7 +112,7 @@ describe('COM', () => {
 /**
  * T Y P E S C R I P T
  */
-function test(
+export function test(
   eq: <T>(a: T, b: T) => void,
   init: (a: string, b: number) => {count: number},
   update: (a: string, b: {count: number}) => {count: number},

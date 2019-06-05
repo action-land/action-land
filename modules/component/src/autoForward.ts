@@ -1,11 +1,6 @@
 import {COM, Component} from '@action-land/component'
 import {action, isAction, Nil} from '@action-land/core'
-import {
-  CommandFunction,
-  concatC,
-  concatR,
-  ReducerFunction
-} from '@action-land/tarz'
+import {concatC, concatR} from '@action-land/tarz'
 
 import {hasOwnProperty} from '../../utils'
 

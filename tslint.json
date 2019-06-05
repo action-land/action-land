@@ -22,7 +22,6 @@
       "allow-declarations",
       "allow-named-functions"
     ],
-    "no-parameter-properties": false,
-    "no-unused-expression": true
+    "no-parameter-properties": false
   }
 }

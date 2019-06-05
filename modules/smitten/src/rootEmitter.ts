@@ -1,5 +1,3 @@
-import {IAction} from '@action-land/core'
-
 import {EmitValue, ISmitten} from '../index'
 
 import {DefaultEmitter} from './defaultEmitter'

@@ -2,7 +2,7 @@
  * Created by tushar on 05/07/18
  */
 
-import {IAction, INilAction, Nil} from '@action-land/core'
+import {INilAction, Nil} from '@action-land/core'
 import {curry2} from 'ts-curry'
 
 export const zeroC: {

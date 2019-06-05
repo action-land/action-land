@@ -1,4 +1,4 @@
-import {AutoForward, COM, Component} from '@action-land/component'
+import {AutoForward, COM} from '@action-land/component'
 import {action} from '@action-land/core'
 import {ISmitten} from '@action-land/smitten'
 import {matchC, matchR} from '@action-land/tarz'
