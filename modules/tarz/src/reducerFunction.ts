@@ -7,8 +7,6 @@
  * @param: action
  * @param: Old state
  */
-// tslint:disable-next-line: no-any
-export type ReducerFunction<State, Input = any> = (
-  input: Input,
-  state: State
-) => State
+export type ReducerFunction<State, Input = unknown> =
+  | ((input: Input, state: State) => State)
+  | ((input: Input) => State)

@@ -15,7 +15,7 @@ describe('concatR', () => {
   const P = (a: IAction<number>, b: number) => a.value + b
   const Q = (a: IAction<number>, b: number) => a.value * b
   it('should combine multiple reducers into one', () => {
-    const r = concatR(P, Q)
+    const r = concatR<number>(P, Q)
     const actual = r(TEST_ACTION, 20)
     const expected = (100 + 20) * 100
     assert.strictEqual(actual, expected)
@@ -23,7 +23,7 @@ describe('concatR', () => {
   it('should combine multiple curried reducers into one', () => {
     const r0 = curry2(P)
     const r1 = curry2(Q)
-    const r = concatR(r0, r1)
+    const r = concatR<number>(r0, r1)
     const actual = r(TEST_ACTION, 20)
     const expected = (100 + 20) * 100
     assert.strictEqual(actual, expected)
@@ -31,14 +31,14 @@ describe('concatR', () => {
   it('should return a curried function', () => {
     const r0 = curry2(P)
     const r1 = curry2(Q)
-    const r = concatR(r0, r1)
+    const r = concatR<number>(r0, r1)
     const actual = r(TEST_ACTION)(20)
     const expected = (100 + 20) * 100
     assert.strictEqual(actual, expected)
   })
 
   it('should satisfy right identity', () => {
-    const r = concatR(P, zeroR)
+    const r = concatR<number>(P, zeroR)
     const actual = r(TEST_ACTION)(20)
     const expected = 100 + 20
     assert.strictEqual(actual, expected)

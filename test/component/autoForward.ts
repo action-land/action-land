@@ -16,7 +16,7 @@ describe('AutoForward', () => {
   }
   const child = COM<IChild, {}, [], string>(
     (): IChild => ({C: 3}),
-    matchR<IChild>({set: R.assoc('C')}),
+    matchR({set: R.assoc('C')}),
     matchC<IChild>({set: action('bananas')}),
     (e: ISmitten, m: IChild, p: {}) => 'CHILD'
   )
@@ -30,7 +30,7 @@ describe('AutoForward', () => {
   }
   const parent = COM(
     (): IParent => ({A: 1, child: child.init()}),
-    matchR<IParent>({get: R.prop('A')}),
+    matchR({get: R.prop('A')}),
     matchC<IParent>({get: action('bananas')}),
     (e: ISmitten, m: IParent, p: {color: string}) =>
       `PARENT ${child.view(e.of('child'), m.child, {})}`
