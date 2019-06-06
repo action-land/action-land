@@ -10,32 +10,32 @@ import {match} from '../../modules/match/index'
 describe('match', () => {
   it('should match based on action.type', () => {
     const actual = match((i: unknown) => i, {
-      greet: (i: string) => `hi ${i}`,
-      inc: (i: number) => i + 1
+      greet: (i: unknown) => (typeof i === 'string' ? `hi ${i}` : i),
+      inc: (i: unknown) => (typeof i === 'number' ? i + 1 : i)
     })(action('inc', 10))
     const expected = 11
     assert.strictEqual(actual, expected)
   })
   it('should call default with action if nothing matches', () => {
     const actual = match((i: unknown) => (isAction(i) ? i.value : i), {
-      dec: (i: number) => i - 1,
-      inc: (i: number) => i + 1
+      dec: (i: unknown) => (typeof i === 'number' ? i - 1 : i),
+      inc: (i: unknown) => (typeof i === 'number' ? i + 1 : i)
     })(action('otherwise', 10))
     const expected = 10
     assert.strictEqual(actual, expected)
   })
   it('should be curried', () => {
     const actual = match((i: unknown) => (isAction(i) ? i.value : i))({
-      dec: (i: number) => i - 1,
-      inc: (i: number) => i + 1
+      dec: (i: unknown) => (typeof i === 'number' ? i - 1 : i),
+      inc: (i: unknown) => (typeof i === 'number' ? i + 1 : i)
     })(action('otherwise', 10))
     const expected = 10
     assert.strictEqual(actual, expected)
   })
   it('should handle non-action types', () => {
     const actual = match(() => 1000, {
-      dec: (i: number) => i - 1,
-      inc: (i: number) => i + 1
+      dec: (i: unknown) => (typeof i === 'number' ? i - 1 : i),
+      inc: (i: unknown) => (typeof i === 'number' ? i + 1 : i)
     })(null)
     const expected = 1000
     assert.strictEqual(actual, expected)
