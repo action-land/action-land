@@ -9,7 +9,7 @@ type Component<S1, V, IA1 = never, OA1 = never, C1 = unknown, P1 = never> = {
   matchC<AT extends string | number, AV, OT extends string | number, OV>(
     type: AT,
     cb: (v: AV, s: S1) => Action<OT, OV>
-  ): Component<S1, V, IA1 | Action<AT, AV>, OA1 | Action<OT, OV>>
+  ): Component<S1, V, IA1 | Action<AT, AV>, OA1 | Action<OT, OV>, C1, P1>
 
   forward<K extends string | number, S2, IA2, OA2, C2, P2>(
     k: K,
