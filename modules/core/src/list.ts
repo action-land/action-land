@@ -1,6 +1,6 @@
 import {Action, action} from './action'
 import {isNil} from './isNil'
-import {Nil} from './Nil'
+import {Nil} from './nil'
 
 /**
  * Action type for Nil
@@ -23,6 +23,6 @@ export function List(
   return nActions.length === 0
     ? Nil()
     : nActions.length === 1
-      ? nActions[0]
-      : action(LIST_ACTION_TYPE, nActions)
+    ? nActions[0]
+    : action(LIST_ACTION_TYPE, nActions)
 }

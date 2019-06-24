@@ -8,7 +8,7 @@ type ComponentSpec = {
 }
 type ComponentState<T extends Component> = T extends Component<infer State>
   ? State
-  : never
+  : unknown
 type ChildStateSpec<T extends ComponentSpec> = {
   [k in keyof T]: ComponentState<T[k]>
 }

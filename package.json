@@ -3,8 +3,7 @@
   "scripts": {
     "test": "mocha --require=ts-node/register test/**/*.ts",
     "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc",
-    "lint": "git ls-files | grep '.ts$' | xargs yarn tslint",
-    "lint:fix": "git ls-files | grep '.ts$' | xargs yarn tslint --fix",
+    "lint": "tslint --project .",
     "preversion": "tsc -d",
     "lerna-publish": "lerna publish --conventional-commits"
   },
@@ -19,19 +18,19 @@
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.2",
-    "@types/ramda": "^0.25.35",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.13.7",
+    "@types/ramda": "^0.26.8",
     "benchmark": "^2.1.4",
-    "cz-lerna-changelog": "^1.2.1",
-    "lerna": "^2.11.0",
-    "mocha": "^5.2.0",
-    "prettier": "^1.13.7",
-    "ramda": "^0.25.0",
+    "cz-lerna-changelog": "^2.0.2",
+    "lerna": "^3.13.3",
+    "mocha": "^6.1.4",
+    "prettier": "^1.17.0",
+    "ramda": "^0.26.1",
     "ts-curry": "^1.0.4",
-    "ts-node": "^7.0.0",
-    "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.4"
   },
   "workspaces": [
     "modules/*"

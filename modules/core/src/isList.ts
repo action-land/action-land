@@ -1,6 +1,6 @@
 import {Action} from './action'
 import {isAction} from './isAction'
-import {LIST_ACTION_TYPE} from './List'
+import {LIST_ACTION_TYPE} from './list'
 
 /**
  * Checks if the object is of type List
