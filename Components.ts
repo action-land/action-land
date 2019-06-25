@@ -11,10 +11,10 @@ type Component<S1, V, IA1 = never, OA1 = never, C1 = unknown, P1 = never> = {
     cb: (v: iActionValue<IA1, AT, AV>, s: S1) => S2
   ): Component<S2, V, IA1 | Action<AT, AV>, OA1, C1, P1>
 
-  matchC<AT extends string | number, AV, A extends Action>(
+  matchC<AT extends string | number, AV, OT extends string | number, OV>(
     type: AT,
-    cb: (v: AV, s: S1) => A
-  ): Component<S1, V, IA1 | Action<AT, AV>, OA1 | A, C1, P1>
+    cb: (v: AV, s: S1) => Action<OT, OV>
+  ): Component<S1, V, IA1 | Action<AT, AV>, OA1 | Action<OT, OV>, C1, P1>
 
   forward<K extends string | number, S2, IA2, OA2, C2, P2>(
     k: K,
@@ -72,8 +72,10 @@ const a = c1
     ])
   })
 
-type actA = Action<'click', Event> | Action<'hover', Response>
-type x = iActionValue<actA, 'hover'>
+const b = c1.matchC('keydown', (v: KeyboardEvent, s: {color: string}) => [
+  'set',
+  v.charCode
+])
 
 /**
  * Fix matchR/ match C typings to accomodate duplicate action types
