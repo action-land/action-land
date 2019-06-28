@@ -1,20 +1,24 @@
 type Action<T = unknown, V = unknown> = [T, V]
 
-type iActionValue<A, T, D = never> = A extends Action<T, infer V> ? V : D
+/**
+ * Component Constructor
+ * @param state : Any State object
+ */
+declare function COM<S> (state: S): Component<S>
 
-type Component<S1, V, IA1 = never, OA1 = never, C1 = unknown, P1 = never> = {
-  init<T>(state: T): Component<T, V, IA1, OA1, C1, P1>
-  initilize: () => S1
+type iActionValue<A, T> = A extends Action<T, infer V> ? V : never
 
+
+type Component<S1, V = unknown, IA1 = never, OA1 = never, C1 = unknown, P1 = never> = {
   matchR<AT extends string | number, S2, AV>(
     type: AT,
-    cb: (v: iActionValue<IA1, AT, AV>, s: S1) => S2
-  ): Component<S2, V, IA1 | Action<AT, AV>, OA1, C1, P1>
+    cb: (v: AV, s: S1) => S2
+  ): Component<S2, V, IA1 | Action<AT, iActionValue<IA1, AT> extends never ? AV : iActionValue<IA1, AT>&AV >, OA1, C1, P1>
 
   matchC<AT extends string | number, AV, OT extends string | number, OV>(
     type: AT,
     cb: (v: AV, s: S1) => Action<OT, OV>
-  ): Component<S1, V, IA1 | Action<AT, AV>, OA1 | Action<OT, OV>, C1, P1>
+  ): Component<S1, V, IA1 | Action<AT, iActionValue<IA1, AT> extends never ? AV : iActionValue<IA1, AT>&AV >, OA1 | Action<OT, OV>, C1, P1>
 
   forward<K extends string | number, S2, IA2, OA2, C2, P2>(
     k: K,
@@ -31,7 +35,8 @@ type Component<S1, V, IA1 = never, OA1 = never, C1 = unknown, P1 = never> = {
   view(
     cb: (e: (act: IA1) => void, s: S1, v: {[k in keyof C1]: C1[k]}) => V
   ): Component<S1, V, IA1, OA1, C1, P1>
-
+  configure<S2 extends S1>(cb: (s: S1) => S2 ): Component<S2, V, IA1, OA1, C1, P1>
+  init(): S1
   render(props: P1): V
 }
 
@@ -52,7 +57,7 @@ declare const c1: Component<
 declare const c2: Component<
   {age: number},
   string,
-  Action<'GQL', Response>,
+  Action<'GQL', Response> | Action<'click', Event>,
   never,
   never,
   {name: string}
@@ -62,7 +67,7 @@ const a = c1
   .matchR('hover', (ev: MouseEvent, s) => ({
     color: s.color.toLowerCase()
   }))
-  .matchR('hover', (ev: MouseEvent, s) => ({
+  .matchR('click', (ev: Response, s) => ({
     color: s.color.toLowerCase()
   }))
   .forward('c2', c2)
@@ -76,8 +81,3 @@ const b = c1.matchC('keydown', (v: KeyboardEvent, s: {color: string}) => [
   'set',
   v.charCode
 ])
-
-/**
- * Fix matchR/ match C typings to accomodate duplicate action types
- * Emitter to function like click: e.click
- */
