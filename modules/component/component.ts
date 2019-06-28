@@ -25,7 +25,7 @@ type Component<
   ): Component<
     S2,
     V,
-    | Exclude<IA1, Action<AT, iActionValue<IA1, AT>>>
+    Exclude<IA1, Action<AT, iActionValue<IA1, AT>>>
     | Action<AT, outputActionValue<IA1, AT, AV>>,
     OA1,
     C1,
@@ -38,7 +38,8 @@ type Component<
   ): Component<
     S1,
     V,
-    Exclude<IA1 | Action<AT, outputActionValue<IA1, AT, AV>>, ['click', Event]>,
+    Exclude<IA1, Action<AT, iActionValue<IA1, AT>>>
+    | Action<AT, outputActionValue<IA1, AT, AV>>,
     OA1 | Action<OT, OV>,
     C1,
     P1

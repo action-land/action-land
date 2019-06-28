@@ -39,8 +39,5 @@
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
-  },
-  "dependencies": {
-    "utility-types": "^3.7.0"
   }
 }
