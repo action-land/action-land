@@ -10,35 +10,26 @@ import {CommandFunction, ReducerFunction} from '@action-land/tarz'
  * Component interface.
  */
 
-export class Component<
-  State = any,
-  Params = any,
-  Init extends any[] = any,
-  VNode = any
-> {
+export class Component<S1, P1, I1 extends unknown[], V> {
   constructor(
-    readonly init: (...t: Init) => State,
-    readonly update: ReducerFunction<State>,
-    readonly command: CommandFunction<State>,
-    readonly view: (e: Smitten, m: State, p: Params) => VNode
+    readonly init: (...t: I1) => S1,
+    readonly update: ReducerFunction<S1>,
+    readonly command: CommandFunction<S1>,
+    readonly view: (e: Smitten, m: S1, p: P1) => V
   ) {}
 
   /**
    * @deprecated Use Component.lift() instead
    */
-  map<S, P, I extends any[], V>(
-    fn: (
-      component: Component<State, Params, Init, VNode>
-    ) => Component<S, P, I, V>
-  ): Component<S, P, I, V> {
+  map<S2, P2, I2 extends any[]>(
+    fn: (component: Component<S1, P1, I1, V>) => Component<S2, P2, I2, V>
+  ): Component<S2, P2, I2, V> {
     return this.lift(fn)
   }
 
-  lift<S, P, I extends any[], V>(
-    fn: (
-      component: Component<State, Params, Init, VNode>
-    ) => Component<S, P, I, V>
-  ): Component<S, P, I, V> {
+  lift<S2, P2, I2 extends any[]>(
+    fn: (component: Component<S1, P1, I1, V>) => Component<S2, P2, I2, V>
+  ): Component<S2, P2, I2, V> {
     return fn(this)
   }
 }

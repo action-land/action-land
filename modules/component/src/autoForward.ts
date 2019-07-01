@@ -2,12 +2,18 @@ import {COM, Component} from '@action-land/component'
 import {action, isAction, Nil} from '@action-land/core'
 import {concatC, concatR} from '@action-land/tarz'
 
+type anyComponent = Component<any, any, any, any>
 type NState<T> = T & {'@@forward': {keys: Array<string>}}
 type ComponentSpec = {
-  [key: string]: Component
+  [key: string]: anyComponent
 }
-type ComponentState<T extends Component> = T extends Component<infer State>
-  ? State
+type ComponentState<T extends anyComponent> = T extends Component<
+  infer S,
+  unknown,
+  unknown[],
+  unknown
+>
+  ? S
   : unknown
 type ChildStateSpec<T extends ComponentSpec> = {
   [k in keyof T]: ComponentState<T[k]>
