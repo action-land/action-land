@@ -23,7 +23,18 @@ export class Component<
     readonly view: (e: Smitten, m: State, p: Params) => VNode
   ) {}
 
+  /**
+   * @deprecated Use Component.lift() instead
+   */
   map<S, P, I extends any[], V>(
+    fn: (
+      component: Component<State, Params, Init, VNode>
+    ) => Component<S, P, I, V>
+  ): Component<S, P, I, V> {
+    return this.lift(fn)
+  }
+
+  lift<S, P, I extends any[], V>(
     fn: (
       component: Component<State, Params, Init, VNode>
     ) => Component<S, P, I, V>
