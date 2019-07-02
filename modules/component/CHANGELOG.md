@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/action-land/action-land/compare/v4.0.1...v4.1.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* **component:** fix typings ([217e779](https://github.com/action-land/action-land/commit/217e779))
+
+
+### Features
+
+* **component:** deprecating \`map\` method on Component ([8efaf33](https://github.com/action-land/action-land/commit/8efaf33))
+* **component:** Remove optionality from Component's type params. ([55c1570](https://github.com/action-land/action-land/commit/55c1570))
+
+
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/action-land/action-land/compare/v4.0.0...v4.0.1) (2018-08-22)
 

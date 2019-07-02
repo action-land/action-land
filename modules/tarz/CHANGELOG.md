@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/action-land/action-land/compare/v4.0.1...v4.1.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* **readme:** Fix typo ([edc4349](https://github.com/action-land/action-land/commit/edc4349))
+
+
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/action-land/action-land/compare/v4.0.0...v4.0.1) (2018-08-22)
 
