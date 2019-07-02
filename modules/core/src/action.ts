@@ -24,6 +24,6 @@ function createAction<T extends AType, V>(type: T, value: V) {
  * @returns {Action}
  */
 export const action: {
-  <T extends AType, V>(type: T, value: V): Action<V>
-  <T extends AType, V>(type: T): {(value: V): Action<V>}
+  <T extends AType, V>(type: T, value: V): Action<V, T>
+  <T extends AType, V>(type: T): {(value: V): Action<V, T>}
 } = curry2(createAction)
