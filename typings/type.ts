@@ -1,17 +1,29 @@
-import {ComponentNext} from '@action-land/component'
-import {action} from '@action-land/core'
+import {ComponentNext, ComponentProps} from '@action-land/component'
 
-// $ExpectType ComponentNext<{ count: number; }, { count: number; }, never, never>
-ComponentNext.lift({count: 0})
+declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
-// $ExpectType ComponentNext<{ count: number; }, { count: number; }, Action<unknown, "inc">, never>
-ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({count: s.count + 1}))
+// $ExpectType { count: number; }
+$(ComponentNext.lift({count: 0})).iState
 
-// $ExpectType ComponentNext<{ count: number; }, { count: number; } | { count: number; lastAction: string; }, Action<unknown, "inc">, never>
-ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
-  count: s.count + 1,
-  lastAction: 'inc'
-}))
+// $ExpectType { count: number; }
+$(ComponentNext.lift({count: 0})).oState
 
-// $ExpectType ComponentNext<{ count: number; }, { count: number; }, never, Action<number, "GQL">>
-ComponentNext.lift({count: 0}).matchC('inc', (e, s) => action('GQL', s.count))
+// $ExpectType Action<unknown, "inc">
+$(
+  ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({count: s.count + 1}))
+).iActions
+
+// $ExpectType { count: number; } | { count: number; action: string; }
+$(
+  ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
+    count: s.count + 1,
+    action: 'inc'
+  }))
+).oState
+
+// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchR('inc', (e: {a: string}, s) => s)
+    .matchR('inc', (e: {b: number}, s) => s)
+).iActions
