@@ -1,4 +1,5 @@
 import {ComponentNext, ComponentProps} from '@action-land/component'
+import {action} from '@action-land/core'
 
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
@@ -27,3 +28,10 @@ $(
     .matchR('inc', (e: {a: string}, s) => s)
     .matchR('inc', (e: {b: number}, s) => s)
 ).iActions
+
+// $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('inc', (e, s) => action('HTTP', {url: 'abc.com'}))
+    .matchC('dec', (e, s) => action('Write', {data: 'abc'}))
+).oActions
