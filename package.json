@@ -32,7 +32,7 @@
     "ts-curry": "^1.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
-    "typedoc": "^0.14.2",
+    "@tusharmathur/typedoc": "^1.0.0",
     "typescript": "^3.5.2",
     "typings-checker": "^2.0.0"
   },
