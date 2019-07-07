@@ -3,7 +3,7 @@
   "scripts": {
     "test": "mocha test/**/*.ts",
     "check-types": "typings-checker typings/type.ts",
-    "prettier": "git ls-files | grep '.ts$' | xargs prettier --write --config=.prettierrc",
+    "prettier": "git ls-files | grep '\\.ts$' | xargs prettier --write --config=.prettierrc",
     "lint": "tslint --project .",
     "preversion": "tsc -d",
     "lerna-publish": "lerna publish --conventional-commits",
