@@ -1,7 +1,7 @@
+import {ComponentNext} from '@action-land/component'
 import {action, Action} from '@action-land/core'
 import {create} from '@action-land/smitten'
 import * as assert from 'assert'
-import {ComponentNext} from '../../modules/component/src/componentNext'
 
 describe('ComponentNext', () => {
   describe('lift', () => {
