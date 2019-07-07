@@ -62,6 +62,13 @@ $(
     })
 ).iActions
 
+// $ExpectType { childA: ComponentNext<{ iState: number; oState: number; oView: void; }>; }
+$(
+  ComponentNext.lift(0).forward({
+    childA: ComponentNext.lift(10)
+  })
+).iChildren
+
 // $ExpectType Action<null, "X"> | Action<Action<null, "A">, "childA">
 $(
   ComponentNext.lift({count: 0})
@@ -72,3 +79,38 @@ $(
       )
     })
 ).oActions
+
+// $ExpectType string
+$(ComponentNext.lift({count: 0}).render(() => 'Hello')).oView
+
+// $ExpectType { s: { count: number; }; p: boolean; }
+$(ComponentNext.lift({count: 0}).render((_, p: boolean) => ({s: _.state, p})))
+  .oView
+
+// $ExpectType { inc: (e: number) => unknown; }
+$(
+  ComponentNext.lift(0)
+    .matchR('inc', (e: number, s) => s + e)
+    .render((_, p: boolean) => _.actions)
+).oView
+
+// $ExpectType {}
+$(ComponentNext.lift(0).render((_, p: boolean) => _.actions)).oView
+
+// $ExpectType { childA: (p: Date) => string[]; }
+$(
+  ComponentNext.lift(0)
+    .forward({
+      childA: ComponentNext.lift(10).render((_, p: Date) => ['DONE'])
+    })
+    .render((_, p: boolean) => _.children)
+).oView
+
+// $ExpectType { childA: () => string[]; }
+$(
+  ComponentNext.lift(0)
+    .forward({
+      childA: ComponentNext.lift(10).render(() => ['DONE'])
+    })
+    .render((_, p: boolean) => _.children)
+).oView

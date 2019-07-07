@@ -5,28 +5,32 @@ export type ComponentProps = {
   readonly oState?: unknown
   readonly iActions?: Action<unknown>
   readonly oActions?: Action<unknown>
+  readonly oView?: unknown
+  readonly iChildren?: unknown
+  readonly iProps?: unknown
 }
 
 /**
  * Extracts values of the provided keys from ComponentProps
  */
-type PP<
-  O extends ComponentProps,
-  K extends keyof ComponentProps
-> = K extends keyof O ? O[K] : never
+type PP<O, K extends keyof ComponentProps> = K extends keyof O ? O[K] : never
 
 /**
- * Extracts values of the provided keys from ComponentNext
+ * Extracts values of the provided keys from ComponentNext or ComponentProps
  */
-type PPP<
-  O extends ComponentNext<ComponentProps>,
-  K extends keyof ComponentProps
-> = O extends ComponentNext<infer P> ? PP<P, K> : never
+type PPP<O, K extends keyof ComponentProps> = O extends ComponentNext<infer P>
+  ? PP<P, K>
+  : O extends ComponentProps
+  ? PP<O, K>
+  : never
 
-type iState<P> = PP<P, 'iState'>
-type oState<P> = PP<P, 'oState'>
-type iActions<P> = PP<P, 'iActions'>
-type oActions<P> = PP<P, 'oActions'>
+type iState<P> = PPP<P, 'iState'>
+type oState<P> = PPP<P, 'oState'>
+type iActions<P> = PPP<P, 'iActions'>
+type oActions<P> = PPP<P, 'oActions'>
+type oView<P> = PPP<P, 'oView'>
+type iChildren<P> = PPP<P, 'iChildren'>
+type iProps<P> = PPP<P, 'iProps'>
 
 //#region TypeLambdas
 type LActionTypes<A> = A extends Action<any, infer T> ? T : never
@@ -52,18 +56,23 @@ const arg2 = <A, B>(a: A, b: B) => b
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
     // TODO: Fix typings for _init, _update, _command
-    readonly _init: (...t: unknown[]) => unknown,
-    readonly _update: (a: Action<unknown>, b: unknown) => unknown,
-    readonly _command: (a: Action<unknown>, b: unknown) => unknown
+    readonly _init: (...t: unknown[]) => any,
+    readonly _update: (a: Action<unknown>, b: unknown) => any,
+    readonly _command: (a: Action<unknown>, b: unknown) => unknown,
+    readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
+    readonly _children: {[k: string]: ComponentNext<any>},
+
+    // TODO: using arrays will be expensive (can benchmark with linked lists)
+    readonly _iActions: unknown[]
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
     return fn(this)
   }
 
-  static lift<S>(state: S): ComponentNext<{iState: S; oState: S}> {
-    const i = () => state
-    return new ComponentNext(i, arg2, Nil)
+  static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
+    const i = () => ({node: state, children: {}})
+    return new ComponentNext(i, arg2, Nil, () => undefined, {}, [])
   }
 
   matchR<T extends string | number, V, oState2 extends oState<P1>>(
@@ -80,14 +89,20 @@ export class ComponentNext<P1 extends ComponentProps> {
   > {
     return new ComponentNext(
       this._init,
-      (a, s) => {
-        const s2 = this._update(a, s)
+      (a, s: any) => {
+        const s2 = this._update(a, s) as any
         if (a.type === type) {
-          return {...s, ...cb(a.value as V, s2 as iState<P1>)}
+          return {
+            node: {...s.node, ...cb(a.value as V, s2.node)},
+            children: this._children
+          }
         }
         return s2
       },
-      this._command
+      this._command,
+      this._view,
+      {},
+      [...this._iActions, type]
     )
   }
 
@@ -95,13 +110,20 @@ export class ComponentNext<P1 extends ComponentProps> {
     type: T,
     cb: (value: V, state: iState<P1>) => Action<V2, T2>
   ): iComponentNext<P1, {oActions: oActions<P1> | Action<V2, T2>}> {
-    return new ComponentNext(this._init, this._update, (a, s) => {
-      const a2 = this._command(a, s) as Action<unknown>
-      if (isAction(a) && a.type === type) {
-        return List(a2, cb(a.value, s as iState<P1>))
-      }
-      return a2
-    })
+    return new ComponentNext(
+      this._init,
+      this._update,
+      (a, s) => {
+        const a2 = this._command(a, s) as Action<unknown>
+        if (isAction(a) && a.type === type) {
+          return List(a2, cb(a.value, s as iState<P1>))
+        }
+        return a2
+      },
+      this._view,
+      {},
+      this._iActions
+    )
   }
 
   forward<
@@ -115,12 +137,13 @@ export class ComponentNext<P1 extends ComponentProps> {
     {
       iState: {
         node: iState<P1>
-        children: {[k in keyof typeof spec]: PPP<typeof spec[k], 'iState'>}
+        children: {[k in keyof typeof spec]: iState<typeof spec[k]>}
       }
       oState: {
         node: iState<P1>
-        children: {[k in keyof typeof spec]: PPP<typeof spec[k], 'oState'>}
+        children: {[k in keyof typeof spec]: oState<typeof spec[k]>}
       }
+      iChildren: S
       iActions:
         | iActions<P1>
         | LObjectValues<
@@ -143,17 +166,17 @@ export class ComponentNext<P1 extends ComponentProps> {
   > {
     return new ComponentNext(
       () => {
-        const node = this._init()
+        const node = this._init().node
         const children: any = {}
         for (let i in spec) {
           if (spec.hasOwnProperty(i)) {
             children[i] = spec[i]._init()
           }
         }
-        return {node, children}
+        return {node, children: {...this._children, ...children}}
       },
       (a: any, s: any) => {
-        const node = this._update(a, s.node)
+        const node = this._update(a, s).node
 
         const children: any = {...s.children}
         for (let key in spec) {
@@ -167,7 +190,62 @@ export class ComponentNext<P1 extends ComponentProps> {
         }
         return {node, children}
       },
-      this._command
+      this._command,
+      this._view,
+      spec,
+      this._iActions
+    )
+  }
+
+  render<P = never, V = unknown>(
+    cb: (
+      env: {
+        actions: {
+          [k in LActionTypes<iActions<P1>>]: (
+            e: iActions<P1> extends Action<infer V, k> ? V : never
+          ) => unknown
+        }
+        state: oState<P1>
+        children: {
+          [k in keyof iChildren<P1>]: iProps<iChildren<P1>[k]> extends never
+            ? () => oView<iChildren<P1>[k]>
+            : (p: iProps<iChildren<P1>[k]>) => oView<iChildren<P1>[k]>
+        }
+      },
+      p: P
+    ) => V
+  ): iComponentNext<P1, {oView: V; iProps: P}> {
+    return new ComponentNext(
+      this._init,
+      this._update,
+      this._command,
+      (e: any, s: any, p) => {
+        const children: any = {}
+        for (let i in this._children) {
+          if (this._children.hasOwnProperty(i)) {
+            const item = this._children[i]
+            children[i] = (p: unknown) => item._view(e.of(i), s.children[i], p)
+          }
+        }
+
+        const actions: any = {}
+
+        for (let i = 0; i < this._iActions.length; i++) {
+          const key = this._iActions[i] as string
+          actions[key] = (ev: any) => e.of(key).emit(ev)
+        }
+
+        return cb(
+          {
+            actions,
+            state: s.node,
+            children
+          },
+          p as any
+        )
+      },
+      this._children,
+      this._iActions
     )
   }
 }
