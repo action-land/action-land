@@ -1,5 +1,5 @@
 import {ComponentNext} from '@action-land/component'
-import {action, Action} from '@action-land/core'
+import {action, Action, List, Nil} from '@action-land/core'
 import {create} from '@action-land/smitten'
 import * as assert from 'assert'
 
@@ -27,7 +27,7 @@ describe('ComponentNext', () => {
     it('should return the initial state', () => {
       const component = ComponentNext.lift({count: 0})
       const actual = component._init()
-      const expected = {node: {count: 0}, children: {}}
+      const expected = {count: 0}
       assert.deepEqual(actual, expected)
     })
   })
@@ -39,12 +39,13 @@ describe('ComponentNext', () => {
         .matchR('dec', (e, s) => ({count: s.count - 1, lastAction: 'dec'}))
 
       const actual = component._update(action('inc', null), component._init())
-      const expected = {node: {count: 1, lastAction: 'inc'}, children: {}}
+      const expected = {count: 1, lastAction: 'inc'}
 
       assert.deepEqual(actual, expected)
     })
 
-    it('should merge with the initial state', () => {
+    // This should be the responsibility of the callback passed to matchR
+    it.skip('should merge with the initial state', () => {
       const component = ComponentNext.lift({count: 0}).matchR(
         'inc',
         (e, s) => ({count: s.count + 1})
@@ -62,26 +63,38 @@ describe('ComponentNext', () => {
 
       assert.deepEqual(actual, expected)
     })
+
+    it('should propagate children', () => {
+      const component = ComponentNext.lift(0)
+        .install({
+          child: ComponentNext.lift(10).render(() => 'Hello')
+        })
+        .matchR('inc', (e, {node: s, children}) => ({node: s + 1, children}))
+        .render(_ => _.children.child())
+      const actual = component._view(create(() => {}), component._init(), {})
+      const expected = 'Hello'
+
+      assert.strictEqual(actual, expected)
+    })
   })
 
-  describe('forward', () => {
+  describe('install', () => {
     it('should perform nested initialization', () => {
-      const component = ComponentNext.lift({countA: 0}).forward({
+      const component = ComponentNext.lift({countA: 0}).install({
         childB: ComponentNext.lift({countB: 100})
       })
       const actual = component._init()
       const expected = {
         node: {countA: 0},
-        children: {childB: {node: {countB: 100}, children: {}}}
+        children: {childB: {countB: 100}}
       }
 
       assert.deepEqual(actual, expected)
     })
 
-    it('should forward actions', () => {
-      const component = ComponentNext.lift({countA: 0}).forward({
+    it('should install actions', () => {
+      const component = ComponentNext.lift({countA: 0}).install({
         childB: ComponentNext.lift({countB: 100}).matchR('inc', (e, s) => ({
-          ...s,
           countB: s.countB + 1
         }))
       })
@@ -91,18 +104,18 @@ describe('ComponentNext', () => {
       )
       const expected = {
         node: {countA: 0},
-        children: {childB: {node: {countB: 101}, children: {}}}
+        children: {childB: {countB: 101}}
       }
 
       assert.deepEqual(actual, expected)
     })
 
-    it('should not forward if the action does not match', () => {
+    it('should call local matchR', () => {
       const component = ComponentNext.lift({a: 0})
         .matchR('inc', (e, s) => ({
           a: s.a + 1
         }))
-        .forward({
+        .install({
           child: ComponentNext.lift({b: 100}).matchR('inc', (e, s) => ({
             b: s.b + 1
           }))
@@ -111,9 +124,54 @@ describe('ComponentNext', () => {
       const actual = component._update(action('inc', null), component._init())
       const expected = {
         node: {a: 1},
-        children: {child: {node: {b: 100}, children: {}}}
+        children: {child: {b: 100}}
       }
 
+      assert.deepStrictEqual(actual, expected)
+    })
+
+    it('should update child state locally', () => {
+      const component = ComponentNext.lift(0)
+        .install({
+          child: ComponentNext.lift(10)
+        })
+        .matchR('inc', (e, s) => ({...s, children: {child: 1000}}))
+      const actual = component._update(action('inc', null), component._init())
+      const expected = {
+        node: 0,
+        children: {
+          child: 1000
+        }
+      }
+
+      assert.deepStrictEqual(actual, expected)
+    })
+
+    it('should return nested child action', () => {
+      const component = ComponentNext.lift(0)
+        .matchC('a', () => action('A', []))
+        .install({
+          child: ComponentNext.lift(1).matchC('b', (e, s) => action('c', 10))
+        })
+      const actual = component._command(
+        action('child', action('b', null)),
+        component._init()
+      )
+      const expected = action('child', action('c', 10))
+      assert.deepStrictEqual(actual, expected)
+    })
+
+    it('should combine with nested child actions', () => {
+      const component = ComponentNext.lift(0)
+        .matchC('X', () => action('X', 'X'))
+        .install({
+          X: ComponentNext.lift(1).matchC('Y', (e, s) => action('Y', 'Y'))
+        })
+      const actual = component._command(
+        action('X', action('Y', {})),
+        component._init()
+      )
+      const expected = List(action('X', 'X'), action('X', action('Y', 'Y')))
       assert.deepStrictEqual(actual, expected)
     })
   })
@@ -132,8 +190,8 @@ describe('ComponentNext', () => {
 
     it('should create children views', () => {
       const component = ComponentNext.lift('Hello')
-        .forward({child: ComponentNext.lift('World').render(_ => _.state)})
-        .render(_ => [_.state, _.children.child()])
+        .install({child: ComponentNext.lift('World').render(_ => _.state)})
+        .render(_ => [_.state.node, _.children.child()])
 
       const actual = component._view(create(() => {}), component._init(), {})
       const expected = ['Hello', 'World']
@@ -143,7 +201,7 @@ describe('ComponentNext', () => {
 
     it('should render with props', () => {
       const component = ComponentNext.lift('Hello')
-        .forward({
+        .install({
           child: ComponentNext.lift('World').render((_, p: string) => p)
         })
         .render((_, p: string) => [p, _.children.child('World')])
@@ -175,15 +233,43 @@ describe('ComponentNext', () => {
       const result: Action<unknown>[] = []
       const e = create(a => result.push(a))
       const component = ComponentNext.lift(10)
-        .forward({
+        .install({
           child: ComponentNext.lift(0)
             .matchR('add', (a: number, s) => s + a)
+
             .render(_ => _.actions.add(100))
         })
         .render(_ => _.children.child())
 
       component._view(e, component._init(), '')
       const expected = [action('child', action('add', 100))]
+
+      assert.deepStrictEqual(result, expected)
+    })
+  })
+
+  describe('matchC', () => {
+    it('should propagate children', () => {
+      const component = ComponentNext.lift(0)
+        .install({
+          child: ComponentNext.lift(10).render(() => 'Hello')
+        })
+        .matchC('inc', Nil)
+        .render(_ => _.children.child())
+      const actual = component._view(create(() => {}), component._init(), {})
+      const expected = 'Hello'
+
+      assert.strictEqual(actual, expected)
+    })
+
+    it('should add new action', () => {
+      const result: unknown[] = []
+      const component = ComponentNext.lift(0)
+        .matchC('inc', Nil)
+        .render(_ => _.actions.inc('Hello'))
+
+      component._view(create(a => result.push(a)), component._init(), {})
+      const expected = [action('inc', 'Hello')]
 
       assert.deepStrictEqual(result, expected)
     })

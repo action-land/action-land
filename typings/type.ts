@@ -1,5 +1,5 @@
 import {ComponentNext, ComponentProps} from '@action-land/component'
-import {action} from '@action-land/core'
+import {action, Nil} from '@action-land/core'
 
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
@@ -36,9 +36,16 @@ $(
     .matchC('dec', (e, s) => action('Write', {data: 'abc'}))
 ).oActions
 
+// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('inc', (a: {a: string}, s) => Nil())
+    .matchC('inc', (a: {b: number}, s) => Nil())
+).iActions
+
 // $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
 $(
-  ComponentNext.lift({count: 0}).forward({
+  ComponentNext.lift({count: 0}).install({
     child1: ComponentNext.lift({i: true}),
     child2: ComponentNext.lift({i: 'Hi'})
   })
@@ -46,7 +53,7 @@ $(
 
 // $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
 $(
-  ComponentNext.lift({count: 0}).forward({
+  ComponentNext.lift({count: 0}).install({
     child1: ComponentNext.lift({i: true}),
     child2: ComponentNext.lift({i: 'Hi'})
   })
@@ -56,7 +63,7 @@ $(
 $(
   ComponentNext.lift({count: 0})
     .matchR('X', (e, s) => s)
-    .forward({
+    .install({
       childA: ComponentNext.lift({i: true}).matchR('A', (e, s) => s),
       childB: ComponentNext.lift({i: true}).matchR('B', (e, s) => s)
     })
@@ -64,7 +71,7 @@ $(
 
 // $ExpectType { childA: ComponentNext<{ iState: number; oState: number; oView: void; }>; }
 $(
-  ComponentNext.lift(0).forward({
+  ComponentNext.lift(0).install({
     childA: ComponentNext.lift(10)
   })
 ).iChildren
@@ -73,7 +80,7 @@ $(
 $(
   ComponentNext.lift({count: 0})
     .matchC('X', (e, s) => action('X', null))
-    .forward({
+    .install({
       childA: ComponentNext.lift({i: true}).matchC('A', (e, s) =>
         action('A', null)
       )
@@ -100,7 +107,7 @@ $(ComponentNext.lift(0).render((_, p: boolean) => _.actions)).oView
 // $ExpectType { childA: (p: Date) => string[]; }
 $(
   ComponentNext.lift(0)
-    .forward({
+    .install({
       childA: ComponentNext.lift(10).render((_, p: Date) => ['DONE'])
     })
     .render((_, p: boolean) => _.children)
@@ -109,7 +116,7 @@ $(
 // $ExpectType { childA: () => string[]; }
 $(
   ComponentNext.lift(0)
-    .forward({
+    .install({
       childA: ComponentNext.lift(10).render(() => ['DONE'])
     })
     .render((_, p: boolean) => _.children)

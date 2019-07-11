@@ -1,4 +1,4 @@
-import {Action, isAction, List, Nil} from '@action-land/core'
+import {Action, action, isAction, List, Nil} from '@action-land/core'
 
 export type ComponentProps = {
   readonly iState?: unknown
@@ -11,9 +11,9 @@ export type ComponentProps = {
 }
 
 /**
- * Extracts values of the provided keys from ComponentProps
+ * Extracts values of the provided keys
  */
-type PP<O, K extends keyof ComponentProps> = K extends keyof O ? O[K] : never
+type PP<O, K> = K extends keyof O ? O[K] : never
 
 /**
  * Extracts values of the provided keys from ComponentNext or ComponentProps
@@ -55,14 +55,14 @@ export type U<A, B> = A | B extends A & B ? A : A | B
 const arg2 = <A, B>(a: A, b: B) => b
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
-    // TODO: Fix typings for _init, _update, _command
+    // FIXME: Fix typings for _init, _update, _command
     readonly _init: (...t: unknown[]) => any,
     readonly _update: (a: Action<unknown>, b: unknown) => any,
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     readonly _children: {[k: string]: ComponentNext<any>},
 
-    // TODO: using arrays will be expensive (can benchmark with linked lists)
+    // FIXME: using arrays will be expensive (can benchmark with linked lists)
     readonly _iActions: unknown[]
   ) {}
 
@@ -71,7 +71,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
-    const i = () => ({node: state, children: {}})
+    const i = () => state
     return new ComponentNext(i, arg2, Nil, () => undefined, {}, [])
   }
 
@@ -92,16 +92,13 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s: any) => {
         const s2 = this._update(a, s) as any
         if (a.type === type) {
-          return {
-            node: {...s.node, ...cb(a.value as V, s2.node)},
-            children: this._children
-          }
+          return cb(a.value as V, s2)
         }
         return s2
       },
       this._command,
       this._view,
-      {},
+      this._children,
       [...this._iActions, type]
     )
   }
@@ -109,7 +106,15 @@ export class ComponentNext<P1 extends ComponentProps> {
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
     cb: (value: V, state: iState<P1>) => Action<V2, T2>
-  ): iComponentNext<P1, {oActions: oActions<P1> | Action<V2, T2>}> {
+  ): iComponentNext<
+    P1,
+    {
+      iActions: T extends LActionTypes<iActions<P1>>
+        ? Action<V & LActionValues<iActions<P1>>, T>
+        : Action<V, T> | iActions<P1>
+      oActions: oActions<P1> | Action<V2, T2>
+    }
+  > {
     return new ComponentNext(
       this._init,
       this._update,
@@ -121,12 +126,12 @@ export class ComponentNext<P1 extends ComponentProps> {
         return a2
       },
       this._view,
-      {},
-      this._iActions
+      this._children,
+      [...this._iActions, type]
     )
   }
 
-  forward<
+  install<
     S extends {
       [k: string]: ComponentNext<any>
     }
@@ -140,7 +145,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         children: {[k in keyof typeof spec]: iState<typeof spec[k]>}
       }
       oState: {
-        node: iState<P1>
+        node: oState<P1>
         children: {[k in keyof typeof spec]: oState<typeof spec[k]>}
       }
       iChildren: S
@@ -166,31 +171,41 @@ export class ComponentNext<P1 extends ComponentProps> {
   > {
     return new ComponentNext(
       () => {
-        const node = this._init().node
+        const node = this._init()
         const children: any = {}
         for (let i in spec) {
           if (spec.hasOwnProperty(i)) {
             children[i] = spec[i]._init()
           }
         }
-        return {node, children: {...this._children, ...children}}
+
+        return {node, children: children}
       },
       (a: any, s: any) => {
-        const node = this._update(a, s).node
-
-        const children: any = {...s.children}
-        for (let key in spec) {
-          const c = spec[key]
-          if (spec.hasOwnProperty(key)) {
-            if (a.type === key) {
-              const data = c._update(a.value, s.children[key])
-              children[key] = data
+        const node = this._update(a, s.node)
+        const children: any = s.children
+        if (spec[a.type]) {
+          return {
+            node,
+            children: {
+              ...s.children,
+              [a.type]: spec[a.type]._update(a.value, s.children[a.type])
             }
           }
         }
         return {node, children}
       },
-      this._command,
+      (a: any, s: any) => {
+        const a1 = this._command(a, s) as Action<unknown>
+
+        if (spec[a.type]) {
+          return List(
+            a1,
+            action(a.type, spec[a.type]._command(a.value, s.children[a.type]))
+          )
+        }
+        return a1
+      },
       this._view,
       spec,
       this._iActions
@@ -238,7 +253,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         return cb(
           {
             actions,
-            state: s.node,
+            state: s,
             children
           },
           p as any
