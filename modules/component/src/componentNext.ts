@@ -11,6 +11,7 @@ export type ComponentProps = {
   readonly iProps?: unknown
 }
 
+//#region TypeLambdas
 /**
  * Extracts values of the provided keys
  */
@@ -33,7 +34,6 @@ type oView<P> = PPP<P, 'oView'>
 type iChildren<P> = PPP<P, 'iChildren'>
 type iProps<P> = PPP<P, 'iProps'>
 
-//#region TypeLambdas
 type LActionTypes<A> = A extends Action<any, infer T> ? T : never
 type LActionValues<A> = A extends Action<infer V, any> ? V : never
 type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
