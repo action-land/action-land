@@ -1,17 +1,22 @@
 import {Action} from './action'
 
+const hasOwnProperty = <K extends string | number>(
+  o: unknown,
+  k: K
+): o is {[k in K]: unknown} => {
+  return typeof o === 'object' && o !== null && o.hasOwnProperty(k)
+}
+
 /**
  * Checks if the object is of Action type
  * @function
  * @param {any} obj
  * @returns {boolean}
  */
-export function isAction(obj: any): obj is Action<any> {
+export function isAction(obj: unknown): obj is Action<unknown> {
   return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    obj.hasOwnProperty('type') &&
-    obj.hasOwnProperty('value') &&
+    hasOwnProperty(obj, 'type') &&
+    hasOwnProperty(obj, 'value') &&
     (typeof obj.type === 'string' || typeof obj.type === 'number')
   )
 }

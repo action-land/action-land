@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-import {describe, it} from 'mocha'
 import {action, isNil, Nil} from '../../modules/core/index'
 
 describe('action', () => {

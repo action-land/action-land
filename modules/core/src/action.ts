@@ -7,9 +7,9 @@ type AType = string | number
  * Interface for Action
  * @interface
  */
-export interface Action<V, T extends AType = AType> {
-  type: T
-  value: V
+export interface Action<V, T = AType> {
+  readonly type: T
+  readonly value: V
 }
 
 function createAction<T extends AType, V>(type: T, value: V) {
