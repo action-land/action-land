@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/action-land/action-land/compare/v4.2.0...v4.3.0) (2019-07-12)
+
+
+### Features
+
+* **component:** add new operators and improve type-safety ([081a0b3](https://github.com/action-land/action-land/commit/081a0b3))
+
+
+
+
+
 # [4.2.0](https://github.com/action-land/action-land/compare/v4.1.0...v4.2.0) (2019-07-03)
 
 
