@@ -128,7 +128,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s) => {
         const a2 = this._command(a, s) as Action<unknown>
         if (isAction(a) && a.type === type) {
-          return List(a2, cb(a.value, s as iState<P1>))
+          return List(a2, cb(a.value as any, s as iState<P1>))
         }
         return a2
       },
