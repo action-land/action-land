@@ -9,9 +9,11 @@ $(ComponentNext.lift({count: 0})).iState
 // $ExpectType { count: number; }
 $(ComponentNext.lift({count: 0})).oState
 
-// $ExpectType Action<unknown, "inc">
+// $ExpectType Action<number, "inc">
 $(
-  ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({count: s.count + 1}))
+  ComponentNext.lift({count: 0}).matchR('inc', (e: number, s) => ({
+    count: s.count + 1
+  }))
 ).iActions
 
 // $ExpectType { count: number; } | { count: number; action: string; }

@@ -12,12 +12,12 @@ describe('ComponentNext', () => {
   })
 
   describe('update', () => {
-    it('should update on the passed state', () => {
+    it('should not update the current state', () => {
       const actual = ComponentNext.lift({count: 0})._update(
         action('inc', null),
-        {node: {count: 10, color: 'red'}, children: {}}
+        {count: 10}
       )
-      const expected = {node: {count: 10, color: 'red'}, children: {}}
+      const expected = {count: 10}
 
       assert.deepStrictEqual(actual, expected)
     })
