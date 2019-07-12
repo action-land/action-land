@@ -1,4 +1,5 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
+import {LinkedList} from '../internals/linkedList'
 
 export type ComponentProps = {
   readonly iState?: unknown
@@ -61,9 +62,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     readonly _children: {[k: string]: ComponentNext<any>},
-
-    // FIXME: using arrays will be expensive (can benchmark with linked lists)
-    readonly _iActions: unknown[]
+    readonly _iActions: LinkedList<unknown>
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -72,7 +71,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
     const i = () => state
-    return new ComponentNext(i, arg2, Nil, () => undefined, {}, [])
+    return new ComponentNext(i, arg2, Nil, () => undefined, {}, new LinkedList())
   }
 
   matchR<T extends string | number, V, oState2 extends oState<P1>>(
@@ -99,7 +98,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      [...this._iActions, type]
+      this._iActions.concat(type)
     )
   }
 
@@ -127,7 +126,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       this._children,
-      [...this._iActions, type]
+      this._iActions.concat(type)
     )
   }
 
@@ -244,12 +243,12 @@ export class ComponentNext<P1 extends ComponentProps> {
         }
 
         const actions: any = {}
-
-        for (let i = 0; i < this._iActions.length; i++) {
-          const key = this._iActions[i] as string
+        let listHead = this._iActions.getHead()
+        while (listHead !== null) {
+          const key = listHead.value as string
           actions[key] = (ev: any) => e.of(key).emit(ev)
+          listHead = listHead.next
         }
-
         return cb(
           {
             actions,
