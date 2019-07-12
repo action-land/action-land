@@ -121,3 +121,11 @@ $(
     })
     .render((_, p: boolean) => _.children)
 ).oView
+
+// $ExpectType (e: string) => unknown
+$(
+  ComponentNext.lift(0)
+    .matchR('inc', (e: string, s) => s)
+    .matchR('dec', (e: number, s) => s)
+    .render((_, p: boolean) => _.actions.inc)
+).oView

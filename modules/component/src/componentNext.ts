@@ -37,6 +37,7 @@ type iProps<P> = PPP<P, 'iProps'>
 type LActionTypes<A> = A extends Action<any, infer T> ? T : never
 type LActionValues<A> = A extends Action<infer V, any> ? V : never
 type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
+type LActionValueForType<A, T> = A extends Action<infer V, T> ? V : never
 //#endregion
 
 /**
@@ -223,7 +224,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       env: {
         actions: {
           [k in LActionTypes<iActions<P1>>]: (
-            e: iActions<P1> extends Action<infer V, k> ? V : never
+            e: LActionValueForType<iActions<P1>, k>
           ) => unknown
         }
         state: oState<P1>
