@@ -71,7 +71,14 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
     const i = () => state
-    return new ComponentNext(i, arg2, Nil, () => undefined, {}, new LinkedList())
+    return new ComponentNext(
+      i,
+      arg2,
+      Nil,
+      () => undefined,
+      {},
+      new LinkedList()
+    )
   }
 
   matchR<T extends string | number, V, oState2 extends oState<P1>>(
@@ -207,7 +214,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      this._iActions
+      this._iActions.concat(Object.keys(spec))
     )
   }
 
