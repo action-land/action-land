@@ -62,8 +62,8 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _update: (a: Action<unknown>, b: unknown) => any,
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
-    readonly _children: {[k: string]: ComponentNext<any>},
-    readonly _iActions: LinkedList<unknown>
+    private readonly _children: {[k: string]: ComponentNext<any>},
+    private readonly _iActions: LinkedList<string | number>
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -78,7 +78,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       Nil,
       () => undefined,
       {},
-      new LinkedList()
+      LinkedList.empty
     )
   }
 
@@ -106,7 +106,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions.concat(type)
+      this._iActions.prepend(type)
     )
   }
 
@@ -134,7 +134,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       this._children,
-      this._iActions.concat(type)
+      this._iActions.prepend(type)
     )
   }
 
@@ -215,7 +215,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      this._iActions.concat(Object.keys(spec))
+      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions)
     )
   }
 
@@ -250,16 +250,13 @@ export class ComponentNext<P1 extends ComponentProps> {
           }
         }
 
-        const actions: any = {}
-        let listHead = this._iActions.getHead()
-        while (listHead !== null) {
-          const key = listHead.value as string
-          actions[key] = (ev: any) => e.of(key).emit(ev)
-          listHead = listHead.next
-        }
+        const actions = this._iActions.reduce({}, (key, actions) => ({
+          ...actions,
+          [key]: (ev: any) => e.of(key).emit(ev)
+        }))
         return cb(
           {
-            actions,
+            actions: actions as any,
             state: s,
             children
           },

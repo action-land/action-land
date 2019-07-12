@@ -174,23 +174,6 @@ describe('ComponentNext', () => {
       const expected = List(action('X', 'X'), action('X', action('Y', 'Y')))
       assert.deepStrictEqual(actual, expected)
     })
-
-    it('should concat child name as action types in iActions', () => {
-      const component = ComponentNext.lift(0)
-        .matchC('X', () => action('X', 'X'))
-        .install({
-          Z: ComponentNext.lift(1).matchC('Y', (e, s) => action('Y', 'Y'))
-        })
-      const actual = component._iActions.getHead()
-      const expected = {
-        value: 'Z',
-        next: {
-          value: 'X',
-          next: null
-        }
-      }
-      assert.deepEqual(actual, expected)
-    })
   })
 
   describe('render', () => {
