@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/action-land/action-land/compare/v4.3.0...v4.4.0) (2019-07-15)
+
+
+### Features
+
+* **component:** add configure() method to configure initial state ([090d28e](https://github.com/action-land/action-land/commit/090d28e))
+* **component:** add methods to interop ComponentNext with Component. ([6807b07](https://github.com/action-land/action-land/commit/6807b07))
+
+
+
+
+
 # [4.3.0](https://github.com/action-land/action-land/compare/v4.2.0...v4.3.0) (2019-07-12)
 
 
