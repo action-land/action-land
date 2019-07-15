@@ -1,5 +1,6 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
 import {LinkedList} from '../internals/linkedList'
+import {Component} from './component'
 
 export type ComponentProps = {
   readonly iState?: unknown
@@ -266,5 +267,30 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._children,
       this._iActions
     )
+  }
+
+  static from<A, V, P>(
+    init: () => A,
+    update: (a: unknown, s: unknown) => unknown,
+    command: (a: unknown, s: unknown) => unknown,
+    view: (e: unknown, s: unknown, p: P) => V
+  ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
+    return new ComponentNext(
+      init,
+      update,
+      command,
+      view as any,
+      {},
+      LinkedList.empty
+    )
+  }
+
+  get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
+    return {
+      init: this._init,
+      update: this._update,
+      command: this._command,
+      view: this._view
+    } as any
   }
 }
