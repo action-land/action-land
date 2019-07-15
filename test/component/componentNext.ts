@@ -274,4 +274,15 @@ describe('ComponentNext', () => {
       assert.deepStrictEqual(result, expected)
     })
   })
+
+  describe('configure', () => {
+    it('should configure the initial state', () => {
+      const actual = ComponentNext.lift({count: 10})
+        .configure(S => ({...S, color: 'red'}))
+        ._init()
+      const expected = {count: 10, color: 'red'}
+
+      assert.deepStrictEqual(actual, expected)
+    })
+  })
 })

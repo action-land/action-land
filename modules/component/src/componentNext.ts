@@ -59,7 +59,7 @@ const arg2 = <A, B>(a: A, b: B) => b
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
     // FIXME: Fix typings for _init, _update, _command
-    readonly _init: (...t: unknown[]) => any,
+    readonly _init: () => any,
     readonly _update: (a: Action<unknown>, b: unknown) => any,
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
@@ -264,6 +264,19 @@ export class ComponentNext<P1 extends ComponentProps> {
           p as any
         )
       },
+      this._children,
+      this._iActions
+    )
+  }
+
+  configure<S2 extends iState<P1>>(
+    fn: (a: iState<P1>) => S2
+  ): iComponentNext<P1, {iState: S2}> {
+    return new ComponentNext(
+      () => fn(this._init()),
+      this._update,
+      this._command,
+      this._view,
       this._children,
       this._iActions
     )

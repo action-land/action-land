@@ -131,3 +131,6 @@ $(
     .matchR('dec', (e: number, s) => s)
     .render((_, p: boolean) => _.actions.inc)
 ).oView
+
+// $ExpectType { color: string; count: number; }
+$(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
