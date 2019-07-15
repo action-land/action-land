@@ -16,6 +16,7 @@ function createAction<T extends AType, V>(type: T, value: V) {
   return isNil(value) ? value : {type, value}
 }
 
+// FIXME: Order of type params should be the same as the order of arguments.
 /**
  * Creates a new Action type object
  * @function
@@ -24,6 +25,6 @@ function createAction<T extends AType, V>(type: T, value: V) {
  * @returns {Action}
  */
 export const action: {
-  <T extends AType, V>(type: T, value: V): Action<V, T>
-  <T extends AType, V>(type: T): {(value: V): Action<V, T>}
+  <V, T extends AType = AType>(type: T, value: V): Action<V, T>
+  <V, T extends AType = AType>(type: T): {(value: V): Action<V, T>}
 } = curry2(createAction)
