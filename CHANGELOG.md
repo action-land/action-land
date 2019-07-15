@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/action-land/action-land/compare/v4.4.0...v4.4.1) (2019-07-15)
+
+
+### Bug Fixes
+
+* **action:** reverse the order of type params ([62b9e05](https://github.com/action-land/action-land/commit/62b9e05))
+
+
+
+
+
 # [4.4.0](https://github.com/action-land/action-land/compare/v4.3.0...v4.4.0) (2019-07-15)
 
 
