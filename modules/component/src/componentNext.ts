@@ -283,10 +283,10 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   static from<A, V, P>(
-    init: () => A,
-    update: (a: unknown, s: unknown) => unknown,
-    command: (a: unknown, s: unknown) => unknown,
-    view: (e: unknown, s: unknown, p: P) => V
+    init: (...t: any[]) => A,
+    update: (a: any, s: any) => any,
+    command: (a: any, s: any) => any,
+    view: (e: any, s: any, p: P) => V
   ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
     return new ComponentNext(
       init,

@@ -1,5 +1,6 @@
-import {ComponentNext, ComponentProps} from '@action-land/component'
-import {action, Nil} from '@action-land/core'
+import {ComponentNext} from '@action-land/component'
+import {action, Action, Nil} from '@action-land/core'
+import {Smitten} from '@action-land/smitten'
 
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
@@ -134,3 +135,13 @@ $(
 
 // $ExpectType { color: string; count: number; }
 $(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
+
+// $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; }>
+ComponentNext.from(
+  (a: string, b: number) => 10,
+  (a: Action<unknown>, b: number) => b,
+  (a: Action<unknown>, b: number) => Nil(),
+  (e: Smitten, m: number, s: Date) => {
+    return ['Hello']
+  }
+)
