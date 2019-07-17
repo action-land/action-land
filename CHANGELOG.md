@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.2](https://github.com/action-land/action-land/compare/v4.4.1...v4.4.2) (2019-07-17)
+
+
+### Bug Fixes
+
+* **component:** loosen types for Component.from() ([555cee8](https://github.com/action-land/action-land/commit/555cee8))
+
+
+
+
+
 ## [4.4.1](https://github.com/action-land/action-land/compare/v4.4.0...v4.4.1) (2019-07-15)
 
 
