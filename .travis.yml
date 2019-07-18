@@ -19,7 +19,6 @@ script:
 before_install: yarn global add greenkeeper-lockfile@2
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
-after_success: ./deploy.sh
 deploy:
   provider: pages
   skip_cleanup: true
