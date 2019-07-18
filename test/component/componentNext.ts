@@ -38,9 +38,9 @@ describe('ComponentNext', () => {
         .matchR('inc', (e, s) => ({count: s.count + 1, lastAction: 'inc'}))
         .matchR('dec', (e, s) => ({count: s.count - 1, lastAction: 'dec'}))
 
-      const actual = component._update(action('inc', null), component._init())
+      const actual = component.eval(action('inc', null), component.initState)
+        .state
       const expected = {count: 1, lastAction: 'inc'}
-
       assert.deepEqual(actual, expected)
     })
 
@@ -71,7 +71,7 @@ describe('ComponentNext', () => {
         })
         .matchR('inc', (e, {node: s, children}) => ({node: s + 1, children}))
         .render(_ => _.children.child())
-      const actual = component._view(create(() => {}), component._init(), {})
+      const actual = component._view(create(() => {}), component.initState, {})
       const expected = 'Hello'
 
       assert.strictEqual(actual, expected)
@@ -83,7 +83,7 @@ describe('ComponentNext', () => {
       const component = ComponentNext.lift({countA: 0}).install({
         childB: ComponentNext.lift({countB: 100})
       })
-      const actual = component._init()
+      const actual = component.initState
       const expected = {
         node: {countA: 0},
         children: {childB: {countB: 100}}
@@ -98,10 +98,10 @@ describe('ComponentNext', () => {
           countB: s.countB + 1
         }))
       })
-      const actual = component._update(
+      const actual = component.eval(
         action('childB', action('inc', null)),
-        component._init()
-      )
+        component.initState
+      ).state
       const expected = {
         node: {countA: 0},
         children: {childB: {countB: 101}}
@@ -121,7 +121,8 @@ describe('ComponentNext', () => {
           }))
         })
 
-      const actual = component._update(action('inc', null), component._init())
+      const actual = component.eval(action('inc', null), component.initState)
+        .state
       const expected = {
         node: {a: 1},
         children: {child: {b: 100}}
@@ -136,7 +137,8 @@ describe('ComponentNext', () => {
           child: ComponentNext.lift(10)
         })
         .matchR('inc', (e, s) => ({...s, children: {child: 1000}}))
-      const actual = component._update(action('inc', null), component._init())
+      const actual = component.eval(action('inc', null), component.initState)
+        .state
       const expected = {
         node: 0,
         children: {
@@ -153,10 +155,10 @@ describe('ComponentNext', () => {
         .install({
           child: ComponentNext.lift(1).matchC('b', (e, s) => action('c', 10))
         })
-      const actual = component._command(
+      const actual = component.eval(
         action('child', action('b', null)),
-        component._init()
-      )
+        component.initState
+      ).effect
       const expected = action('child', action('c', 10))
       assert.deepStrictEqual(actual, expected)
     })
@@ -167,10 +169,10 @@ describe('ComponentNext', () => {
         .install({
           X: ComponentNext.lift(1).matchC('Y', (e, s) => action('Y', 'Y'))
         })
-      const actual = component._command(
+      const actual = component.eval(
         action('X', action('Y', {})),
-        component._init()
-      )
+        component.initState
+      ).effect
       const expected = List(action('X', 'X'), action('X', action('Y', 'Y')))
       assert.deepStrictEqual(actual, expected)
     })
@@ -182,7 +184,7 @@ describe('ComponentNext', () => {
         'Hello',
         _.state + 1
       ])
-      const actual = component._view({}, component._init(), {})
+      const actual = component._view({}, component.initState, {})
       const expected = ['Hello', 11]
 
       assert.deepStrictEqual(actual, expected)
@@ -193,7 +195,7 @@ describe('ComponentNext', () => {
         .install({child: ComponentNext.lift('World').render(_ => _.state)})
         .render(_ => [_.state.node, _.children.child()])
 
-      const actual = component._view(create(() => {}), component._init(), {})
+      const actual = component._view(create(() => {}), component.initState, {})
       const expected = ['Hello', 'World']
 
       assert.deepStrictEqual(actual, expected)
@@ -208,7 +210,7 @@ describe('ComponentNext', () => {
 
       const actual = component._view(
         create(() => {}),
-        component._init(),
+        component.initState,
         'Hello'
       )
       const expected = ['Hello', 'World']
@@ -223,7 +225,7 @@ describe('ComponentNext', () => {
         .matchR('add', (a: number, s) => s + a)
         .render(_ => _.actions.add(100))
 
-      component._view(e, component._init(), '')
+      component._view(e, component.initState, '')
       const expected = [action('add', 100)]
 
       assert.deepStrictEqual(result, expected)
@@ -241,7 +243,7 @@ describe('ComponentNext', () => {
         })
         .render(_ => _.children.child())
 
-      component._view(e, component._init(), '')
+      component._view(e, component.initState, '')
       const expected = [action('child', action('add', 100))]
 
       assert.deepStrictEqual(result, expected)
@@ -256,7 +258,7 @@ describe('ComponentNext', () => {
         })
         .matchC('inc', Nil)
         .render(_ => _.children.child())
-      const actual = component._view(create(() => {}), component._init(), {})
+      const actual = component._view(create(() => {}), component.initState, {})
       const expected = 'Hello'
 
       assert.strictEqual(actual, expected)
@@ -268,7 +270,7 @@ describe('ComponentNext', () => {
         .matchC('inc', Nil)
         .render(_ => _.actions.inc('Hello'))
 
-      component._view(create(a => result.push(a)), component._init(), {})
+      component._view(create(a => result.push(a)), component.initState, {})
       const expected = [action('inc', 'Hello')]
 
       assert.deepStrictEqual(result, expected)
@@ -277,9 +279,10 @@ describe('ComponentNext', () => {
 
   describe('configure', () => {
     it('should configure the initial state', () => {
-      const actual = ComponentNext.lift({count: 10})
-        .configure(S => ({...S, color: 'red'}))
-        ._init()
+      const actual = ComponentNext.lift({count: 10}).configure(S => ({
+        ...S,
+        color: 'red'
+      })).initState
       const expected = {count: 10, color: 'red'}
 
       assert.deepStrictEqual(actual, expected)

@@ -282,6 +282,18 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
+  eval(
+    action: iActions<P1>,
+    state: iState<P1>
+  ): {effect: oActions<P1>; state: oState<P1>} {
+    return {
+      effect: this._command(action as any, state) as oActions<P1>,
+      state: this._update(action as any, state) as oState<P1>
+    }
+  }
+  get initState(): iState<P1> {
+    return this._init()
+  }
   static from<A, V, P>(
     init: (...t: any[]) => A,
     update: (a: any, s: any) => any,

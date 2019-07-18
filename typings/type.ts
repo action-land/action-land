@@ -145,3 +145,11 @@ ComponentNext.from(
     return ['Hello']
   }
 )
+// $ExpectType { effect: Action<number, "oAction">; state: { color: string; } | { font: string; color: string; }; }
+ComponentNext.lift({color: 'blue'})
+  .matchR('mount', (value: string, state) => ({
+    ...state,
+    font: value
+  }))
+  .matchC('mount', (value: string, state) => action('oAction', 10))
+  .eval(action('mount', '10px'), {color: 'blue'})
