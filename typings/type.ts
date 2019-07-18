@@ -148,3 +148,9 @@ ComponentNext.from(
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType Action<string, "inc">
+ComponentNext.lift(0)
+  .matchR('inc', (e: string, s) => s)
+  .matchR('dec', (e: number, s) => s)
+  .actions.inc('sd')

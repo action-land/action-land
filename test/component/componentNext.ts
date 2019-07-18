@@ -293,4 +293,15 @@ describe('ComponentNext', () => {
       assert.strictEqual(actual, expected)
     })
   })
+
+  describe('actions', () => {
+    it('should create actions', () => {
+      const actual = ComponentNext.lift(0)
+        .matchR('inc', (e: string, s) => s)
+        .matchR('dec', (e: number, s) => s)
+        .actions.dec(10)
+      const expected = action('dec', 10)
+      assert.deepEqual(actual, expected)
+    })
+  })
 })

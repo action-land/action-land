@@ -276,7 +276,16 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._iActions
     )
   }
-
+  get actions(): {
+    [k in LActionTypes<iActions<P1>>]: (
+      val: LActionValueForType<iActions<P1>, k>
+    ) => Action<typeof val, k>
+  } {
+    return this._iActions.reduce({}, (key, actions) => ({
+      ...actions,
+      [key]: (val: any) => action(key, val)
+    })) as any
+  }
   configure<S2 extends iState<P1>>(
     fn: (a: iState<P1>) => S2
   ): iComponentNext<P1, {iState: S2}> {
