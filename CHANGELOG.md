@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/action-land/action-land/compare/v4.4.2...v4.5.0) (2019-07-18)
+
+
+### Features
+
+* **component:** ability to add empty component ([#38](https://github.com/action-land/action-land/issues/38)) ([1869060](https://github.com/action-land/action-land/commit/1869060))
+
+
+
+
+
 ## [4.4.2](https://github.com/action-land/action-land/compare/v4.4.1...v4.4.2) (2019-07-17)
 
 
