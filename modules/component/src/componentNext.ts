@@ -83,6 +83,10 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
+  static empty(): ComponentNext<{iState: undefined; oState: undefined; oView: void}> {
+    return ComponentNext.lift(undefined)
+  }
+
   matchR<T extends string | number, V, oState2 extends oState<P1>>(
     type: T,
     cb: (value: V, state: iState<P1>) => oState2

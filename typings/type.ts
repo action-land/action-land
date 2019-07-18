@@ -153,3 +153,6 @@ ComponentNext.lift({color: 'blue'})
   }))
   .matchC('mount', (value: string, state) => action('oAction', 10))
   .eval(action('mount', '10px'), {color: 'blue'})
+
+// $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
+ComponentNext.empty()
