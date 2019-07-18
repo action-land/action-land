@@ -285,4 +285,12 @@ describe('ComponentNext', () => {
       assert.deepStrictEqual(actual, expected)
     })
   })
+
+  describe('empty', () => {
+    it('should give initial state as undefined', () => {
+      const actual = ComponentNext.empty._init()
+      const expected = undefined
+      assert.strictEqual(actual, expected)
+    })
+  })
 })
