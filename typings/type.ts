@@ -145,3 +145,6 @@ ComponentNext.from(
     return ['Hello']
   }
 )
+
+// $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
+ComponentNext.empty
