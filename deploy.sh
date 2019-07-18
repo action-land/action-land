@@ -3,6 +3,7 @@
 DEPLOY_BRANCH=master
 
 if [ "$TRAVIS_BRANCH" = "$DEPLOY_BRANCH" ]; then
-    git checkout "$DEPLOY_BRANCH"
-    yarn lerna-publish --yes
+    git remote set-url origin https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}
+    yarn lerna-publish --yes --conventional-commits
+    git push --all origin ${DEPLOY_BRANCH}
 fi
