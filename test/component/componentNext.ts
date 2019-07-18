@@ -13,10 +13,8 @@ describe('ComponentNext', () => {
 
   describe('update', () => {
     it('should not update the current state', () => {
-      const actual = ComponentNext.lift({count: 0})._update(
-        action('inc', null),
-        {count: 10}
-      )
+      const component = ComponentNext.lift({count: 0})
+      const actual = component._update(action('inc', null), {count: 10})
       const expected = {count: 10}
 
       assert.deepStrictEqual(actual, expected)
@@ -38,7 +36,10 @@ describe('ComponentNext', () => {
         .matchR('inc', (e, s) => ({count: s.count + 1, lastAction: 'inc'}))
         .matchR('dec', (e, s) => ({count: s.count - 1, lastAction: 'dec'}))
 
-      const actual = component._update(action('inc', null), component._init())
+      const actual = component._update(
+        component.actions.inc(null),
+        component._init()
+      )
       const expected = {count: 1, lastAction: 'inc'}
 
       assert.deepEqual(actual, expected)
@@ -52,7 +53,7 @@ describe('ComponentNext', () => {
       )
 
       const iState: any = component._init()
-      const actual = component._update(action('inc', null), {
+      const actual = component._update(component.actions.inc(null), {
         node: {
           ...iState.node,
           color: 'red'
@@ -93,13 +94,17 @@ describe('ComponentNext', () => {
     })
 
     it('should install actions', () => {
-      const component = ComponentNext.lift({countA: 0}).install({
-        childB: ComponentNext.lift({countB: 100}).matchR('inc', (e, s) => ({
+      const childComponent = ComponentNext.lift({countB: 100}).matchR(
+        'inc',
+        (e, s) => ({
           countB: s.countB + 1
-        }))
+        })
+      )
+      const component = ComponentNext.lift({countA: 0}).install({
+        childB: childComponent
       })
       const actual = component._update(
-        action('childB', action('inc', null)),
+        component.actions.childB(childComponent.actions.inc(null)),
         component._init()
       )
       const expected = {
@@ -136,7 +141,10 @@ describe('ComponentNext', () => {
           child: ComponentNext.lift(10)
         })
         .matchR('inc', (e, s) => ({...s, children: {child: 1000}}))
-      const actual = component._update(action('inc', null), component._init())
+      const actual = component._update(
+        component.actions.inc(null),
+        component._init()
+      )
       const expected = {
         node: 0,
         children: {
@@ -148,13 +156,16 @@ describe('ComponentNext', () => {
     })
 
     it('should return nested child action', () => {
+      const childComponent = ComponentNext.lift(1).matchC('b', (e, s) =>
+        action('c', 10)
+      )
       const component = ComponentNext.lift(0)
         .matchC('a', () => action('A', []))
         .install({
-          child: ComponentNext.lift(1).matchC('b', (e, s) => action('c', 10))
+          child: childComponent
         })
       const actual = component._command(
-        action('child', action('b', null)),
+        component.actions.child(childComponent.actions.b(null)),
         component._init()
       )
       const expected = action('child', action('c', 10))
@@ -162,13 +173,16 @@ describe('ComponentNext', () => {
     })
 
     it('should combine with nested child actions', () => {
+      const componentX = ComponentNext.lift(1).matchC('Y', (e, s) =>
+        action('Y', 'Y')
+      )
       const component = ComponentNext.lift(0)
         .matchC('X', () => action('X', 'X'))
         .install({
-          X: ComponentNext.lift(1).matchC('Y', (e, s) => action('Y', 'Y'))
+          X: componentX
         })
       const actual = component._command(
-        action('X', action('Y', {})),
+        component.actions.X(componentX.actions.Y(null)),
         component._init()
       )
       const expected = List(action('X', 'X'), action('X', action('Y', 'Y')))

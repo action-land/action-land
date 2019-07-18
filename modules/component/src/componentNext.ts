@@ -283,7 +283,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   } {
     return this._iActions.reduce({}, (key, actions) => ({
       ...actions,
-      [key]: (val: any) => action(key, val)
+      [key]: (val: unknown) => action(key, val)
     })) as any
   }
   configure<S2 extends iState<P1>>(
