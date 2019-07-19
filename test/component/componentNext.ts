@@ -1,6 +1,6 @@
 import {ComponentNext} from '@action-land/component'
 import {action, Action, List, Nil} from '@action-land/core'
-import {create} from '@action-land/smitten'
+import {create, Smitten} from '@action-land/smitten'
 import * as assert from 'assert'
 
 describe('ComponentNext', () => {
@@ -291,6 +291,40 @@ describe('ComponentNext', () => {
       const actual = ComponentNext.empty._init()
       const expected = undefined
       assert.strictEqual(actual, expected)
+    })
+  })
+
+  describe('from', () => {
+    const component = ComponentNext.from(
+      {
+        init: (a: string, b: number) => 10,
+        update: (a: Action<unknown>, b: number) => 5,
+        command: (a: Action<unknown>, b: number) => action('c', 10),
+        view: (e: Smitten, m: number, s: Date) => {
+          return ['Hello']
+        }
+      },
+      ['hello', 10]
+    )
+    it('should call init of old version of component', () => {
+      const actual = component._init()
+      const expected = 10
+      assert.deepEqual(actual, expected)
+    })
+    it('should call update of old version of component', () => {
+      const actual = component._update(action('a', 10), 10)
+      const expected = 5
+      assert.deepEqual(actual, expected)
+    })
+    it('should call command of old version of component', () => {
+      const actual = component._command(action('a', 10), 10)
+      const expected = action('c', 10)
+      assert.deepEqual(actual, expected)
+    })
+    it('should call view of old version of component', () => {
+      const actual = component._view(create(() => {}), 10, new Date())
+      const expected = ['Hello']
+      assert.deepEqual(actual, expected)
     })
   })
 })

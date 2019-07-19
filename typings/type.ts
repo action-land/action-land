@@ -138,12 +138,15 @@ $(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
 
 // $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; }>
 ComponentNext.from(
-  (a: string, b: number) => 10,
-  (a: Action<unknown>, b: number) => b,
-  (a: Action<unknown>, b: number) => Nil(),
-  (e: Smitten, m: number, s: Date) => {
-    return ['Hello']
-  }
+  {
+    init: (a: string, b: number) => 10,
+    update: (a: Action<unknown>, b: number) => b,
+    command: (a: Action<unknown>, b: number) => Nil(),
+    view: (e: Smitten, m: number, s: Date) => {
+      return ['Hello']
+    }
+  },
+  ['hello', 10]
 )
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
