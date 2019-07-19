@@ -297,7 +297,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       command: (a: any, s: any) => any
       view: (e: any, s: any, p: P) => V
     },
-    initParams: I
+    ...initParams: I
   ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
     return new ComponentNext(
       () => component.init(...initParams),

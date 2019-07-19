@@ -146,7 +146,8 @@ ComponentNext.from(
       return ['Hello']
     }
   },
-  ['hello', 10]
+  'hello',
+  10
 )
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>

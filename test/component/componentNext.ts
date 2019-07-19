@@ -304,7 +304,8 @@ describe('ComponentNext', () => {
           return ['Hello']
         }
       },
-      ['hello', 10]
+      'hello',
+      10
     )
     it('should call init of old version of component', () => {
       const actual = component._init()
