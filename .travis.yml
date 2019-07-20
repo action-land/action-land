@@ -20,9 +20,9 @@ before_install: yarn global add greenkeeper-lockfile@2
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 after_success:
-  - lerna-semantic-release pre
-  - lerna-semantic-release perform
-  - lerna-semantic-release post
+  - yarn lerna-semantic-release pre
+  - yarn lerna-semantic-release perform
+  - yarn lerna-semantic-release post
 deploy:
   provider: pages
   skip_cleanup: true
