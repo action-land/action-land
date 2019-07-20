@@ -151,3 +151,11 @@ ComponentNext.from(
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType (e: string) => unknown
+$(
+  ComponentNext.lift(0)
+    .matchR('inc', (e: string, s) => s)
+    .render((_, p: boolean) => _.actions.inc)
+    .memo((a, b) => true)
+).oView

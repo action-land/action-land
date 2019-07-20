@@ -277,6 +277,35 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
+  memo(
+    comparator: (
+      newState: oState<P1>,
+      newProps: iProps<P1>,
+      oldState?: oState<P1>,
+      oldProp?: iProps<P1>
+    ) => boolean
+  ): ComponentNext<P1> {
+    let oldProp: iProps<P1> | undefined
+    let oldState: oState<P1> | undefined
+    let memoizedView: unknown
+    return new ComponentNext(
+      this._init,
+      this._update,
+      this._command,
+      (e: any, s: any, p: any) => {
+        if (comparator(s, p, oldState, oldProp) && memoizedView) {
+          return memoizedView
+        }
+        memoizedView = this._view(e, s, p)
+        oldState = s
+        oldProp = p
+        return memoizedView
+      },
+      this._children,
+      this._iActions
+    )
+  }
+
   configure<S2 extends iState<P1>>(
     fn: (a: iState<P1>) => S2
   ): iComponentNext<P1, {iState: S2}> {

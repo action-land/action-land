@@ -327,4 +327,30 @@ describe('ComponentNext', () => {
       assert.deepEqual(actual, expected)
     })
   })
+  describe('memo', () => {
+    it('memoized view should not be called again if passed with same parameters consecutively ', () => {
+      let count = 0
+      const component = ComponentNext.lift(10)
+        .render((_, props: string) => [props, count++])
+        .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
+      const componentState = component._init()
+      component._view({}, componentState, 'hello')
+      component._view({}, componentState, 'hello')
+      const actual = count
+      const expected = 1
+      assert.deepStrictEqual(actual, expected)
+    })
+    it('memoized view should be called if passed with different parameters consecutively ', () => {
+      let count = 0
+      const component = ComponentNext.lift(10)
+        .render((_, props: string) => [props, count++])
+        .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
+      const componentState = component._init()
+      component._view({}, componentState, 'hello')
+      component._view({}, componentState, 'hello2')
+      const actual = count
+      const expected = 2
+      assert.deepStrictEqual(actual, expected)
+    })
+  })
 })
