@@ -328,29 +328,125 @@ describe('ComponentNext', () => {
     })
   })
   describe('memo', () => {
-    it('memoized view should not be called again if passed with same parameters consecutively ', () => {
-      let count = 0
-      const component = ComponentNext.lift(10)
-        .render((_, props: string) => [props, count++])
-        .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
-      const componentState = component._init()
-      component._view({}, componentState, 'hello')
-      component._view({}, componentState, 'hello')
-      const actual = count
-      const expected = 1
-      assert.deepStrictEqual(actual, expected)
+    describe('memo all', () => {
+      it('memoized view should not be called again if passed with same parameters consecutively ', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hello')
+        const actual = count
+        const expected = 1
+        assert.deepStrictEqual(actual, expected)
+      })
+      it('memoized view should be called if passed with different parameters consecutively ', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hello2')
+        const actual = count
+        const expected = 2
+        assert.deepStrictEqual(actual, expected)
+      })
     })
-    it('memoized view should be called if passed with different parameters consecutively ', () => {
-      let count = 0
-      const component = ComponentNext.lift(10)
-        .render((_, props: string) => [props, count++])
-        .memo((nS, nP, oS, oP) => nS === oS && nP === oP)
-      const componentState = component._init()
-      component._view({}, componentState, 'hello')
-      component._view({}, componentState, 'hello2')
-      const actual = count
-      const expected = 2
-      assert.deepStrictEqual(actual, expected)
+    describe('memoState', () => {
+      it('should not call view function if passes same state ', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoState((nS, oS) => nS === oS)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hellop')
+        const actual = count
+        const expected = 1
+        assert.deepStrictEqual(actual, expected)
+      })
+      it('should call view function if passed different state', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoState((nP, oP) => nP === oP)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, 12, 'hello')
+        const actual = count
+        const expected = 2
+        assert.deepStrictEqual(actual, expected)
+      })
+    })
+    describe('memoProp', () => {
+      it('should not call view function twice if provided same prop simultaneously', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoProp((nS, oS) => nS === oS)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, 12, 'hello')
+        const actual = count
+        const expected = 1
+        assert.deepStrictEqual(actual, expected)
+      })
+      it('should call view function if provided different prop', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoProp((nP, oP) => nP === oP)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hello1')
+        const actual = count
+        const expected = 2
+        assert.deepStrictEqual(actual, expected)
+      })
+    })
+    describe('memoState + memoProps', () => {
+      it('should call view function if props change', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoState((nS, oS) => nS === oS)
+          .memoProp((nP, oP) => nP === oP)
+
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hello1')
+        const actual = count
+        const expected = 2
+        assert.deepStrictEqual(actual, expected)
+      })
+      it('should call view function if state changes', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoProp((nP, oP) => nP === oP)
+          .memoState((nS, oS) => nS === oS)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, 12, 'hello')
+        const actual = count
+        const expected = 2
+        assert.deepStrictEqual(actual, expected)
+      })
+      it('should not call view function if both props and state remain the same', () => {
+        let count = 0
+        const component = ComponentNext.lift(10)
+          .render((_, props: string) => [props, count++])
+          .memoProp((nP, oP) => nP === oP)
+          .memoState((nS, oS) => nS === oS)
+        const componentState = component._init()
+        component._view({}, componentState, 'hello')
+        component._view({}, componentState, 'hello')
+        const actual = count
+        const expected = 1
+        assert.deepStrictEqual(actual, expected)
+      })
     })
   })
 })

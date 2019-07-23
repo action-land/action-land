@@ -157,5 +157,13 @@ $(
   ComponentNext.lift(0)
     .matchR('inc', (e: string, s) => s)
     .render((_, p: boolean) => _.actions.inc)
-    .memo((a, b) => true)
+    .memoState((a, b) => true)
+).oView
+
+// $ExpectType (e: string) => unknown
+$(
+  ComponentNext.lift(0)
+    .matchR('inc', (e: string, s) => s)
+    .render((_, p: boolean) => _.actions.inc)
+    .memoProp((a, b) => true)
 ).oView

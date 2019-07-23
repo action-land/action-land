@@ -64,7 +64,14 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     private readonly _children: {[k: string]: ComponentNext<any>},
-    private readonly _iActions: LinkedList<string | number>
+    private readonly _iActions: LinkedList<string | number>,
+    readonly _comparator: (
+      newState: oState<P1>,
+      newProps: iProps<P1>,
+      oldState?: oState<P1>,
+      oldProp?: iProps<P1>
+    ) => boolean = (a, b) => true,
+    readonly _baseView: (e: unknown, s: unknown, p: unknown) => unknown = _view
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -293,17 +300,34 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._update,
       this._command,
       (e: any, s: any, p: any) => {
-        if (comparator(s, p, oldState, oldProp) && memoizedView) {
+        if (
+          this._comparator(s, p, oldState, oldProp) &&
+          comparator(s, p, oldState, oldProp) &&
+          memoizedView
+        ) {
           return memoizedView
         }
-        memoizedView = this._view(e, s, p)
+        memoizedView = this._baseView(e, s, p)
         oldState = s
         oldProp = p
         return memoizedView
       },
       this._children,
-      this._iActions
+      this._iActions,
+      comparator,
+      this._baseView
     )
+  }
+
+  memoState(
+    comparator: (newState: oState<P1>, oldState?: oState<P1>) => boolean
+  ): ComponentNext<P1> {
+    return this.memo((ns, np, os, op) => comparator(ns, os))
+  }
+  memoProp(
+    comparator: (newProp: iProps<P1>, oldProp?: iProps<P1>) => boolean
+  ): ComponentNext<P1> {
+    return this.memo((ns, np, os, op) => comparator(np, op))
   }
 
   configure<S2 extends iState<P1>>(
