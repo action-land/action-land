@@ -65,15 +65,17 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     private readonly _children: {[k: string]: ComponentNext<any>},
     private readonly _iActions: LinkedList<string | number>,
-    readonly _comparator: (
-      newState: oState<P1>,
-      newProps: iProps<P1>,
-      oldState?: oState<P1>,
-      oldProp?: iProps<P1>
-    ) => boolean = (a, b) => true,
-    readonly _baseView: (e: unknown, s: unknown, p: unknown) => unknown = _view
+    readonly _comparator?: (
+      newState: unknown,
+      oldState: unknown,
+      newProps?: unknown,
+      oldProp?: unknown
+    ) => boolean
   ) {}
 
+  private oldState?: oState<P1>
+  private oldProp?: iProps<P1>
+  private memoizedView?: unknown
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
     return fn(this)
   }
@@ -122,7 +124,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
@@ -150,7 +153,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
@@ -231,7 +235,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions)
+      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions),
+      this._comparator
     )
   }
 
@@ -270,7 +275,20 @@ export class ComponentNext<P1 extends ComponentProps> {
           ...actions,
           [key]: (ev: any) => e.of(key).emit(ev)
         }))
-        return cb(
+        console.log(this._comparator)
+        if (
+          this._comparator &&
+          this._comparator(
+            s,
+            this.oldState ? this.oldState : s,
+            p as iProps<P1>,
+            this.oldProp
+          ) &&
+          this.memoizedView
+        ) {
+          return this.memoizedView
+        }
+        this.memoizedView = cb(
           {
             actions: actions as any,
             state: s,
@@ -278,57 +296,52 @@ export class ComponentNext<P1 extends ComponentProps> {
           },
           p as any
         )
+        this.oldState = s
+        this.oldProp = p as iProps<P1>
+
+        return this.memoizedView
       },
       this._children,
-      this._iActions
+      this._iActions,
+      this._comparator
     )
   }
 
   memo(
     comparator: (
       newState: oState<P1>,
-      newProps: iProps<P1>,
-      oldState?: oState<P1>,
+      oldState: oState<P1>,
+      newProps?: iProps<P1>,
       oldProp?: iProps<P1>
     ) => boolean
   ): ComponentNext<P1> {
-    let oldProp: iProps<P1> | undefined
-    let oldState: oState<P1> | undefined
-    let memoizedView: unknown
     return new ComponentNext(
       this._init,
       this._update,
       this._command,
-      (e: any, s: any, p: any) => {
-        if (
-          this._comparator(s, p, oldState, oldProp) &&
-          comparator(s, p, oldState, oldProp) &&
-          memoizedView
-        ) {
-          return memoizedView
-        }
-        memoizedView = this._baseView(e, s, p)
-        oldState = s
-        oldProp = p
-        return memoizedView
-      },
+      this._view,
       this._children,
       this._iActions,
-      comparator,
-      this._baseView
+      (a: any, b: any, c: any, d: any) => {
+        // console.log(comparator(...t) , this._comparator(...t))
+        if (this._comparator) {
+          return comparator(a, b, c, d) && this._comparator(a, b, c, d)
+        }
+        return comparator(a, b, c, d)
+      }
     )
   }
 
-  memoState(
-    comparator: (newState: oState<P1>, oldState?: oState<P1>) => boolean
-  ): ComponentNext<P1> {
-    return this.memo((ns, np, os, op) => comparator(ns, os))
-  }
-  memoProp(
-    comparator: (newProp: iProps<P1>, oldProp?: iProps<P1>) => boolean
-  ): ComponentNext<P1> {
-    return this.memo((ns, np, os, op) => comparator(np, op))
-  }
+  // memoState(
+  //   comparator: (newState: oState<P1>, oldState: oState<P1>) => boolean
+  // ): ComponentNext<P1> {
+  //   return this.memo((ns, os, np, op) => comparator(ns, os))
+  // }
+  // memoProp(
+  //   comparator: (newProp: iProps<P1>, oldProp?: iProps<P1>) => boolean
+  // ): ComponentNext<P1> {
+  //   return this.memo((ns, np, os, op) => comparator(np, op))
+  // }
 
   configure<S2 extends iState<P1>>(
     fn: (a: iState<P1>) => S2
@@ -339,7 +352,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions
+      this._iActions,
+      this._comparator
     )
   }
 
