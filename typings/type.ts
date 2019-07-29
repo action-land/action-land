@@ -148,3 +148,10 @@ ComponentNext.from(
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType { a: string } | { a: string, b: string } | { a: string, c: string }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+).oState
