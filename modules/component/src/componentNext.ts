@@ -100,7 +100,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       iActions: T extends LActionTypes<iActions<P1>>
         ? Action<V & LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
-      oState: oState2 | iState<P1>
+      oState: oState2 | oState<P1>
     }
   > {
     return new ComponentNext(
