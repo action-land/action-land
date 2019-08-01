@@ -3,8 +3,7 @@ import {LinkedList} from '../internals/linkedList'
 import {Component} from './component'
 
 export type ComponentProps = {
-  readonly iState?: unknown
-  readonly oState?: unknown
+  readonly ioState?: unknown
   readonly iActions?: Action<unknown>
   readonly oActions?: Action<unknown>
   readonly oView?: unknown
@@ -27,8 +26,7 @@ type PPP<O, K extends keyof ComponentProps> = O extends ComponentNext<infer P>
   ? PP<O, K>
   : never
 
-type iState<P> = PPP<P, 'iState'>
-type oState<P> = PPP<P, 'oState'>
+type ioState<P> = PPP<P, 'ioState'>
 type iActions<P> = PPP<P, 'iActions'>
 type oActions<P> = PPP<P, 'oActions'>
 type oView<P> = PPP<P, 'oView'>
@@ -71,7 +69,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     return fn(this)
   }
 
-  static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
+  static lift<S>(state: S): ComponentNext<{ioState: S; oView: void}> {
     const i = () => state
     return new ComponentNext(
       i,
@@ -84,23 +82,22 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   static get empty(): ComponentNext<{
-    iState: undefined
-    oState: undefined
+    ioState: undefined
     oView: void
   }> {
     return ComponentNext.lift(undefined)
   }
 
-  matchR<T extends string | number, V, oState2 extends oState<P1>>(
+  matchR<T extends string | number, V, oState2 extends ioState<P1>>(
     type: T,
-    cb: (value: V, state: iState<P1>) => oState2
+    cb: (value: V, state: ioState<P1>) => oState2
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
         ? Action<V & LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
-      oState: oState2 | iState<P1>
+      ioState: oState2 | ioState<P1>
     }
   > {
     return new ComponentNext(
@@ -121,7 +118,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
-    cb: (value: V, state: iState<P1>) => Action<V2, T2>
+    cb: (value: V, state: ioState<P1>) => Action<V2, T2>
   ): iComponentNext<
     P1,
     {
@@ -137,7 +134,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s) => {
         const a2 = this._command(a, s) as Action<unknown>
         if (isAction(a) && a.type === type) {
-          return List(a2, cb(a.value as any, s as iState<P1>))
+          return List(a2, cb(a.value as any, s as ioState<P1>))
         }
         return a2
       },
@@ -156,13 +153,9 @@ export class ComponentNext<P1 extends ComponentProps> {
   ): iComponentNext<
     P1,
     {
-      iState: {
-        node: iState<P1>
-        children: {[k in keyof typeof spec]: iState<typeof spec[k]>}
-      }
-      oState: {
-        node: oState<P1>
-        children: {[k in keyof typeof spec]: oState<typeof spec[k]>}
+      ioState: {
+        node: ioState<P1>
+        children: {[k in keyof typeof spec]: ioState<typeof spec[k]>}
       }
       iChildren: S
       iActions:
@@ -236,7 +229,7 @@ export class ComponentNext<P1 extends ComponentProps> {
             e: LActionValueForType<iActions<P1>, k>
           ) => unknown
         }
-        state: oState<P1>
+        state: ioState<P1>
         children: {
           [k in keyof iChildren<P1>]: iProps<iChildren<P1>[k]> extends never
             ? () => oView<iChildren<P1>[k]>
@@ -277,9 +270,9 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
-  configure<S2 extends iState<P1>>(
-    fn: (a: iState<P1>) => S2
-  ): iComponentNext<P1, {iState: S2}> {
+  configure<S2 extends ioState<P1>>(
+    fn: (a: ioState<P1>) => S2
+  ): iComponentNext<P1, {ioState: S2}> {
     return new ComponentNext(
       () => fn(this._init()),
       this._update,
@@ -298,7 +291,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       view: (e: any, s: any, p: P) => V
     },
     ...initParams: I
-  ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
+  ): ComponentNext<{ioState: A; oView: V; iProps: P}> {
     return new ComponentNext(
       () => component.init(...initParams),
       component.update,
@@ -309,7 +302,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
-  get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
+  get component(): Component<ioState<P1>, iProps<P1>, [], oView<P1>> {
     return {
       init: this._init,
       update: this._update,

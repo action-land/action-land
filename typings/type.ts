@@ -5,10 +5,10 @@ import {Smitten} from '@action-land/smitten'
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
 // $ExpectType { count: number; }
-$(ComponentNext.lift({count: 0})).iState
+$(ComponentNext.lift({count: 0})).ioState
 
-// $ExpectType { count: number; }
-$(ComponentNext.lift({count: 0})).oState
+// // $ExpectType { count: number; }
+// $(ComponentNext.lift({count: 0})).ioState
 
 // $ExpectType Action<number, "inc">
 $(
@@ -23,7 +23,7 @@ $(
     count: s.count + 1,
     action: 'inc'
   }))
-).oState
+).ioState
 
 // $ExpectType Action<{ b: number; } & { a: string; }, "inc">
 $(
@@ -52,7 +52,7 @@ $(
     child1: ComponentNext.lift({i: true}),
     child2: ComponentNext.lift({i: 'Hi'})
   })
-).oState
+).ioState
 
 // $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
 $(
@@ -60,7 +60,7 @@ $(
     child1: ComponentNext.lift({i: true}),
     child2: ComponentNext.lift({i: 'Hi'})
   })
-).iState
+).ioState
 
 // $ExpectType Action<unknown, "X"> | Action<Action<unknown, "A">, "childA"> | Action<Action<unknown, "B">, "childB">
 $(
@@ -72,7 +72,7 @@ $(
     })
 ).iActions
 
-// $ExpectType { childA: ComponentNext<{ iState: number; oState: number; oView: void; }>; }
+// $ExpectType { childA: ComponentNext<{ ioState: number; oView: void; }>; }
 $(
   ComponentNext.lift(0).install({
     childA: ComponentNext.lift(10)
@@ -134,9 +134,10 @@ $(
 ).oView
 
 // $ExpectType { color: string; count: number; }
-$(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
+$(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'})))
+  .ioState
 
-// $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; }>
+// $ExpectType ComponentNext<{ ioState: number; oView: string[]; iProps: Date; }>
 ComponentNext.from(
   {
     init: (a: string, b: number) => 10,
@@ -150,5 +151,20 @@ ComponentNext.from(
   10
 )
 
-// $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
+// $ExpectType ComponentNext<{ ioState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType { a: string; } | { b: string; a: string; } | { c: string; a: string; } | { c: string; b: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+).ioState
+
+// { a: string; } | { b: string; a: string; } | { c: string; a: string; } | { c: string; b: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+    .render(_ => _.state)
+).oView
