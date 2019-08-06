@@ -152,3 +152,53 @@ ComponentNext.from(
 
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType { newAction: Action<number, "oAction">; newState: { color: string; } | { font: string; color: string; }; }
+ComponentNext.lift({color: 'blue'})
+  .matchR('mount', (value: string, state) => ({
+    ...state,
+    font: value
+  }))
+  .matchC('mount', (value: string, state) => action('oAction', 10))
+  .eval(action('mount', '10px'), {color: 'blue'})
+
+// const childComponent2 = ComponentNext.lift({c: 100})
+//   .matchR('inc', (e, s) => ({
+//     c: s.c + 1
+//   }))
+//   .matchC('inc', (e, s) => action('incIO', s))
+//   .render((_, p) => _.state.c)
+
+// const childComponent1 = ComponentNext.lift({b: 100})
+//   .matchR('inc', (e, s) => ({
+//     b: s.b + 1
+//   }))
+//   .matchC('inc', (e, s) => action('incIO', s))
+//   .install({
+//     child: childComponent2
+//   })
+//   .render((_, p) => _.state.node.b + _.children.child())
+
+// // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
+// $(
+//   ComponentNext.lift({a: 0})
+//     .matchR('inc', (e, s) => ({
+//       a: s.a + 1
+//     }))
+//     .install({
+//       child: childComponent1
+//     })
+// ).oActions
+
+// type a = Action<
+//   Action<{b: number}, 'incIO'> | Action<Action<{c: number}, 'incIO'>, 'child'>,
+//   'child'
+// >
+
+// $ExpectType { newAction: Action<number, "oAction">; newState: { color: string; } | { font: string; color: string; }; }
+const a = ComponentNext.addEnv({
+  getDisk: (a: null): void => {},
+  writeDisk: (a: {data: {key: number}}) => {}
+})
+  .lift({count: 10})
+  .matchR('inc', (a: null, b) => ({count: b}))

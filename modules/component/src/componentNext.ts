@@ -10,6 +10,7 @@ export type ComponentProps = {
   readonly oView?: unknown
   readonly iChildren?: unknown
   readonly iProps?: unknown
+  readonly iSideEffects?: Action<unknown>
 }
 
 //#region TypeLambdas
@@ -27,6 +28,17 @@ type PPP<O, K extends keyof ComponentProps> = O extends ComponentNext<infer P>
   ? PP<O, K>
   : never
 
+type extractFunctionArgument<T extends (a: any) => any> = T extends (
+  a: infer A
+) => unknown
+  ? A
+  : never
+
+type mapKeyandFunctionArgument<
+  T extends {[k in string | number]: (a: any) => any}
+> = {[k in keyof T]: Action<k, extractFunctionArgument<T[k]>>}
+type valueUnion<T extends Object> = T[keyof T]
+
 type iState<P> = PPP<P, 'iState'>
 type oState<P> = PPP<P, 'oState'>
 type iActions<P> = PPP<P, 'iActions'>
@@ -34,6 +46,7 @@ type oActions<P> = PPP<P, 'oActions'>
 type oView<P> = PPP<P, 'oView'>
 type iChildren<P> = PPP<P, 'iChildren'>
 type iProps<P> = PPP<P, 'iProps'>
+type iSideEffects<P> = PPP<P, 'iSideEffects'>
 
 type LActionTypes<A> = A extends Action<any, infer T> ? T : never
 type LActionValues<A> = A extends Action<infer V, any> ? V : never
@@ -71,7 +84,9 @@ export class ComponentNext<P1 extends ComponentProps> {
     return fn(this)
   }
 
-  static lift<S>(state: S): ComponentNext<{iState: S; oState: S; oView: void}> {
+  static lift<S>(
+    state: S
+  ): ComponentNext<{iState: S; oState: S; oView: void; iSideEffects: any}> {
     const i = () => state
     return new ComponentNext(
       i,
@@ -82,11 +97,33 @@ export class ComponentNext<P1 extends ComponentProps> {
       LinkedList.empty
     )
   }
-
+  static addEnv<T extends {[key in string]: (a: any) => any}>(t: T) {
+    return {
+      lift: <S>(
+        state: S
+      ): ComponentNext<{
+        iState: S
+        oState: S
+        oView: void
+        iSideEffects: valueUnion<mapKeyandFunctionArgument<T>>
+      }> => {
+        const i = () => state
+        return new ComponentNext(
+          i,
+          arg2,
+          Nil,
+          () => undefined,
+          {},
+          LinkedList.empty
+        )
+      }
+    }
+  }
   static get empty(): ComponentNext<{
     iState: undefined
     oState: undefined
     oView: void
+    iSideEffects: any
   }> {
     return ComponentNext.lift(undefined)
   }
@@ -307,6 +344,19 @@ export class ComponentNext<P1 extends ComponentProps> {
       {},
       LinkedList.empty
     )
+  }
+  eval(
+    action: iActions<P1>,
+    state: iState<P1>
+  ): {newAction: oActions<P1>; newState: oState<P1>} {
+    let view
+    return {
+      newAction: this._command(action as any, state) as oActions<P1>,
+      newState: this._update(action as any, state) as oState<P1>
+    }
+  }
+  get initState(): iState<P1> {
+    return this._init()
   }
 
   get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
