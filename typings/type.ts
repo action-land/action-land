@@ -170,3 +170,11 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// $ExpectType { count: number; name: undefined; } | { count: number; name: string; }
+$(
+  ComponentNext.lift({count: 0, name: undefined}).matchR(
+    'click',
+    (value: string, state) => ({count: state.count + 1, name: value})
+  )
+).oState

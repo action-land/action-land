@@ -39,6 +39,7 @@ type LActionTypes<A> = A extends Action<any, infer T> ? T : never
 type LActionValues<A> = A extends Action<infer V, any> ? V : never
 type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
 type LActionValueForType<A, T> = A extends Action<infer V, T> ? V : never
+type returnUnionIfDoesNotExtend<A, B> = B extends A ? B : A | B
 //#endregion
 
 /**
@@ -90,7 +91,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     return ComponentNext.lift(undefined)
   }
 
-  matchR<T extends string | number, V, oState2 extends iState<P1>>(
+  matchR<T extends string | number, V, oState2>(
     type: T,
     cb: (value: V, state: iState<P1>) => oState2
   ): iComponentNext<
@@ -99,7 +100,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       iActions: T extends LActionTypes<iActions<P1>>
         ? Action<V & LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
-      oState: oState2 | oState<P1>
+      oState: returnUnionIfDoesNotExtend<oState2, iState<P1>> | oState<P1>
     }
   > {
     return new ComponentNext(
