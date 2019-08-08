@@ -148,10 +148,17 @@ describe('ComponentNext', () => {
     })
 
     it('should return nested child action', () => {
-      const component = ComponentNext.lift(0)
+      const component = ComponentNext.addEnv({
+        A: (a: string[]) => a
+      })
+        .lift(0)
         .matchC('a', () => action('A', []))
         .install({
-          child: ComponentNext.lift(1).matchC('b', (e, s) => action('c', 10))
+          child: ComponentNext.addEnv({
+            c: (a: number) => a
+          })
+            .lift(1)
+            .matchC('b', (e, s) => action('c', 10))
         })
       const actual = component._command(
         action('child', action('b', null)),
@@ -162,10 +169,17 @@ describe('ComponentNext', () => {
     })
 
     it('should combine with nested child actions', () => {
-      const component = ComponentNext.lift(0)
+      const component = ComponentNext.addEnv({
+        X: (a: string) => a
+      })
+        .lift(0)
         .matchC('X', () => action('X', 'X'))
         .install({
-          X: ComponentNext.lift(1).matchC('Y', (e, s) => action('Y', 'Y'))
+          X: ComponentNext.addEnv({
+            Y: (a: string) => a
+          })
+            .lift(1)
+            .matchC('Y', (e, s) => action('Y', 'Y'))
         })
       const actual = component._command(
         action('X', action('Y', {})),
@@ -250,27 +264,25 @@ describe('ComponentNext', () => {
 
   describe('matchC', () => {
     it('should propagate children', () => {
-      const component = ComponentNext.lift(0)
+      const component = ComponentNext.addEnv({getDisk: (a: null): void => {}})
+        .lift(0)
         .install({
           child: ComponentNext.lift(10).render(() => 'Hello')
         })
-        .matchC('inc', Nil)
+        .matchC('inc', () => action('getDisk', null))
         .render(_ => _.children.child())
       const actual = component._view(create(() => {}), component._init(), {})
       const expected = 'Hello'
-
       assert.strictEqual(actual, expected)
     })
-
     it('should add new action', () => {
       const result: unknown[] = []
-      const component = ComponentNext.lift(0)
-        .matchC('inc', Nil)
+      const component = ComponentNext.addEnv({getDisk: (a: null): void => {}})
+        .lift(0)
+        .matchC('inc', () => action('getDisk', null))
         .render(_ => _.actions.inc('Hello'))
-
       component._view(create(a => result.push(a)), component._init(), {})
       const expected = [action('inc', 'Hello')]
-
       assert.deepStrictEqual(result, expected)
     })
   })
@@ -326,6 +338,37 @@ describe('ComponentNext', () => {
       const actual = component._view(create(() => {}), 10, new Date())
       const expected = ['Hello']
       assert.deepEqual(actual, expected)
+    })
+  })
+  describe('addEnv', () => {
+    const runIO = {
+      sideEffect1: (a: number) => ({a: a * 10}),
+      sideEffect2: (a: string) => ({a: a + 'hi'})
+    }
+    describe('addEnv -> lift', () => {
+      it('should return new component with output action creator set in side effects', () => {
+        const ComponentNextWithEnv = ComponentNext.addEnv(runIO)
+        const actual = ComponentNextWithEnv.lift({
+          count: 10
+        })._oActions.sideEffect1(10)
+        const expected = action('sideEffect1', 10)
+        assert.deepEqual(actual, expected)
+      })
+      it('should not allow match to return actions other than actions in side effects', () => {
+        const ComponentNextWithEnv = ComponentNext.addEnv(runIO)
+        const component = ComponentNextWithEnv.lift({
+          count: 10
+        }).matchC('mount', (a: number, s, actions) => actions.sideEffect1(a))
+        const actual = component._command(
+          action('mount', 10),
+          component._init()
+        )
+        const expected = action('sideEffect1', 10)
+      })
+    })
+    describe('addEnv -> empty', () => {
+      it('should return new component with output action creator set in side effects', () => {})
+      it('should not allow match to return actions other than actions in side effects', () => {})
     })
   })
 })
