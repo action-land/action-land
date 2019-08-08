@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/action-land/action-land/compare/v4.6.0...v4.6.1) (2019-08-08)
+
+
+### Bug Fixes
+
+* **component:** remove oState from the component that's returned from lift ([#46](https://github.com/action-land/action-land/issues/46)) ([fe1808e](https://github.com/action-land/action-land/commit/fe1808e))
+
+
+
+
+
 # [4.6.0](https://github.com/action-land/action-land/compare/v4.5.1...v4.6.0) (2019-07-24)
 
 
