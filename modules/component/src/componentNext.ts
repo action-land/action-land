@@ -100,7 +100,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   static lift<S>(
     state: S
-  ): ComponentNext<{iState: S; oState: S; oView: void; iSideEffects: never}> {
+  ): ComponentNext<{iState: S; oView: void; iSideEffects: never}> {
     const i = () => state
     return new ComponentNext(
       i,
@@ -137,14 +137,13 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
   static get empty(): ComponentNext<{
     iState: undefined
-    oState: undefined
     oView: void
     iSideEffects: never
   }> {
     return ComponentNext.lift(undefined)
   }
 
-  matchR<T extends string | number, V, oState2 extends oState<P1>>(
+  matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
     cb: (value: V, state: iState<P1>) => oState2
   ): iComponentNext<
@@ -153,7 +152,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       iActions: T extends LActionTypes<iActions<P1>>
         ? Action<V & LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
-      oState: oState2 | iState<P1>
+      oState: oState2 | oState<P1>
     }
   > {
     return new ComponentNext(
@@ -299,7 +298,7 @@ export class ComponentNext<P1 extends ComponentProps> {
             e: LActionValueForType<iActions<P1>, k>
           ) => unknown
         }
-        state: oState<P1>
+        state: oState<P1> | iState<P1>
         children: {
           [k in keyof iChildren<P1>]: iProps<iChildren<P1>[k]> extends never
             ? () => oView<iChildren<P1>[k]>

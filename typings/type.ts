@@ -8,8 +8,8 @@ declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 // $ExpectType { count: number; }
 $(ComponentNext.lift({count: 0})).iState
 
-// $ExpectType { count: number; }
-$(ComponentNext.lift({count: 0})).oState
+// $ExpectType { iState: { count: number; }; oView: void; iSideEffects: never; }
+$(ComponentNext.lift({count: 0}))
 
 // $ExpectType Action<number, "inc">
 $(
@@ -18,7 +18,7 @@ $(
   }))
 ).iActions
 
-// $ExpectType { count: number; } | { count: number; action: string; }
+// $ExpectType { count: number; action: string; }
 $(
   ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
     count: s.count + 1,
@@ -41,7 +41,7 @@ $(
     .matchC('inc', (a: {b: number}, s) => action('getDisk', null))
 ).iActions
 
-// $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
+// $ExpectType { node: never; children: { child1: never; child2: never; }; }
 $(
   ComponentNext.lift({count: 0}).install({
     child1: ComponentNext.lift({i: true}),
@@ -67,7 +67,7 @@ $(
     })
 ).iActions
 
-// $ExpectType { childA: ComponentNext<{ iState: number; oState: number; oView: void; iSideEffects: never; }>; }
+// $ExpectType { childA: ComponentNext<{ iState: number; oView: void; iSideEffects: never; }>; }
 $(
   ComponentNext.lift(0).install({
     childA: ComponentNext.lift(10)
@@ -134,8 +134,26 @@ ComponentNext.from(
   10
 )
 
-// $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; iSideEffects: never; }>
+// $ExpectType ComponentNext<{ iState: undefined; oView: void; iSideEffects: never; }>
 ComponentNext.empty
+
+// $ExpectType { b: string; a: string; } | { c: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+).oState
+
+// $ExpectType { a: string; } | { b: string; a: string; } | { c: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+    .render(_ => _.state)
+).oView
+
+// $ExpectType { a: string; }
+$(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
 
 // $ExpectType ComponentNext<{ iState: { count: number; }; oState: { count: number; }; oView: void; iSideEffects: Action<null, "getDisk"> | Action<{ data: { key: number; }; }, "writeDisk">; }>
 ComponentNext.addEnv({
@@ -144,11 +162,13 @@ ComponentNext.addEnv({
 }).lift({count: 10})
 
 // $ExpectType Action<number, "type">
-$(ComponentNext.addEnv({
-  getDisk: (a: null): void => {},
-  writeDisk: (a: {data: {key: number}}) => {}
-})
-  .lift({count: 10})
-  .matchC('type', (a: number, state, actions) =>
-    actions.writeDisk({data: {key: a}})
-  )).iActions
+$(
+  ComponentNext.addEnv({
+    getDisk: (a: null): void => {},
+    writeDisk: (a: {data: {key: number}}) => {}
+  })
+    .lift({count: 10})
+    .matchC('type', (a: number, state, actions) =>
+      actions.writeDisk({data: {key: a}})
+    )
+).iActions
