@@ -1,6 +1,7 @@
 import {ComponentNext} from '@action-land/component'
 import {action, Action, Nil} from '@action-land/core'
 import {Smitten} from '@action-land/smitten'
+import keys from 'ramda/es/keys'
 
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
@@ -34,10 +35,10 @@ $(
 
 // $ExpectType Action<{ b: number; } & { a: string; }, "inc">
 $(
-  ComponentNext.addEnv({})
+  ComponentNext.addEnv({getDisk: (a: null): void => {}})
     .lift({count: 0})
-    .matchC('inc', (a: {a: string}, s) => Nil())
-    .matchC('inc', (a: {b: number}, s) => Nil())
+    .matchC('inc', (a: {a: string}, s) => action('getDisk', null))
+    .matchC('inc', (a: {b: number}, s) => action('getDisk', null))
 ).iActions
 
 // $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
@@ -136,8 +137,18 @@ ComponentNext.from(
 // $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; iSideEffects: never; }>
 ComponentNext.empty
 
-// $ExpectType ComponentNext<{ iState: { count: number; }; oState: { count: number; }; oView: void; iSideEffects: Action<{}, string | number> | Action<null, "getDisk"> | Action<{ data: { key: number; }; }, "writeDisk">; }>
+// $ExpectType ComponentNext<{ iState: { count: number; }; oState: { count: number; }; oView: void; iSideEffects: Action<null, "getDisk"> | Action<{ data: { key: number; }; }, "writeDisk">; }>
 ComponentNext.addEnv({
   getDisk: (a: null): void => {},
   writeDisk: (a: {data: {key: number}}) => {}
 }).lift({count: 10})
+
+// $ExpectType Action<number, "type">
+$(ComponentNext.addEnv({
+  getDisk: (a: null): void => {},
+  writeDisk: (a: {data: {key: number}}) => {}
+})
+  .lift({count: 10})
+  .matchC('type', (a: number, state, actions) =>
+    actions.writeDisk({data: {key: a}})
+  )).iActions

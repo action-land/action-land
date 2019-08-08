@@ -120,7 +120,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         iState: S
         oState: S
         oView: void
-        iSideEffects: valueUnion<mapKeyandFunctionArgument<T>> | Action<{}>
+        iSideEffects: valueUnion<mapKeyandFunctionArgument<T>>
       }> => {
         const i = () => state
         return new ComponentNext(
@@ -179,7 +179,15 @@ export class ComponentNext<P1 extends ComponentProps> {
     NA extends Exclude<iSideEffects<P1>, undefined>
   >(
     type: T,
-    cb: (value: V, state: iState<P1>) => NA
+    cb: (
+      value: V,
+      state: iState<P1>,
+      actions: {
+        [k in LActionTypes<iSideEffects<P1>>]: (
+          e: LActionValueForType<iSideEffects<P1>, k>
+        ) => Action<LActionValueForType<iSideEffects<P1>, k>, k>
+      }
+    ) => NA
   ): iComponentNext<
     P1,
     {
@@ -195,7 +203,11 @@ export class ComponentNext<P1 extends ComponentProps> {
         const a2 = this._command(a, s) as Action<unknown>
         if (isAction(a) && a.type === type) {
           // @fixme
-          return List(a2, cb(a.value as any, s as iState<P1>) as Action<any>)
+          return List(a2, cb(
+            a.value as any,
+            s as iState<P1>,
+            this._oActions as any
+          ) as Action<any>)
         }
         return a2
       },

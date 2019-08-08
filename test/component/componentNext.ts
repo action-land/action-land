@@ -264,12 +264,12 @@ describe('ComponentNext', () => {
 
   describe('matchC', () => {
     it('should propagate children', () => {
-      const component = ComponentNext.addEnv({})
+      const component = ComponentNext.addEnv({getDisk: (a: null): void => {}})
         .lift(0)
         .install({
           child: ComponentNext.lift(10).render(() => 'Hello')
         })
-        .matchC('inc', Nil)
+        .matchC('inc', () => action('getDisk', null))
         .render(_ => _.children.child())
       const actual = component._view(create(() => {}), component._init(), {})
       const expected = 'Hello'
@@ -277,9 +277,9 @@ describe('ComponentNext', () => {
     })
     it('should add new action', () => {
       const result: unknown[] = []
-      const component = ComponentNext.addEnv({})
+      const component = ComponentNext.addEnv({getDisk: (a: null): void => {}})
         .lift(0)
-        .matchC('inc', Nil)
+        .matchC('inc', () => action('getDisk', null))
         .render(_ => _.actions.inc('Hello'))
       component._view(create(a => result.push(a)), component._init(), {})
       const expected = [action('inc', 'Hello')]
@@ -358,7 +358,7 @@ describe('ComponentNext', () => {
         const ComponentNextWithEnv = ComponentNext.addEnv(runIO)
         const component = ComponentNextWithEnv.lift({
           count: 10
-        }).matchC('mount', (a: number, s) => action('sideEffect1', a))
+        }).matchC('mount', (a: number, s, actions) => actions.sideEffect1(a))
         const actual = component._command(
           action('mount', 10),
           component._init()
