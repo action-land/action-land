@@ -7,8 +7,8 @@ declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 // $ExpectType { count: number; }
 $(ComponentNext.lift({count: 0})).iState
 
-// $ExpectType { count: number; }
-$(ComponentNext.lift({count: 0})).oState
+// $ExpectType { iState: { count: number; }; oView: void; }
+$(ComponentNext.lift({count: 0}))
 
 // $ExpectType Action<number, "inc">
 $(
@@ -17,7 +17,7 @@ $(
   }))
 ).iActions
 
-// $ExpectType { count: number; } | { count: number; action: string; }
+// $ExpectType { count: number; action: string; }
 $(
   ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
     count: s.count + 1,
@@ -46,7 +46,7 @@ $(
     .matchC('inc', (a: {b: number}, s) => Nil())
 ).iActions
 
-// $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
+// $ExpectType { node: never; children: { child1: never; child2: never; }; }
 $(
   ComponentNext.lift({count: 0}).install({
     child1: ComponentNext.lift({i: true}),
@@ -72,7 +72,7 @@ $(
     })
 ).iActions
 
-// $ExpectType { childA: ComponentNext<{ iState: number; oState: number; oView: void; }>; }
+// $ExpectType { childA: ComponentNext<{ iState: number; oView: void; }>; }
 $(
   ComponentNext.lift(0).install({
     childA: ComponentNext.lift(10)
@@ -150,5 +150,23 @@ ComponentNext.from(
   10
 )
 
-// $ExpectType ComponentNext<{ iState: undefined; oState: undefined; oView: void; }>
+// $ExpectType ComponentNext<{ iState: undefined; oView: void; }>
 ComponentNext.empty
+
+// $ExpectType { b: string; a: string; } | { c: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+).oState
+
+// $ExpectType { a: string; } | { b: string; a: string; } | { c: string; a: string; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchR('action2', (value, state) => ({...state, c: ''}))
+    .render(_ => _.state)
+).oView
+
+// $ExpectType { a: string; }
+$(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
