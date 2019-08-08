@@ -6,11 +6,11 @@ export type ComponentProps = {
   readonly iState?: unknown
   readonly oState?: unknown
   readonly iActions?: Action<unknown>
-  readonly oActions?: Action<unknown>
   readonly oView?: unknown
   readonly iChildren?: unknown
   readonly iProps?: unknown
-  readonly iSideEffects?: Action<unknown>
+  // @fixme
+  readonly iSideEffects?: Action<unknown, string | number | symbol>
 }
 
 //#region TypeLambdas
@@ -33,16 +33,14 @@ type extractFunctionArgument<T extends (a: any) => any> = T extends (
 ) => unknown
   ? A
   : never
-
-type mapKeyandFunctionArgument<
-  T extends {[k in string | number]: (a: any) => any}
-> = {[k in keyof T]: Action<k, extractFunctionArgument<T[k]>>}
+type mapKeyandFunctionArgument<T extends {[t: string]: (a: any) => any}> = {
+  [k in keyof T]: Action<extractFunctionArgument<T[k]>, k>
+}
 type valueUnion<T extends Object> = T[keyof T]
 
 type iState<P> = PPP<P, 'iState'>
 type oState<P> = PPP<P, 'oState'>
 type iActions<P> = PPP<P, 'iActions'>
-type oActions<P> = PPP<P, 'oActions'>
 type oView<P> = PPP<P, 'oView'>
 type iChildren<P> = PPP<P, 'iChildren'>
 type iProps<P> = PPP<P, 'iProps'>
@@ -69,6 +67,19 @@ export type iComponentNext<P, S> = ComponentNext<iSet<P, S>>
  */
 export type U<A, B> = A | B extends A & B ? A : A | B
 const arg2 = <A, B>(a: A, b: B) => b
+const convertToAC = <T extends {[key in string]: (a: any) => any}>(
+  t: T
+): {
+  [k in keyof T]: ((
+    z: extractFunctionArgument<T[k]>
+  ) => Action<extractFunctionArgument<T[k]>, k>)
+} => {
+  const actionCreatorMap: any = {}
+  for (let key in t) {
+    actionCreatorMap[key] = (val: any) => action(key, val)
+  }
+  return actionCreatorMap
+}
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
     // FIXME: Fix typings for _init, _update, _command
@@ -77,7 +88,10 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     private readonly _children: {[k: string]: ComponentNext<any>},
-    private readonly _iActions: LinkedList<string | number>
+    private readonly _iActions: LinkedList<string | number>,
+    readonly _oActions: {
+      [k: string]: (a: any) => Action<unknown, unknown>
+    }
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -86,7 +100,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   static lift<S>(
     state: S
-  ): ComponentNext<{iState: S; oState: S; oView: void; iSideEffects: any}> {
+  ): ComponentNext<{iState: S; oState: S; oView: void; iSideEffects: never}> {
     const i = () => state
     return new ComponentNext(
       i,
@@ -94,7 +108,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       Nil,
       () => undefined,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      {}
     )
   }
   static addEnv<T extends {[key in string]: (a: any) => any}>(t: T) {
@@ -105,7 +120,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         iState: S
         oState: S
         oView: void
-        iSideEffects: valueUnion<mapKeyandFunctionArgument<T>>
+        iSideEffects: valueUnion<mapKeyandFunctionArgument<T>> | Action<{}>
       }> => {
         const i = () => state
         return new ComponentNext(
@@ -114,7 +129,8 @@ export class ComponentNext<P1 extends ComponentProps> {
           Nil,
           () => undefined,
           {},
-          LinkedList.empty
+          LinkedList.empty,
+          convertToAC(t)
         )
       }
     }
@@ -123,7 +139,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     iState: undefined
     oState: undefined
     oView: void
-    iSideEffects: any
+    iSideEffects: never
   }> {
     return ComponentNext.lift(undefined)
   }
@@ -152,20 +168,24 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._oActions
     )
   }
 
-  matchC<T extends string | number, V, V2, T2 extends string | number>(
+  matchC<
+    T extends string | number,
+    V,
+    NA extends Exclude<iSideEffects<P1>, undefined>
+  >(
     type: T,
-    cb: (value: V, state: iState<P1>) => Action<V2, T2>
+    cb: (value: V, state: iState<P1>) => NA
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
         ? Action<V & LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
-      oActions: oActions<P1> | Action<V2, T2>
     }
   > {
     return new ComponentNext(
@@ -174,13 +194,15 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s) => {
         const a2 = this._command(a, s) as Action<unknown>
         if (isAction(a) && a.type === type) {
-          return List(a2, cb(a.value as any, s as iState<P1>))
+          // @fixme
+          return List(a2, cb(a.value as any, s as iState<P1>) as Action<any>)
         }
         return a2
       },
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._oActions
     )
   }
 
@@ -208,15 +230,6 @@ export class ComponentNext<P1 extends ComponentProps> {
             {
               [k in keyof S]: S[k] extends ComponentNext<infer P2>
                 ? Action<iActions<P2>, k>
-                : never
-            }
-          >
-      oActions:
-        | oActions<P1>
-        | LObjectValues<
-            {
-              [k in keyof S]: S[k] extends ComponentNext<infer P2>
-                ? Action<oActions<P2>, k>
                 : never
             }
           >
@@ -261,7 +274,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions)
+      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions),
+      this._oActions
     )
   }
 
@@ -310,7 +324,8 @@ export class ComponentNext<P1 extends ComponentProps> {
         )
       },
       this._children,
-      this._iActions
+      this._iActions,
+      this._oActions
     )
   }
 
@@ -323,7 +338,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions
+      this._iActions,
+      this._oActions
     )
   }
 
@@ -342,21 +358,9 @@ export class ComponentNext<P1 extends ComponentProps> {
       component.command,
       component.view as any,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      {}
     )
-  }
-  eval(
-    action: iActions<P1>,
-    state: iState<P1>
-  ): {newAction: oActions<P1>; newState: oState<P1>} {
-    let view
-    return {
-      newAction: this._command(action as any, state) as oActions<P1>,
-      newState: this._update(action as any, state) as oState<P1>
-    }
-  }
-  get initState(): iState<P1> {
-    return this._init()
   }
 
   get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
