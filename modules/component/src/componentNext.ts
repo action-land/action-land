@@ -95,14 +95,21 @@ export class ComponentNext<P1 extends ComponentProps> {
     cb: (
       value: LActionValueForType<iActions<P1>, T> extends never
         ? V
-        : LActionValueForType<iActions<P1>, T>,
+        : LActionValueForType<iActions<P1>, T> extends Action<unknown>
+        ? LActionValueForType<iActions<P1>, T>
+        : V,
       state: iState<P1>
     ) => oState2
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<LActionValues<iActions<P1>>, T> | iActions<P1>
+        ?
+            | Action<V & LActionValueForType<iActions<P1>, T>, T>
+            | Exclude<
+                iActions<P1>,
+                Action<LActionValueForType<iActions<P1>, T>, T>
+              >
         : Action<V, T> | iActions<P1>
       oState: oState2 | oState<P1>
     }
@@ -125,12 +132,24 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
-    cb: (value: V, state: iState<P1>) => Action<V2, T2>
+    cb: (
+      value: LActionValueForType<iActions<P1>, T> extends never
+        ? V
+        : LActionValueForType<iActions<P1>, T> extends Action<unknown>
+        ? LActionValueForType<iActions<P1>, T>
+        : V,
+      state: iState<P1>
+    ) => Action<V2, T2>
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<V & LActionValues<iActions<P1>>, T>
+        ?
+            | Action<V & LActionValueForType<iActions<P1>, T>, T>
+            | Exclude<
+                iActions<P1>,
+                Action<LActionValueForType<iActions<P1>, T>, T>
+              >
         : Action<V, T> | iActions<P1>
       oActions: oActions<P1> | Action<V2, T2>
     }
