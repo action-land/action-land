@@ -92,12 +92,17 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
-    cb: (value: V, state: iState<P1>) => oState2
+    cb: (
+      value: LActionValueForType<iActions<P1>, T> extends never
+        ? V
+        : LActionValueForType<iActions<P1>, T>,
+      state: iState<P1>
+    ) => oState2
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<V & LActionValues<iActions<P1>>, T>
+        ? Action<LActionValues<iActions<P1>>, T> | iActions<P1>
         : Action<V, T> | iActions<P1>
       oState: oState2 | oState<P1>
     }
@@ -107,7 +112,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s: any) => {
         const s2 = this._update(a, s) as any
         if (a.type === type) {
-          return cb(a.value as V, s2)
+          return cb(a.value as any, s2)
         }
         return s2
       },

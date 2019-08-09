@@ -25,13 +25,6 @@ $(
   }))
 ).oState
 
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
-$(
-  ComponentNext.lift({count: 0})
-    .matchR('inc', (e: {a: string}, s) => s)
-    .matchR('inc', (e: {b: number}, s) => s)
-).iActions
-
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
   ComponentNext.lift({count: 0})
@@ -170,3 +163,18 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// $ExpectType Action<Action<Action<unknown, "a">, "gc1"> | Action<number, "c1">, "child1"> | Action<never, "child2">
+$(
+  ComponentNext.lift({count: 0})
+    .install({
+      child1: ComponentNext.lift({i: true})
+        .install({gc1: ComponentNext.empty.matchR('a', (a, s) => s)})
+        .matchR('c1', (a: number, s) => s),
+      child2: ComponentNext.lift({i: 'Hi'})
+    })
+    .matchR('child1', (a, s) => {
+      a.value
+      return s
+    })
+).iActions
