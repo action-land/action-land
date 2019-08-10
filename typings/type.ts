@@ -25,20 +25,6 @@ $(
   }))
 ).oState
 
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
-$(
-  ComponentNext.lift({count: 0})
-    .matchR('inc', (e: {a: string}, s) => s)
-    .matchR('inc', (e: {b: number}, s) => s)
-).iActions
-
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
-$(
-  ComponentNext.lift({count: 0})
-    .matchC('inc', (e: {a: string}, s) => Nil())
-    .matchC('inc', (e: {b: number}, s) => Nil())
-).iActions
-
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
   ComponentNext.lift({count: 0})
@@ -188,18 +174,7 @@ $(
       child2: ComponentNext.lift({i: 'Hi'})
     })
     .matchR('child1', (a, s) => {
+      a.value
       return s
     })
-).iActions
-
-// $ExpectType Action<Action<Action<unknown, "a">, "gc1"> | Action<number, "c1">, "child1"> | Action<never, "child2">
-$(
-  ComponentNext.lift({count: 0})
-    .install({
-      child1: ComponentNext.lift({i: true})
-        .install({gc1: ComponentNext.empty.matchR('a', (a, s) => s)})
-        .matchC('c1', (a: number, s) => Nil()),
-      child2: ComponentNext.lift({i: 'Hi'})
-    })
-    .matchC('child1', (a, s) => Nil())
 ).iActions
