@@ -3,17 +3,15 @@ import {isNil} from './isNil'
 
 type AType = string | number
 
-/**
- * Interface for Action
- * @interface
- */
-export interface Action<V, T = AType> {
-  readonly type: T
-  readonly value: V
+export class Action<V, T = AType> {
+  private constructor(readonly value: V, readonly type: T) {}
+  static of<T extends AType, V>(value: V, type: T) {
+    return new Action(value, type)
+  }
 }
 
 function createAction<T extends AType, V>(type: T, value: V) {
-  return isNil(value) ? value : {type, value}
+  return isNil(value) ? value : Action.of(value, type)
 }
 
 // FIXME: Order of type params should be the same as the order of arguments.
