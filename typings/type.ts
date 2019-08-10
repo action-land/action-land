@@ -32,6 +32,14 @@ $(
     .matchR('inc', (e: {b: number}, s) => s)
 ).iActions
 
+// $ExpectType Action<{ b: number; }, "dec"> | Action<{ b: number; } & { a: string; }, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchR('dec', (e: {b: number}, s) => s)
+    .matchR('inc', (e: {a: string}, s) => s)
+    .matchR('inc', (e: {b: number}, s) => s)
+).iActions
+
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
   ComponentNext.lift({count: 0})
@@ -44,6 +52,14 @@ $(
   ComponentNext.lift({count: 0})
     .matchC('inc', (a: {a: string}, s) => Nil())
     .matchC('inc', (a: {b: number}, s) => Nil())
+).iActions
+
+// $ExpectType Action<{ b: number; }, "dec"> | Action<{ b: number; } & { a: string; }, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('dec', (e: {b: number}, s) => Nil())
+    .matchC('inc', (e: {a: string}, s) => Nil())
+    .matchC('inc', (e: {b: number}, s) => Nil())
 ).iActions
 
 // $ExpectType { node: never; children: { child1: never; child2: never; }; }
