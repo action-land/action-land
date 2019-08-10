@@ -102,7 +102,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<LActionValues<iActions<P1>>, T> | iActions<P1>
+        ? Action<LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
       oState: oState2 | oState<P1>
     }
@@ -112,6 +112,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s: any) => {
         const s2 = this._update(a, s) as any
         if (a.type === type) {
+          // this.update args type is Action<unknown>
           return cb(a.value as any, s2)
         }
         return s2
@@ -125,12 +126,17 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
-    cb: (value: V, state: iState<P1>) => Action<V2, T2>
+    cb: (
+      value: LActionValueForType<iActions<P1>, T> extends never
+        ? V
+        : LActionValueForType<iActions<P1>, T>,
+      state: iState<P1>
+    ) => Action<V2, T2>
   ): iComponentNext<
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<V & LActionValues<iActions<P1>>, T>
+        ? Action<LActionValues<iActions<P1>>, T>
         : Action<V, T> | iActions<P1>
       oActions: oActions<P1> | Action<V2, T2>
     }

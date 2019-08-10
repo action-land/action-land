@@ -32,13 +32,6 @@ $(
     .matchC('dec', (e, s) => action('Write', {data: 'abc'}))
 ).oActions
 
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
-$(
-  ComponentNext.lift({count: 0})
-    .matchC('inc', (a: {a: string}, s) => Nil())
-    .matchC('inc', (a: {b: number}, s) => Nil())
-).iActions
-
 // $ExpectType { node: never; children: { child1: never; child2: never; }; }
 $(
   ComponentNext.lift({count: 0}).install({
@@ -164,17 +157,20 @@ $(
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
 
-// $ExpectType Action<Action<Action<unknown, "a">, "gc1"> | Action<number, "c1">, "child1"> | Action<never, "child2">
+// $ExpectType Action<number, "c1">
 $(
   ComponentNext.lift({count: 0})
     .install({
-      child1: ComponentNext.lift({i: true})
-        .install({gc1: ComponentNext.empty.matchR('a', (a, s) => s)})
-        .matchR('c1', (a: number, s) => s),
-      child2: ComponentNext.lift({i: 'Hi'})
+      child1: ComponentNext.lift({i: true}).matchR('c1', (a: number, s) => s)
     })
     .matchR('child1', (a, s) => {
       a.value
-      return s
+      return {
+        ...s,
+        node: {
+          ...s.node,
+          action: a
+        }
+      }
     })
-).iActions
+).oState.node.action
