@@ -1,6 +1,7 @@
 import {ComponentNext} from '@action-land/component'
 import {action, Action, Nil} from '@action-land/core'
 import {Smitten} from '@action-land/smitten'
+import {Action2} from '@action-land/core/src/action'
 
 declare function $<T>(a: T): T extends ComponentNext<infer P> ? P : never
 
@@ -30,6 +31,13 @@ $(
   ComponentNext.lift({count: 0})
     .matchR('inc', (e: {a: string}, s) => s)
     .matchR('inc', (e: {b: number}, s) => s)
+).iActions
+
+// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('inc', (e: {a: string}, s) => Nil())
+    .matchC('inc', (e: {b: number}, s) => Nil())
 ).iActions
 
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
@@ -170,3 +178,54 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// $ExpectType Action<Action<Action<unknown, "a">, "gc1"> | Action<number, "c1">, "child1"> | Action<never, "child2">
+$(
+  ComponentNext.lift({count: 0})
+    .install({
+      child1: ComponentNext.lift({i: true})
+        .install({gc1: ComponentNext.empty.matchR('a', (a, s) => s)})
+        .matchR('c1', (a: number, s) => s),
+      child2: ComponentNext.lift({i: 'Hi'})
+    })
+    .matchR('child1', (a, s) => {
+      return s
+    })
+).iActions
+
+// $ExpectType Action<Action<Action<unknown, "a">, "gc1"> | Action<number, "c1">, "child1"> | Action<never, "child2">
+$(
+  ComponentNext.lift({count: 0})
+    .install({
+      child1: ComponentNext.lift({i: true})
+        .install({gc1: ComponentNext.empty.matchR('a', (a, s) => s)})
+        .matchC('c1', (a: number, s) => Nil()),
+      child2: ComponentNext.lift({i: 'Hi'})
+    })
+    .matchC('child1', (a, s) => Nil())
+).iActions
+
+$(
+  Action2.of(Action2.of(Action2.of(10, 't3'), 't2'), 't1').fold(
+    {
+      t1: {
+        t2: {
+          t3: (val, state) => ({count: state.count + val})
+        }
+      }
+    },
+    {count: 10}
+  )
+)
+
+$(
+  Action2.of(Action2.of(Action2.of(Action2.of(10, 't4'), 't3'), 't2'), 't1').fold(
+    {
+      t2: (val, state) =>
+        val.fold({
+          t4: (val, state) => ({count: state.count + val})
+        }, state)
+    },
+    {count: 10}
+  )
+)
