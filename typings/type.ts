@@ -17,6 +17,9 @@ $(
   }))
 ).iActions
 
+// $ExpectType Action<unknown, "inc">
+$(ComponentNext.lift({count: 0}).matchR('inc')).iActions
+
 // $ExpectType { count: number; action: string; }
 $(
   ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
