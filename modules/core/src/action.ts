@@ -1,4 +1,5 @@
 import {curry2} from 'ts-curry'
+import {isAction} from './isAction'
 import {isNil} from './isNil'
 
 type AType = string | number
@@ -17,13 +18,22 @@ type foldSpec<V, S> = V extends sAction<any, infer K>
     }
   : never
 
-
 export class Action<V, T = AType> {
   private constructor(readonly value: V, readonly type: T) {}
   static of<T extends AType, V>(value: V, type: T) {
     return new Action(value, type)
   }
   fold<S>(spec: foldSpec<this, S>, state: S): S {
+    const specInternal = spec as any
+    if (typeof specInternal[this.type] === 'function') {
+      return specInternal[this.type](this.value, state)
+    } else if (
+      isAction(this.value) &&
+      specInternal[this.type] !== null &&
+      typeof specInternal[this.type] === 'object'
+    )
+      return this.fold.bind(this.value)(specInternal[this.type], state)
+
     return state
   }
 }
