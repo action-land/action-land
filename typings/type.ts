@@ -170,3 +170,32 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// $ExpectType { a: string; }
+Action.of(Action.of(Action.of('folded data', 't3'), 't2'), 't1').fold(
+  {
+    t1: {
+      t2: {
+        t3: (val, state) => state
+      }
+    }
+  },
+  {a: 'should not fails'}
+)
+
+// $ExpectType { a: string; }
+Action.of(Action.of(Action.of('folded data', 't3'), 't2'), 't1').fold(
+  {
+    t1: (val, state) => {
+      return val.fold(
+        {
+          t2: {
+            t3: (val, state) => state
+          }
+        },
+        {a: 'ds'}
+      )
+    }
+  },
+  {a: 'should not fails'}
+)
