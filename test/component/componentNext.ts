@@ -76,6 +76,13 @@ describe('ComponentNext', () => {
 
       assert.strictEqual(actual, expected)
     })
+
+    it('should return same state if cb is not passed', () => {
+      const component = ComponentNext.lift({count: 0}).matchR('idd')
+      const actual = component._update(action('idd', null), component._init())
+      const expected = component._init()
+      assert.deepEqual(actual, expected)
+    })
   })
 
   describe('install', () => {

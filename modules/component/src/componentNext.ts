@@ -1,4 +1,5 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
+import values from 'ramda/es/values'
 import {LinkedList} from '../internals/linkedList'
 import {Component} from './component'
 
@@ -92,7 +93,8 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
-    cb: (value: V, state: iState<P1>) => oState2
+    cb: (value: V, state: iState<P1>) => oState2 = (value: V, state: any) =>
+      state
   ): iComponentNext<
     P1,
     {
