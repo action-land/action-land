@@ -97,7 +97,12 @@ export class ComponentNext<P1 extends ComponentProps> {
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<V & LActionValues<iActions<P1>>, T>
+        ?
+            | Action<V & LActionValueForType<iActions<P1>, T>, T>
+            | Exclude<
+                iActions<P1>,
+                Action<LActionValueForType<iActions<P1>, T>>
+              >
         : Action<V, T> | iActions<P1>
       oState: oState2 | oState<P1>
     }
@@ -125,7 +130,12 @@ export class ComponentNext<P1 extends ComponentProps> {
     P1,
     {
       iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<V & LActionValues<iActions<P1>>, T>
+        ?
+            | Action<V & LActionValueForType<iActions<P1>, T>, T>
+            | Exclude<
+                iActions<P1>,
+                Action<LActionValueForType<iActions<P1>, T>>
+              >
         : Action<V, T> | iActions<P1>
       oActions: oActions<P1> | Action<V2, T2>
     }
