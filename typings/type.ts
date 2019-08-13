@@ -25,11 +25,48 @@ $(
   }))
 ).oState
 
+// $ExpectType Action<number, "dec"> | Action<string, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchR('dec', (e: number, s) => s)
+    .matchR('inc', (e: string, s) => s)
+    .matchR('inc', (e, s) => s)
+).iActions
+
+// Should infer value types in callback of match
+// $ExpectType { count: number; } | { value: string; count: number; }
+$(
+  ComponentNext.lift({count: 0})
+    .matchR('inc', (e: string, s) => s)
+    .matchR('inc', (e, s) => ({
+      ...s,
+      value: e
+    }))
+).oState
+
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
   ComponentNext.lift({count: 0})
     .matchC('inc', (e, s) => action('HTTP', {url: 'abc.com'}))
     .matchC('dec', (e, s) => action('Write', {data: 'abc'}))
+).oActions
+
+// iAction should be union of action types if action type is repeated
+// $ExpectType Action<number, "dec"> | Action<string, "inc">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('dec', (e: number, s) => Nil())
+    .matchC('inc', (e: string, s) => Nil())
+    .matchC('inc', (e, s) => action('output', e))
+).iActions
+
+// Should infer value types in callback of match
+// $ExpectType Action<{}, string | number> | Action<string, "output">
+$(
+  ComponentNext.lift({count: 0})
+    .matchC('dec', (e: number, s) => Nil())
+    .matchC('inc', (e: string, s) => Nil())
+    .matchC('inc', (e, s) => action('output', e))
 ).oActions
 
 // $ExpectType { node: never; children: { child1: never; child2: never; }; }
@@ -156,21 +193,3 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
-
-// $ExpectType Action<number, "c1">
-$(
-  ComponentNext.lift({count: 0})
-    .install({
-      child1: ComponentNext.lift({i: true}).matchR('c1', (a: number, s) => s)
-    })
-    .matchR('child1', (a, s) => {
-      a.value
-      return {
-        ...s,
-        node: {
-          ...s.node,
-          action: a
-        }
-      }
-    })
-).oState.node.action

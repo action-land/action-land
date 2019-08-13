@@ -39,6 +39,12 @@ type LActionTypes<A> = A extends Action<any, infer T> ? T : never
 type LActionValues<A> = A extends Action<infer V, any> ? V : never
 type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
 type LActionValueForType<A, T> = A extends Action<infer V, T> ? V : never
+type LActionValueForTypeWithDefault<A, T, D> = LActionValueForType<
+  A,
+  T
+> extends never
+  ? D
+  : LActionValueForType<A, T>
 //#endregion
 
 /**
@@ -93,17 +99,15 @@ export class ComponentNext<P1 extends ComponentProps> {
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
     cb: (
-      value: LActionValueForType<iActions<P1>, T> extends never
-        ? V
-        : LActionValueForType<iActions<P1>, T>,
+      value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
       state: iState<P1>
     ) => oState2
   ): iComponentNext<
     P1,
     {
-      iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<LActionValues<iActions<P1>>, T>
-        : Action<V, T> | iActions<P1>
+      iActions:
+        | Action<LActionValueForTypeWithDefault<iActions<P1>, T, V>, T>
+        | iActions<P1>
       oState: oState2 | oState<P1>
     }
   > {
@@ -127,17 +131,15 @@ export class ComponentNext<P1 extends ComponentProps> {
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
     cb: (
-      value: LActionValueForType<iActions<P1>, T> extends never
-        ? V
-        : LActionValueForType<iActions<P1>, T>,
+      value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
       state: iState<P1>
     ) => Action<V2, T2>
   ): iComponentNext<
     P1,
     {
-      iActions: T extends LActionTypes<iActions<P1>>
-        ? Action<LActionValues<iActions<P1>>, T>
-        : Action<V, T> | iActions<P1>
+      iActions:
+        | Action<LActionValueForTypeWithDefault<iActions<P1>, T, V>, T>
+        | iActions<P1>
       oActions: oActions<P1> | Action<V2, T2>
     }
   > {
