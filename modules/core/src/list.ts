@@ -1,6 +1,4 @@
 import {Action, action} from './action'
-import {isNil} from './isNil'
-import {Nil} from './nil'
 
 /**
  * Action type for Nil
@@ -19,9 +17,9 @@ export function List(
 ): Action<Array<Action<any>> | any> {
   const nActions: Array<Action<any>> = []
   for (let i = 0; i < actions.length; i++)
-    if (!isNil(actions[i])) nActions.push(actions[i])
+    if (!Action.isNil(actions[i])) nActions.push(actions[i])
   return nActions.length === 0
-    ? Nil()
+    ? Action.nil()
     : nActions.length === 1
     ? nActions[0]
     : action(LIST_ACTION_TYPE, nActions)

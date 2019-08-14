@@ -2,7 +2,6 @@
  * Created by tushar on 08/08/18
  */
 
-import {Action} from '@action-land/core'
 import {Smitten} from '@action-land/smitten'
 import {CommandFunction, ReducerFunction} from '@action-land/tarz'
 
