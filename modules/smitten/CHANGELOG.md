@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/action-land/action-land/compare/v4.6.2...v5.0.0) (2019-08-16)
+
+**Note:** Version bump only for package @action-land/smitten
+
+
+
+
+
 ## [4.4.1](https://github.com/action-land/action-land/compare/v4.4.0...v4.4.1) (2019-07-15)
 
 **Note:** Version bump only for package @action-land/smitten

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/action-land/action-land/compare/v4.6.2...v5.0.0) (2019-08-16)
+
+
+### Features
+
+* **action:** remove custom test for isAction ([e0bd6c6](https://github.com/action-land/action-land/commit/e0bd6c6))
+
+
+### BREAKING CHANGES
+
+* **action:** isAction now checks if the object is an instance of the Action class
+
+
+
+
+
 ## [4.4.1](https://github.com/action-land/action-land/compare/v4.4.0...v4.4.1) (2019-07-15)
 
 
