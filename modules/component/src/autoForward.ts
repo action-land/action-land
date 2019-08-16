@@ -1,5 +1,5 @@
 import {COM, Component} from '@action-land/component'
-import {action, isAction, Nil} from '@action-land/core'
+import {action, Action, isAction, Nil} from '@action-land/core'
 import {concatC, concatR} from '@action-land/tarz'
 
 type anyComponent = Component<any, any, any, any>
@@ -45,7 +45,7 @@ export const AutoForward = <T extends ComponentSpec>(spec: T) => <
     ),
     concatC(
       (act, state: any) =>
-        isAction(act) && spec[act.type]
+        isAction(act) && !Action.isNil(act) && spec[act.type]
           ? action(act.type, spec[act.type].command(act.value, state[act.type]))
           : Nil(),
       component.command as any

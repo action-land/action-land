@@ -5,6 +5,7 @@
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "checked-exceptions": "^1.2.0",
     "ts-curry": "^1.0.4"
   },
   "version": "5.0.0",

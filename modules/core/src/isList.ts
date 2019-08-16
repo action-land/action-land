@@ -8,5 +8,7 @@ import {LIST_ACTION_TYPE} from './list'
  * @returns {boolean}
  */
 export function isList(obj: any): obj is Action<Array<any>> {
-  return Action.isAction(obj) && obj.type === LIST_ACTION_TYPE
+  return (
+    Action.isAction(obj) && !Action.isNil(obj) && obj.type === LIST_ACTION_TYPE
+  )
 }

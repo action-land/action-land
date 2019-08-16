@@ -1,16 +1,19 @@
+import {check} from 'checked-exceptions'
 import {curry2} from 'ts-curry'
 
 type AType = string | number
-const NIL_TYPE = '@@NIL'
+
+const NoSuchElementException = check('NoSuchElementException', (s: string) => s)
 
 /**
  * Action
  * @class
  */
-export class Action<V, T = AType> {
-  constructor(public readonly type: T, public readonly value: V) {}
-  static of<T extends AType, V>(type: T, value: V) {
-    return Action.isNil(value) ? value : new Action(type, value)
+export abstract class Action<V, T = AType> {
+  public abstract readonly type: T
+  public abstract readonly value: V
+  static of<T extends AType, V>(type: T, value: V): Action<V, T> {
+    return Action.isNil(value) ? value : new VAction(type, value)
   }
 
   static isAction(a: unknown): a is Action<unknown> {
@@ -24,11 +27,28 @@ export class Action<V, T = AType> {
   static nil(): Nil {
     return new Nil()
   }
+
+  lift<T2 extends AType>(t: T2) {
+    return Action.of(t, this)
+  }
 }
 
-class Nil extends Action<undefined, typeof NIL_TYPE> {
-  constructor() {
-    super(NIL_TYPE, undefined)
+/**
+ * VAction
+ * @class
+ */
+export class VAction<V, T extends AType = AType> extends Action<V, T> {
+  constructor(public readonly type: T, public readonly value: V) {
+    super()
+  }
+}
+
+class Nil extends Action<never, never> {
+  get type(): never {
+    throw new NoSuchElementException('type of nil action')
+  }
+  get value(): never {
+    throw new NoSuchElementException('value of nil action')
   }
 }
 
