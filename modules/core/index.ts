@@ -1,10 +1,8 @@
 import {Action} from './src/action'
 
 export {action, Action} from './src/action'
-export {isAction} from './src/isAction'
-
-export {List} from './src/list'
 export {isList} from './src/isList'
+export {List} from './src/list'
 
 /**
  * Use [[Action.nil]]
@@ -17,3 +15,9 @@ export const Nil = Action.nil
  * @deprecated
  */
 export const isNil = Action.isNil
+
+/**
+ * Use [[Action.isAction]]
+ * @deprecated
+ */
+export const isAction = Action.isAction
