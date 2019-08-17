@@ -4,5 +4,6 @@
     "module": "commonjs",
     "incremental": true,
     "strict": true
-  }
+  },
+  "exclude": ["typings/"]
 }
