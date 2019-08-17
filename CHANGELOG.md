@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
+
+
+### Features
+
+* **action:** add fold method ([323e2f8](https://github.com/action-land/action-land/commit/323e2f8))
+* **action:** add lift() method ([60e6c18](https://github.com/action-land/action-land/commit/60e6c18))
+
+
+
+
+
 # [5.0.0](https://github.com/action-land/action-land/compare/v4.6.2...v5.0.0) (2019-08-16)
 
 
