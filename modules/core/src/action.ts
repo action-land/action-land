@@ -5,6 +5,21 @@ type AType = string | number
 
 const NoSuchElementException = check('NoSuchElementException', (s: string) => s)
 
+type FoldSpec<V, T, S> =
+  | ((seed: S, value: Action<V, T>) => S)
+  | (V extends Action<infer VV, infer TT>
+      ? TT extends AType
+        ? {[k in TT]: FoldSpec<VV, TT, S>}
+        : (seed: S, value: Action<VV, TT>) => S
+      : never)
+
+const hasOwnProperty = <P extends string | number>(
+  obj: unknown,
+  prop: P
+): obj is {[k in P]: unknown} => {
+  return typeof obj === 'object' && obj !== null && obj.hasOwnProperty(prop)
+}
+
 /**
  * Action
  * @class
@@ -28,7 +43,25 @@ export abstract class Action<V, T = AType> {
     return new Nil()
   }
 
-  lift<T2 extends AType>(t: T2) {
+  fold<S>(seed: S, spec: FoldSpec<V, T, S>): S {
+    if (typeof spec === 'function') {
+      return spec(seed, this)
+    }
+
+    if (typeof spec === 'object') {
+      let s: unknown = spec
+      let a: unknown = this.value
+
+      while (Action.isAction(a) && hasOwnProperty(s, a.type)) {
+        s = s[a.type]
+        if (typeof s === 'function') return s(seed, a)
+        a = a.value
+      }
+    }
+    return seed
+  }
+
+  lift<T2 extends AType>(t: T2): Action<Action<V, T>, T2> {
     return Action.of(t, this)
   }
 }
