@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "test": "mocha test/**/*.ts",
-    "check-types": "typings-checker typings/type.ts",
+    "test": "mocha test/**/*.js",
+    "check-types": "typings-checker typings/*.ts",
     "prettier": "git ls-files | grep '\\.ts$' | xargs prettier --write --config=.prettierrc",
     "lint": "tslint --project .",
     "preversion": "tsc -d",
@@ -30,8 +30,6 @@
     "mocha": "^6.2.0",
     "prettier": "^1.18.2",
     "ramda": "^0.26.1",
-    "ts-curry": "^1.0.4",
-    "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "typings-checker": "^2.0.0"

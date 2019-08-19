@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "incremental": true,
     "strict": true
-  }
+  },
+  "exclude": ["typings/"]
 }

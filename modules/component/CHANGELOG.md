@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
+
+
+### Features
+
+* **action:** add lift() method ([60e6c18](https://github.com/action-land/action-land/commit/60e6c18))
+
+
+
+
+
+# [5.0.0](https://github.com/action-land/action-land/compare/v4.6.2...v5.0.0) (2019-08-16)
+
+**Note:** Version bump only for package @action-land/component
+
+
+
+
+
+## [4.6.2](https://github.com/action-land/action-land/compare/v4.6.1...v4.6.2) (2019-08-14)
+
+
+### Bug Fixes
+
+* **component:** matchC and matchR: fix typings for matching types ([#52](https://github.com/action-land/action-land/issues/52)) ([06a6f86](https://github.com/action-land/action-land/commit/06a6f86))
+
+
+
+
+
 ## [4.6.1](https://github.com/action-land/action-land/compare/v4.6.0...v4.6.1) (2019-08-08)
 
 

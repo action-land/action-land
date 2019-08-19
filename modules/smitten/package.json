@@ -3,11 +3,11 @@
   "description": "Higher order event emitter",
   "author": "Tushar Mathur <tusharmath@gmail.com>",
   "license": "ISC",
-  "version": "4.4.1",
+  "version": "5.1.0",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@action-land/core": "^4.4.1"
+    "@action-land/core": "^5.1.0"
   }
 }
