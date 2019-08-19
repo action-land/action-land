@@ -25,6 +25,7 @@ $(
   }))
 ).oState
 
+// iAction should be union of action types if action type is repeated
 // $ExpectType Action<number, "dec"> | Action<string, "inc">
 $(
   ComponentNext.lift({count: 0})
