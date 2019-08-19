@@ -3,6 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "incremental": true,
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
     "strict": true
   },
   "exclude": ["typings/"]
