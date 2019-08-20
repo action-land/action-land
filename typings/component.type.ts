@@ -62,7 +62,7 @@ $(
 ).iActions
 
 // Should infer value types in callback of match
-// $ExpectType Action<{}, string | number> | Action<string, "output">
+// $ExpectType Action<never, never> | Action<string, "output">
 $(
   ComponentNext.lift({count: 0})
     .matchC('dec', (e: number, s) => Nil())
