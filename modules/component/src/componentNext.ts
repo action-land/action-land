@@ -36,7 +36,6 @@ type iChildren<P> = PPP<P, 'iChildren'>
 type iProps<P> = PPP<P, 'iProps'>
 
 type LActionTypes<A> = A extends Action<any, infer T> ? T : never
-type LActionValues<A> = A extends Action<infer V, any> ? V : never
 type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
 type LActionValueForType<A, T> = A extends Action<infer V, T> ? V : never
 //#endregion
