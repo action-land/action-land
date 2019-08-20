@@ -1,45 +1,17 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
 import {LinkedList} from '../internals/linkedList'
+import {ComponentProps} from '../types/componentProps'
+import {LActionTypes} from '../types/extractActionType'
+import {LObjectValues} from '../types/extractValueType'
+import {LActionValueForType} from '../types/extractValueTypeFromAction'
+import {iChildren} from '../types/pickChildrenType'
+import {iActions} from '../types/pickIActionsType'
+import {iState} from '../types/pickIStateType'
+import {oActions} from '../types/pickOActionType'
+import {oState} from '../types/pickOStateType'
+import {oView} from '../types/pickOutputViewType'
+import {iProps} from '../types/pickPropType'
 import {Component} from './component'
-
-export type ComponentProps = {
-  readonly iState?: unknown
-  readonly oState?: unknown
-  readonly iActions?: Action<unknown>
-  readonly oActions?: Action<unknown>
-  readonly oView?: unknown
-  readonly iChildren?: unknown
-  readonly iProps?: unknown
-}
-
-//#region TypeLambdas
-/**
- * Extracts values of the provided keys
- */
-type PP<O, K> = K extends keyof O ? O[K] : never
-
-/**
- * Extracts values of the provided keys from ComponentNext or ComponentProps
- */
-type PPP<O, K extends keyof ComponentProps> = O extends ComponentNext<infer P>
-  ? PP<P, K>
-  : O extends ComponentProps
-  ? PP<O, K>
-  : never
-
-type iState<P> = PPP<P, 'iState'>
-type oState<P> = PPP<P, 'oState'>
-type iActions<P> = PPP<P, 'iActions'>
-type oActions<P> = PPP<P, 'oActions'>
-type oView<P> = PPP<P, 'oView'>
-type iChildren<P> = PPP<P, 'iChildren'>
-type iProps<P> = PPP<P, 'iProps'>
-
-type LActionTypes<A> = A extends Action<any, infer T> ? T : never
-type LActionValues<A> = A extends Action<infer V, any> ? V : never
-type LObjectValues<O> = O extends {[k: string]: infer S} ? S : unknown
-type LActionValueForType<A, T> = A extends Action<infer V, T> ? V : never
-//#endregion
 
 /**
  * Overwrite the props in T with props in S.
