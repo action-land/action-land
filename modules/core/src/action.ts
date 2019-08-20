@@ -1,7 +1,7 @@
 import {check} from 'checked-exceptions'
 import {curry2} from 'ts-curry'
 
-type AType = string | number
+export type AType = string | number
 
 const NoSuchElementException = check('NoSuchElementException', (s: string) => s)
 
@@ -19,6 +19,14 @@ const hasOwnProperty = <P extends string | number>(
 ): obj is {[k in P]: unknown} => {
   return typeof obj === 'object' && obj !== null && obj.hasOwnProperty(prop)
 }
+
+export type GrabSpec<A, S> =
+  | ((s: S, a: A) => S)
+  | (A extends Action<infer V, infer T>
+      ? T extends string | number | symbol
+        ? {[k in T]: GrabSpec<V, S>}
+        : never
+      : never)
 
 /**
  * Action
@@ -41,6 +49,14 @@ export abstract class Action<V, T = AType> {
 
   static nil(): Nil {
     return new Nil()
+  }
+
+  static grab<S, A extends Action<unknown, unknown>>(
+    seed: S,
+    action: A,
+    spec: GrabSpec<A, S>
+  ): S {
+    throw new Error('TODO: Not Implemented')
   }
 
   fold<S>(seed: S, spec: FoldSpec<V, T, S>): S {
@@ -76,7 +92,7 @@ export class VAction<V, T extends AType = AType> extends Action<V, T> {
   }
 }
 
-class Nil extends Action<never, never> {
+export class Nil extends Action<never, never> {
   get type(): never {
     throw new NoSuchElementException('type of nil action')
   }
