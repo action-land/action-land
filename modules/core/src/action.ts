@@ -1,16 +1,16 @@
 import {check} from 'checked-exceptions'
 import {curry2} from 'ts-curry'
 
-type AType = string | number
+export type AType = string | number
 
 const NoSuchElementException = check('NoSuchElementException', (s: string) => s)
 
-type FoldSpec<V, T, S> =
-  | ((seed: S, value: Action<V, T>) => S)
-  | (V extends Action<infer VV, infer TT>
-      ? TT extends AType
-        ? {[k in TT]: FoldSpec<VV, TT, S>}
-        : (seed: S, value: Action<VV, TT>) => S
+type FoldSpec<A, S> =
+  | ((seed: S, value: A) => S)
+  | (A extends Action<infer V, infer T>
+      ? T extends string | number | symbol
+        ? {[k in T]: FoldSpec<V, S>}
+        : ((seed: S, value: A) => S)
       : never)
 
 const hasOwnProperty = <P extends string | number>(
@@ -43,19 +43,23 @@ export abstract class Action<V, T = AType> {
     return new Nil()
   }
 
-  fold<S>(seed: S, spec: FoldSpec<V, T, S>): S {
+  static fold<S, A extends Action<unknown, unknown>>(
+    seed: S,
+    action: A,
+    spec: FoldSpec<A, S>
+  ): S {
     if (typeof spec === 'function') {
-      return spec(seed, this)
+      return spec(seed, action)
     }
 
     if (typeof spec === 'object') {
       let s: unknown = spec
-      let a: unknown = this.value
+      let a: unknown = action
 
       while (Action.isAction(a) && hasOwnProperty(s, a.type)) {
         s = s[a.type]
-        if (typeof s === 'function') return s(seed, a)
         a = a.value
+        if (typeof s === 'function') return s(seed, a)
       }
     }
     return seed
@@ -76,7 +80,7 @@ export class VAction<V, T extends AType = AType> extends Action<V, T> {
   }
 }
 
-class Nil extends Action<never, never> {
+export class Nil extends Action<never, never> {
   get type(): never {
     throw new NoSuchElementException('type of nil action')
   }
@@ -88,6 +92,7 @@ class Nil extends Action<never, never> {
 // FIXME: Order of type params should be the same as the order of arguments.
 /**
  * Creates a new Action type object
+ * @deprecated use Action.of() instead
  * @function
  * @param {string|number} type
  * @param {any} value
