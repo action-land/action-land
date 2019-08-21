@@ -27,7 +27,7 @@ describe('action', () => {
 
   describe('fold', () => {
     it('should fold over non-nested actions', () => {
-      const actual = Action.fold(100, action('A', 50), (s, a) => s + a.value)
+      const actual = Action.fold(action('A', 50), 100, (s, a) => s + a.value)
       const expected = 150
 
       assert.strictEqual(actual, expected)
@@ -35,8 +35,8 @@ describe('action', () => {
 
     it('should fold over nested actions', () => {
       const actual = Action.fold(
-        100,
         action('A', 50).lift('B'),
+        100,
         (s, a) => s + a.value.value
       )
       const expected = 150
@@ -46,11 +46,12 @@ describe('action', () => {
 
     it('should fold over any level of nested actions', () => {
       const actual = Action.fold(
-        100,
         action('A', 50)
           .lift('B')
           .lift('C')
           .lift('D'),
+        100,
+
         (s, a) => s + a.value.value.value.value
       )
       const expected = 150
@@ -60,14 +61,13 @@ describe('action', () => {
 
     it('should fold using a nested spec', () => {
       const actual = Action.fold(
-        {count: 100},
         action('A', 50)
           .lift('B')
           .lift('C')
           .lift('D')
           .lift('E')
           .lift('F'),
-
+        {count: 100},
         {F: {E: {D: {C: {B: {A: (s, a) => ({count: s.count + a})}}}}}}
       )
       const expected = {count: 150}
@@ -76,7 +76,7 @@ describe('action', () => {
     })
 
     it('should fold nil', () => {
-      const actual = Action.fold(100, Action.nil(), (s, a) => s + 1)
+      const actual = Action.fold(Action.nil(), 100, (s, a) => s + 1)
       const expected = 101
 
       assert.strictEqual(actual, expected)

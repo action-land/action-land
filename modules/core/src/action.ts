@@ -44,8 +44,8 @@ export abstract class Action<V, T = AType> {
   }
 
   static fold<S, A extends Action<unknown, unknown>>(
-    seed: S,
     action: A,
+    seed: S,
     spec: FoldSpec<A, S>
   ): S {
     if (typeof spec === 'function') {
