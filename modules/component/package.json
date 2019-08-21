@@ -1,6 +1,6 @@
 {
   "name": "@action-land/component",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Basic interface for a component",
   "main": "index.js",
   "repository": {
@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/action-land/action-land#readme",
   "dependencies": {
-    "@action-land/core": "^6.0.0",
-    "@action-land/smitten": "^6.0.0",
-    "@action-land/tarz": "^6.0.0"
+    "@action-land/core": "^7.0.0",
+    "@action-land/smitten": "^7.0.0",
+    "@action-land/tarz": "^7.0.0"
   },
   "publishConfig": {
     "access": "public"

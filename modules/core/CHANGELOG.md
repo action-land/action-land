@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/action-land/action-land/compare/v6.0.0...v7.0.0) (2019-08-21)
+
+
+### Code Refactoring
+
+* **action:** change the function signature for Action.fold ([7a726b0](https://github.com/action-land/action-land/commit/7a726b0))
+
+
+### BREAKING CHANGES
+
+* **action:** Action.fold now takes the first argument as the action instead of seed.
+
+
+
+
+
 # [6.0.0](https://github.com/action-land/action-land/compare/v5.1.0...v6.0.0) (2019-08-21)
 
 
