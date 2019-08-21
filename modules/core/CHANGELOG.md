@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/action-land/action-land/compare/v5.1.0...v6.0.0) (2019-08-21)
+
+
+### Features
+
+* **action:** create a fold static method ([#55](https://github.com/action-land/action-land/issues/55)) ([1d7c2b1](https://github.com/action-land/action-land/commit/1d7c2b1))
+
+
+### BREAKING CHANGES
+
+* **action:** removing the \`fold()\` method and adding \`Action.fold()\` static method
+
+* docs(action): fix test statement
+
+
+
+
+
 # [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
 
 
