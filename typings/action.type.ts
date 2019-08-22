@@ -4,7 +4,7 @@ declare function $<F, B>(a: <S>(s: S, f: F) => B): {spec: F; ret: B}
 declare function ID<T>(): T
 
 // Action.fold should handle Action.nil()
-Action.fold(Action.nil(), 0, (s, a) => {
+Action.fold(Action.nil(), 0, (a, s) => {
   // $ExpectType Nil
   a
 
@@ -14,7 +14,7 @@ Action.fold(Action.nil(), 0, (s, a) => {
 })
 
 // Action.fold should handle lifted nils
-Action.fold(Action.nil().lift('T'), 0, (s, a) => {
+Action.fold(Action.nil().lift('T'), 0, (a, s) => {
   // $ExpectType Action<Action<never, never>, "T">
   a
 
@@ -25,7 +25,7 @@ Action.fold(Action.nil().lift('T'), 0, (s, a) => {
 
 // Action.fold should handle lifted nils
 Action.fold(Action.nil().lift('T'), 0, {
-  T: (s, a) => {
+  T: (a, s) => {
     // $ExpectType Action<never, never>
     a
 
@@ -41,7 +41,7 @@ Action.fold(
   ID<Action<1, 'B1'> | Action<2, 'B2'>>(),
   {count: 10},
   {
-    B1: (s, a) => {
+    B1: (a, s) => {
       // $ExpectType 1
       a
 
@@ -58,7 +58,7 @@ Action.fold(
   ID<Action<Action<1, 'B1'> | Action<2, 'B2'>, 'A'>>(),
   {count: 10},
   {
-    A: (s, a) => {
+    A: (a, s) => {
       // $ExpectType Action<1, "B1"> | Action<2, "B2">
       a
 
@@ -76,7 +76,7 @@ Action.fold(
   {count: 10},
   {
     A: {
-      B1: (s, a) => {
+      B1: (a, s) => {
         // $ExpectType 1
         a
 

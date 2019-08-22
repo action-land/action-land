@@ -6,11 +6,11 @@ export type AType = string | number
 const NoSuchElementException = check('NoSuchElementException', (s: string) => s)
 
 type FoldSpec<A, S> =
-  | ((seed: S, value: A) => S)
+  | ((value: A, seed: S) => S)
   | (A extends Action<infer V, infer T>
       ? T extends string | number | symbol
         ? {[k in T]: FoldSpec<V, S>}
-        : ((seed: S, value: A) => S)
+        : ((value: A, seed: S) => S)
       : never)
 
 const hasOwnProperty = <P extends string | number>(
@@ -49,7 +49,7 @@ export abstract class Action<V, T = AType> {
     spec: FoldSpec<A, S>
   ): S {
     if (typeof spec === 'function') {
-      return spec(seed, action)
+      return spec(action, seed)
     }
 
     if (typeof spec === 'object') {
@@ -59,7 +59,7 @@ export abstract class Action<V, T = AType> {
       while (Action.isAction(a) && hasOwnProperty(s, a.type)) {
         s = s[a.type]
         a = a.value
-        if (typeof s === 'function') return s(seed, a)
+        if (typeof s === 'function') return s(a, seed)
       }
     }
     return seed
