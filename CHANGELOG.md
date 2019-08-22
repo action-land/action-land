@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/action-land/action-land/compare/v7.0.1...v8.0.0) (2019-08-22)
+
+
+### Code Refactoring
+
+* **action:** change signature for the spec function ([92145e2](https://github.com/action-land/action-land/commit/92145e2))
+
+
+### BREAKING CHANGES
+
+* **action:** FoldSpec's callback has the arguments reversed
+
+
+
+
+
 # [7.0.0](https://github.com/action-land/action-land/compare/v6.0.0...v7.0.0) (2019-08-21)
 
 
