@@ -328,4 +328,73 @@ describe('ComponentNext', () => {
       assert.deepEqual(actual, expected)
     })
   })
+
+  describe('memoizeWith', () => {
+    it('should memoize empty component', () => {
+      const component = ComponentNext.empty.render(_ => Math.random())
+
+      const a = component._view({}, component._init(), null)
+      const b = component._view({}, component._init(), null)
+
+      assert.strictEqual(a, b)
+    })
+    it('should memoize the view', () => {
+      const component = ComponentNext.lift(0)
+        .render(_ => Math.random())
+        .memoizeWith(() => true)
+      const a = component._view({}, component._init(), null)
+      const b = component._view({}, component._init(), null)
+
+      assert.strictEqual(a, b)
+    })
+
+    it('should compute view on first call', () => {
+      const component = ComponentNext.lift(0)
+        .render(_ => [_.state])
+        .memoizeWith(() => true)
+      const actual = component._view({}, component._init(), null)
+      const expected = [0]
+
+      assert.deepStrictEqual(actual, expected)
+    })
+
+    it('should pass pervious state/props to fn', () => {
+      const args = new Array<any>()
+      const component = ComponentNext.lift(0)
+        .render(_ => [_.state])
+        .memoizeWith((...t) => {
+          args.push(t)
+          return false
+        })
+
+      component._view({}, 100, 'A')
+      component._view({}, 200, 'B')
+
+      assert.deepStrictEqual(args, [[200, 'B', 100, 'A']])
+    })
+
+    it('should intersect multiple memoizeWith', () => {
+      const component = ComponentNext.lift(0)
+        .render(_ => [_.state])
+        .memoizeWith((s1, p1, s2, p2) => s1 === s2)
+        .memoizeWith((s1, p1, s2, p2) => p1 === p2)
+
+      const a = component._view({}, 100, 'A')
+      const b = component._view({}, 100, 'A')
+
+      assert.strictEqual(a, b)
+    })
+
+    it('should combine multiple memoizeWith', () => {
+      const component = ComponentNext.lift(0)
+        .render(_ => Math.random())
+        .memoizeWith(() => true)
+        .memoizeWith(() => false)
+
+      const a = component._view({}, 100, 'A')
+      const b = component._view({}, 100, 'A')
+
+      assert.notStrictEqual(a, b)
+    })
+  })
 })
