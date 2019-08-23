@@ -330,13 +330,15 @@ describe('ComponentNext', () => {
   })
 
   describe('memoizeWith', () => {
-    it('should memoize empty component', () => {
-      const component = ComponentNext.empty.render(_ => Math.random())
+    it('should not memoize component by default', () => {
+      const component = ComponentNext.lift({count: 1}).render(_ =>
+        Math.random()
+      )
 
       const a = component._view({}, component._init(), null)
       const b = component._view({}, component._init(), null)
 
-      assert.strictEqual(a, b)
+      assert.notEqual(a, b)
     })
     it('should memoize the view', () => {
       const component = ComponentNext.lift(0)

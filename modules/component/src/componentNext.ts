@@ -281,6 +281,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       function(this: ComponentNext<P1>, e: any, s: any, p: any) {
         if (
           cachedView !== undefined &&
+          this._comparator !== defaultComparator &&
           this._comparator(s, p, cachedState, cachedProps)
         ) {
           return cachedView
