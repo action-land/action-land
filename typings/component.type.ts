@@ -214,3 +214,6 @@ ComponentNext.lift({color: 'red'})
 
     return true
   })
+
+// $ExpectType () => { a: boolean; }
+ComponentNext.lift({a: true}).component.init

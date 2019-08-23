@@ -380,7 +380,7 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
-  get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
+  get component(): Component<iState<P1>, iProps<P1>, [], oView<P1>> {
     return {
       init: this._init,
       update: this._update,
