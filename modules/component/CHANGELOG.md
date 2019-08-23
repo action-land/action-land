@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/action-land/action-land/compare/v8.0.0...v8.1.0) (2019-08-23)
+
+
+### Features
+
+* **component:** add memoizeWith() ([#56](https://github.com/action-land/action-land/issues/56)) ([8152392](https://github.com/action-land/action-land/commit/8152392))
+
+
+
+
+
 # [8.0.0](https://github.com/action-land/action-land/compare/v7.0.1...v8.0.0) (2019-08-22)
 
 **Note:** Version bump only for package @action-land/component
