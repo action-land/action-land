@@ -60,6 +60,14 @@ export type iComponentNext<P, S> = ComponentNext<iSet<P, S>>
  * Removes duplicate A | A insertions.
  */
 export type U<A, B> = A | B extends A & B ? A : A | B
+
+/**
+ * Comparator function used for memoization
+ */
+type Comparator = <S, P>(s1: S, p1: P, s2?: S, p2?: P) => boolean
+
+const defaultComparator: Comparator = () => true
+
 const arg2 = <A, B>(a: A, b: B) => b
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
@@ -69,7 +77,8 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     private readonly _children: {[k: string]: ComponentNext<any>},
-    private readonly _iActions: LinkedList<string | number>
+    private readonly _iActions: LinkedList<string | number>,
+    private readonly _comparator: Comparator
   ) {}
 
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -84,7 +93,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       Nil,
       () => undefined,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      defaultComparator
     )
   }
 
@@ -123,7 +133,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
@@ -154,7 +165,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
@@ -235,7 +247,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions)
+      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions),
+      this._comparator
     )
   }
 
@@ -257,11 +270,25 @@ export class ComponentNext<P1 extends ComponentProps> {
       p: P
     ) => V
   ): iComponentNext<P1, {oView: V; iProps: P}> {
+    let cachedProps: iProps<P1>
+    let cachedState: oState<P1>
+    let cachedView: V
+
     return new ComponentNext(
       this._init,
       this._update,
       this._command,
-      (e: any, s: any, p) => {
+      function(this: ComponentNext<P1>, e: any, s: any, p: any) {
+        if (
+          cachedView !== undefined &&
+          this._comparator !== defaultComparator &&
+          this._comparator(s, p, cachedState, cachedProps)
+        ) {
+          return cachedView
+        }
+        cachedProps = p
+        cachedState = s
+
         const children: any = {}
         for (let i in this._children) {
           if (this._children.hasOwnProperty(i)) {
@@ -274,17 +301,19 @@ export class ComponentNext<P1 extends ComponentProps> {
           ...actions,
           [key]: (ev: any) => e.of(key).emit(ev)
         }))
-        return cb(
+
+        return (cachedView = cb(
           {
             actions: actions as any,
             state: s,
             children
           },
           p as any
-        )
+        ))
       },
       this._children,
-      this._iActions
+      this._iActions,
+      this._comparator
     )
   }
 
@@ -297,7 +326,37 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions
+      this._iActions,
+      defaultComparator
+    )
+  }
+
+  memoizeWith(
+    fn: (
+      s1: oState<P1> | iState<P1>,
+      p1: iProps<P1>,
+      s2?: oState<P1> | iState<P1>,
+      p2?: iProps<P1>
+    ) => boolean
+  ): ComponentNext<P1> {
+    return new ComponentNext(
+      this._init,
+      this._update,
+      this._command,
+      this._view,
+      this._children,
+      this._iActions,
+      (...t) => {
+        const args = t as [
+          oState<P1> | iState<P1>,
+          iProps<P1>,
+          oState<P1> | iState<P1>,
+          iProps<P1>
+        ]
+        return this._comparator === defaultComparator
+          ? fn(...args)
+          : this._comparator(...args) && fn(...args)
+      }
     )
   }
 
@@ -316,7 +375,8 @@ export class ComponentNext<P1 extends ComponentProps> {
       component.command,
       component.view as any,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      defaultComparator
     )
   }
 

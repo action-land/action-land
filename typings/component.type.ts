@@ -194,3 +194,23 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// ComponentNext.memoizeWith should provide current state and props to the callback
+ComponentNext.lift({color: 'red'})
+  .render((_, p: string) => p)
+
+  .memoizeWith((s1, p1, s2, p2) => {
+    // $ExpectType { color: string; }
+    s1
+
+    // $ExpectType string
+    p1
+
+    // $ExpectType { color: string; } | undefined
+    s2
+
+    // $ExpectType string | undefined
+    p2
+
+    return true
+  })
