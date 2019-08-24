@@ -160,7 +160,7 @@ $(
 // $ExpectType { color: string; count: number; }
 $(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
 
-// $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; }>
+// $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; iActions: Action<unknown, string | number>; }>
 ComponentNext.from(
   {
     init: (a: string, b: number) => 10,
@@ -173,6 +173,29 @@ ComponentNext.from(
   'hello',
   10
 )
+
+ComponentNext.from<
+  number,
+  string[],
+  Date,
+  [string, number],
+  Action<string, 't1'> | Action<string, 't2'>
+>(
+  {
+    init: (a: string, b: number) => 10,
+    update: (a: Action<unknown>, b: number) => b,
+    command: (a: Action<unknown>, b: number) => Nil(),
+    view: (e: Smitten, m: number, s: Date) => {
+      return ['Hello']
+    }
+  },
+  'hello',
+  10
+).render(_ => {
+  // Should be able to get actions in render function
+  // $ExpectType { t1: (e: string) => unknown; t2: (e: string) => unknown; }
+  _.actions
+})
 
 // $ExpectType ComponentNext<{ iState: undefined; oView: void; }>
 ComponentNext.empty

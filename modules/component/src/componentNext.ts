@@ -1,4 +1,5 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
+import {AType} from '@action-land/core/src/action'
 import {LinkedList} from '../internals/linkedList'
 import {Component} from './component'
 
@@ -360,7 +361,13 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
-  static from<A, V, P, I extends unknown[]>(
+  static from<
+    A,
+    V,
+    P,
+    I extends unknown[],
+    IA extends Action<unknown, AType> = Action<unknown, AType>
+  >(
     component: {
       init: (...t: I) => A
       update: (a: any, s: any) => any
@@ -368,7 +375,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       view: (e: any, s: any, p: P) => V
     },
     ...initParams: I
-  ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
+  ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P; iActions: IA}> {
     return new ComponentNext(
       () => component.init(...initParams),
       component.update,
