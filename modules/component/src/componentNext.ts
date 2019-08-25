@@ -4,6 +4,7 @@ import {ComponentProps} from '../types/componentProps'
 import {LActionTypes} from '../types/extractActionType'
 import {LObjectValues} from '../types/extractValueType'
 import {LActionValueForType} from '../types/extractValueTypeFromAction'
+import {mergeProps} from '../types/mergeProps'
 import {iChildren} from '../types/pickChildrenType'
 import {iActions} from '../types/pickIActionsType'
 import {iState} from '../types/pickIStateType'
@@ -14,19 +15,10 @@ import {iProps} from '../types/pickPropType'
 import {Component} from './component'
 
 /**
- * Overwrite the props in T with props in S.
- */
-export type iSet<T, S> = Omit<T, keyof S> & S
-
-/**
  * Creates a new component-type with the overridden props
  */
-export type iComponentNext<P, S> = ComponentNext<iSet<P, S>>
+export type iComponentNext<P, S> = ComponentNext<mergeProps<P, S>>
 
-/**
- * Removes duplicate A | A insertions.
- */
-export type U<A, B> = A | B extends A & B ? A : A | B
 const arg2 = <A, B>(a: A, b: B) => b
 export class ComponentNext<P1 extends ComponentProps> {
   private constructor(
