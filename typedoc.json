@@ -4,6 +4,7 @@
   "externalPattern": "**/node_modules",
   "excludeExternals": true,
   "excludeNotExported": true,
+  "excludePrivate": true, 
   "name": "@action-land",
   "readme": "./README.md",
   "toc": ["Action", "concatR", "concatC", "matchR", "matchC", "Component", "ComponentNext", "isList", "isNil"]

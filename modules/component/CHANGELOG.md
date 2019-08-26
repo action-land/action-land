@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/action-land/action-land/compare/v8.0.0...v8.1.0) (2019-08-23)
+
+
+### Features
+
+* **component:** add memoizeWith() ([#56](https://github.com/action-land/action-land/issues/56)) ([8152392](https://github.com/action-land/action-land/commit/8152392))
+
+
+
+
+
+# [8.0.0](https://github.com/action-land/action-land/compare/v7.0.1...v8.0.0) (2019-08-22)
+
+**Note:** Version bump only for package @action-land/component
+
+
+
+
+
+# [7.0.0](https://github.com/action-land/action-land/compare/v6.0.0...v7.0.0) (2019-08-21)
+
+**Note:** Version bump only for package @action-land/component
+
+
+
+
+
+# [6.0.0](https://github.com/action-land/action-land/compare/v5.1.0...v6.0.0) (2019-08-21)
+
+
+### Bug Fixes
+
+* **component:** matchR cb value type infered if action is already handled in matchR or install ([#49](https://github.com/action-land/action-land/issues/49)) ([c1e1868](https://github.com/action-land/action-land/commit/c1e1868))
+
+
+
+
+
 # [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
 
 

@@ -27,48 +27,57 @@ describe('action', () => {
 
   describe('fold', () => {
     it('should fold over non-nested actions', () => {
-      const actual = action('A', 50).fold(100, (s, a) => s + a.value)
+      const actual = Action.fold(action('A', 50), 100, (a, s) => s + a.value)
       const expected = 150
 
       assert.strictEqual(actual, expected)
     })
 
     it('should fold over nested actions', () => {
-      const actual = action('A', 50)
-        .lift('B')
-        .fold(100, (s, a) => s + a.value.value)
+      const actual = Action.fold(
+        action('A', 50).lift('B'),
+        100,
+        (a, s) => s + a.value.value
+      )
       const expected = 150
 
       assert.strictEqual(actual, expected)
     })
 
     it('should fold over any level of nested actions', () => {
-      const actual = action('A', 50)
-        .lift('B')
-        .lift('C')
-        .lift('D')
-        .fold(100, (s, a) => s + a.value.value.value.value)
+      const actual = Action.fold(
+        action('A', 50)
+          .lift('B')
+          .lift('C')
+          .lift('D'),
+        100,
+
+        (a, s) => s + a.value.value.value.value
+      )
       const expected = 150
 
       assert.strictEqual(actual, expected)
     })
 
     it('should fold using a nested spec', () => {
-      const actual = action('A', 50)
-        .lift('B')
-        .lift('C')
-        .lift('D')
-        .lift('E')
-        .lift('F')
-        .fold(100, {E: {D: {C: {B: {A: (s, a) => s + a.value}}}}})
-      const expected = 150
+      const actual = Action.fold(
+        action('A', 50)
+          .lift('B')
+          .lift('C')
+          .lift('D')
+          .lift('E')
+          .lift('F'),
+        {count: 100},
+        {F: {E: {D: {C: {B: {A: (a, s) => ({count: s.count + a})}}}}}}
+      )
+      const expected = {count: 150}
 
-      assert.strictEqual(actual, expected)
+      assert.deepEqual(actual, expected)
     })
 
     it('should fold nil', () => {
-      const actual = Action.nil().fold(10, (s, a) => s + 1)
-      const expected = 11
+      const actual = Action.fold(Action.nil(), 100, (a, s) => s + 1)
+      const expected = 101
 
       assert.strictEqual(actual, expected)
     })

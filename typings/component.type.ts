@@ -25,20 +25,25 @@ $(
   }))
 ).oState
 
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
+// iAction should be union of action types if action type is repeated
+// $ExpectType Action<number, "dec"> | Action<string, "inc">
 $(
   ComponentNext.lift({count: 0})
-    .matchR('inc', (e: {a: string}, s) => s)
-    .matchR('inc', (e: {b: number}, s) => s)
+    .matchR('dec', (e: number, s) => s)
+    .matchR('inc', (e: string, s) => s)
+    .matchR('inc', (e, s) => s)
 ).iActions
 
-// $ExpectType Action<{ b: number; }, "dec"> | Action<{ b: number; } & { a: string; }, "inc">
+// Should infer value types in callback of match
+// $ExpectType { count: number; } | { value: string; count: number; }
 $(
   ComponentNext.lift({count: 0})
-    .matchR('dec', (e: {b: number}, s) => s)
-    .matchR('inc', (e: {a: string}, s) => s)
-    .matchR('inc', (e: {b: number}, s) => s)
-).iActions
+    .matchR('inc', (e: string, s) => s)
+    .matchR('inc', (e, s) => ({
+      ...s,
+      value: e
+    }))
+).oState
 
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
@@ -47,20 +52,23 @@ $(
     .matchC('dec', (e, s) => action('Write', {data: 'abc'}))
 ).oActions
 
-// $ExpectType Action<{ b: number; } & { a: string; }, "inc">
+// iAction should be union of action types if action type is repeated
+// $ExpectType Action<number, "dec"> | Action<string, "inc">
 $(
   ComponentNext.lift({count: 0})
-    .matchC('inc', (a: {a: string}, s) => Nil())
-    .matchC('inc', (a: {b: number}, s) => Nil())
+    .matchC('dec', (e: number, s) => Nil())
+    .matchC('inc', (e: string, s) => Nil())
+    .matchC('inc', (e, s) => action('output', e))
 ).iActions
 
-// $ExpectType Action<{ b: number; }, "dec"> | Action<{ b: number; } & { a: string; }, "inc">
+// Should infer value types in callback of match
+// $ExpectType Action<never, never> | Action<string, "output">
 $(
   ComponentNext.lift({count: 0})
-    .matchC('dec', (e: {b: number}, s) => Nil())
-    .matchC('inc', (e: {a: string}, s) => Nil())
-    .matchC('inc', (e: {b: number}, s) => Nil())
-).iActions
+    .matchC('dec', (e: number, s) => Nil())
+    .matchC('inc', (e: string, s) => Nil())
+    .matchC('inc', (e, s) => action('output', e))
+).oActions
 
 // $ExpectType { node: never; children: { child1: never; child2: never; }; }
 $(
@@ -186,3 +194,23 @@ $(
 
 // $ExpectType { a: string; }
 $(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+
+// ComponentNext.memoizeWith should provide current state and props to the callback
+ComponentNext.lift({color: 'red'})
+  .render((_, p: string) => p)
+
+  .memoizeWith((s1, p1, s2, p2) => {
+    // $ExpectType { color: string; }
+    s1
+
+    // $ExpectType string
+    p1
+
+    // $ExpectType { color: string; } | undefined
+    s2
+
+    // $ExpectType string | undefined
+    p2
+
+    return true
+  })

@@ -12,6 +12,7 @@ import {oActions} from '../types/pickOActionType'
 import {oState} from '../types/pickOStateType'
 import {oView} from '../types/pickOutputViewType'
 import {iProps} from '../types/pickPropType'
+import {LActionValueForTypeWithDefault} from '../types/extractValueTypeFromActionWithDeault'
 import {Component} from './component'
 
 /**
@@ -19,8 +20,30 @@ import {Component} from './component'
  */
 export type iComponentNext<P, S> = ComponentNext<mergeProps<P, S>>
 
+/**
+ * Removes duplicate A | A insertions.
+ */
+export type U<A, B> = A | B extends A & B ? A : A | B
+
+/**
+ * Comparator function used for memoization
+ */
+type Comparator = <S, P>(s1: S, p1: P, s2?: S, p2?: P) => boolean
+
+const defaultComparator: Comparator = () => true
+
 const arg2 = <A, B>(a: A, b: B) => b
+
+/**
+ * Type safe, composable, and view agnostic component API
+ */
 export class ComponentNext<P1 extends ComponentProps> {
+  /**
+   * @param _init Function which return initial state of the component
+   * @param _update Funtion which takes action and state, and returns new state
+   * @param _command Function which takes action and state, and returns new action for causing side effect
+   * @param _view Function which returns view based on state and props provided
+   */
   private constructor(
     // FIXME: Fix typings for _init, _update, _command
     readonly _init: () => any,
@@ -28,13 +51,25 @@ export class ComponentNext<P1 extends ComponentProps> {
     readonly _command: (a: Action<unknown>, b: unknown) => unknown,
     readonly _view: (e: unknown, s: unknown, p: unknown) => unknown,
     private readonly _children: {[k: string]: ComponentNext<any>},
-    private readonly _iActions: LinkedList<string | number>
+    private readonly _iActions: LinkedList<string | number>,
+    private readonly _comparator: Comparator
   ) {}
 
+  /**
+   * Transforms the component from ComponentNext P1 to ComponentNext P2
+   * @param fn mapper function to transform component
+   */
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
     return fn(this)
   }
 
+  /**
+   * Create a new component with provided state as initial state
+   * ```typescript
+   * const component = ComponentNext.lift({count: 100}) // creates new component with initial state as {count: 100}
+   * ```
+   * @param state intial state of component
+   */
   static lift<S>(state: S): ComponentNext<{iState: S; oView: void}> {
     const i = () => state
     return new ComponentNext(
@@ -43,10 +78,17 @@ export class ComponentNext<P1 extends ComponentProps> {
       Nil,
       () => undefined,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      defaultComparator
     )
   }
 
+  /**
+   * Creates a new component with initial state as undefined
+   * ```typescript
+   * const component = ComponentNext.empty // creates new component with initial state as undefined
+   * ```
+   */
   static get empty(): ComponentNext<{
     iState: undefined
     oView: void
@@ -54,20 +96,31 @@ export class ComponentNext<P1 extends ComponentProps> {
     return ComponentNext.lift(undefined)
   }
 
+  /**
+   * Adds ability to transform component's state matching action type
+   * @typeparam T Action type being handled by operator
+   * @typeparam V Value of action being handled by operator
+   * @typeparam oState2 New state returned by the cb function
+   * @param type Action type for which we want to add behaviour
+   * @param cb Function that takes in a action's value and a state and returns a new state
+   * ```typescript
+   * const component = ComponentNext.lift({count: 100})
+   *  .matchR('add', (value: number, state) => ({count: state.count + value}))
+   *  // Adds behaviour to handle action of type Action<number, 'add'>
+   * ```
+   */
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
-    cb: (value: V, state: iState<P1>) => oState2
+    cb: (
+      value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
+      state: iState<P1>
+    ) => oState2
   ): iComponentNext<
     P1,
     {
-      iActions: T extends LActionTypes<iActions<P1>>
-        ?
-            | Action<V & LActionValueForType<iActions<P1>, T>, T>
-            | Exclude<
-                iActions<P1>,
-                Action<LActionValueForType<iActions<P1>, T>>
-              >
-        : Action<V, T> | iActions<P1>
+      iActions:
+        | Action<LActionValueForTypeWithDefault<iActions<P1>, T, V>, T>
+        | iActions<P1>
       oState: oState2 | oState<P1>
     }
   > {
@@ -76,31 +129,45 @@ export class ComponentNext<P1 extends ComponentProps> {
       (a, s: any) => {
         const s2 = this._update(a, s) as any
         if (a.type === type) {
-          return cb(a.value as V, s2)
+          // this.update args type is Action<unknown>
+          return cb(a.value as any, s2)
         }
         return s2
       },
       this._command,
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
+  /**
+   * Adds ability to return side effect cauasing action matching action type
+   * @typeparam T Action type being handled by operator
+   * @typeparam V Type of action value being handled by operator
+   * @typeparam T2 Action type fired by cb function
+   * @typeparam V2 value of action fired by cb function
+   * @param type Action type for which we want to add behaviour
+   * @param cb Function that takes in a action's value and a state and returns a new state
+   * ```typescript
+   * const component = ComponentNext.lift({count: 100})
+   *  .matchC('persist', (value: number, state) => (Action.of('writeCache', value)))
+   *  // Adds behaviour to handle action of type Action<number, 'persist'>
+   * ```
+   */
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
-    cb: (value: V, state: iState<P1>) => Action<V2, T2>
+    cb: (
+      value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
+      state: iState<P1>
+    ) => Action<V2, T2>
   ): iComponentNext<
     P1,
     {
-      iActions: T extends LActionTypes<iActions<P1>>
-        ?
-            | Action<V & LActionValueForType<iActions<P1>, T>, T>
-            | Exclude<
-                iActions<P1>,
-                Action<LActionValueForType<iActions<P1>, T>>
-              >
-        : Action<V, T> | iActions<P1>
+      iActions:
+        | Action<LActionValueForTypeWithDefault<iActions<P1>, T, V>, T>
+        | iActions<P1>
       oActions: oActions<P1> | Action<V2, T2>
     }
   > {
@@ -116,10 +183,40 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       this._children,
-      this._iActions.prepend(type)
+      this._iActions.prepend(type),
+      this._comparator
     )
   }
 
+  /**
+   * Adds child component to a component, this operator does multiple things i.e
+   * 1. Transform component's state to object having keys i.e `node` and `children`
+   * 2. `node` has component's self state
+   * 3. `children` has all component children's state
+   * 4. Forward all actions with type of child's name to child component update function
+   * @param spec key value pair object of child name and child component
+   *
+   * ```typescript
+   * const child1 = ComponentNext.lift({c1: 100})
+   * const child2 = ComponentNext.lift({c2: 200})
+   * const component = ComponentNext.lift({c: 1000})
+   *  .install(
+   *  {
+   *    child1,
+   *    child2
+   *  }
+   * )
+   * // Init state becomes
+   * // {
+   * //  node: {c: 1000},
+   * //  children: {
+   * //     child1: {c1: 100},
+   * //     child2: {c2: 200}
+   * //  }
+   * // }
+   * // All actions of type `child1` will be forwarded to child1 component
+   * ```
+   */
   install<
     S extends {
       [k: string]: ComponentNext<any>
@@ -197,10 +294,36 @@ export class ComponentNext<P1 extends ComponentProps> {
       },
       this._view,
       spec,
-      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions)
+      Object.keys(spec).reduce((a, b) => a.prepend(b), this._iActions),
+      this._comparator
     )
   }
-
+  /**
+   * Adds presentation logic to the component
+   * 1. Create view based on props and state
+   * ```typescript
+   * const component1 = ComponentNext.lift(10).render((_, props: string) => [props, _.state + 1])
+   * component._view({}, component._init(), 'Hello') // output: [Hello, 11]
+   * ```
+   * 2. Can invoke child component's view
+   * ```typescript
+   * const component = ComponentNext.lift('Hello').install({
+   *   child: ComponentNext.lift('World').render((_, p: string) => p)
+   * })
+   * .render((_, p: string) => [p, _.children.child('World')]
+   * component._view({}, component._init(), 'Hello') // output: [Hello, World]
+   * ```
+   * 3. Can emit action
+   * ```typescript
+   * const component = ComponentNext.lift(10)
+   * .matchR('add', (a: number, s) => s + a)
+   * .render(_ => _.actions.add(100))
+   * component._view({}, component._init()) // output: Action<100, 'add'> and changes component state to 110
+   * ```
+   * @typeparam P View prop type
+   * @typeparam V View representation data structure type
+   * @param cb Function which return component view representation based on props and state
+   */
   render<P = never, V = unknown>(
     cb: (
       env: {
@@ -219,11 +342,25 @@ export class ComponentNext<P1 extends ComponentProps> {
       p: P
     ) => V
   ): iComponentNext<P1, {oView: V; iProps: P}> {
+    let cachedProps: iProps<P1>
+    let cachedState: oState<P1>
+    let cachedView: V
+
     return new ComponentNext(
       this._init,
       this._update,
       this._command,
-      (e: any, s: any, p) => {
+      function(this: ComponentNext<P1>, e: any, s: any, p: any) {
+        if (
+          cachedView !== undefined &&
+          this._comparator !== defaultComparator &&
+          this._comparator(s, p, cachedState, cachedProps)
+        ) {
+          return cachedView
+        }
+        cachedProps = p
+        cachedState = s
+
         const children: any = {}
         for (let i in this._children) {
           if (this._children.hasOwnProperty(i)) {
@@ -236,20 +373,33 @@ export class ComponentNext<P1 extends ComponentProps> {
           ...actions,
           [key]: (ev: any) => e.of(key).emit(ev)
         }))
-        return cb(
+
+        return (cachedView = cb(
           {
             actions: actions as any,
             state: s,
             children
           },
           p as any
-        )
+        ))
       },
       this._children,
-      this._iActions
+      this._iActions,
+      this._comparator
     )
   }
 
+  /**
+   * Transform initial state of a component
+   * @typeparam S2 State type post transformation
+   * @param fn function to transform the state
+   *
+   * ```typescript
+   * const component = ComponentNext.lift({count: 100})
+   *  .configure((istate)=> {count: istate.count * 2})
+   * const component._init() // output: {count: 200}
+   * ```
+   */
   configure<S2 extends iState<P1>>(
     fn: (a: iState<P1>) => S2
   ): iComponentNext<P1, {iState: S2}> {
@@ -259,10 +409,50 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._command,
       this._view,
       this._children,
-      this._iActions
+      this._iActions,
+      defaultComparator
     )
   }
 
+  /**
+   * Memoize component view based on comparator passed
+   * @param fn Comparator function which decides wheather to return cached view or calculate new view
+   */
+  memoizeWith(
+    fn: (
+      s1: oState<P1> | iState<P1>,
+      p1: iProps<P1>,
+      s2?: oState<P1> | iState<P1>,
+      p2?: iProps<P1>
+    ) => boolean
+  ): ComponentNext<P1> {
+    return new ComponentNext(
+      this._init,
+      this._update,
+      this._command,
+      this._view,
+      this._children,
+      this._iActions,
+      (...t) => {
+        const args = t as [
+          oState<P1> | iState<P1>,
+          iProps<P1>,
+          oState<P1> | iState<P1>,
+          iProps<P1>
+        ]
+        return this._comparator === defaultComparator
+          ? fn(...args)
+          : this._comparator(...args) && fn(...args)
+      }
+    )
+  }
+  /**
+   * Method to convert old component API to ComponentNext
+   * @typeparam A state
+   * @typeparam V view
+   * @typeparam P prop
+   * @typeparam I init param
+   */
   static from<A, V, P, I extends unknown[]>(
     component: {
       init: (...t: I) => A
@@ -278,10 +468,13 @@ export class ComponentNext<P1 extends ComponentProps> {
       component.command,
       component.view as any,
       {},
-      LinkedList.empty
+      LinkedList.empty,
+      defaultComparator
     )
   }
-
+  /**
+   * Method to convert componentNext to old component API
+   */
   get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
     return {
       init: this._init,

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/action-land/action-land/compare/v7.0.1...v8.0.0) (2019-08-22)
+
+**Note:** Version bump only for package @action-land/match
+
+
+
+
+
+# [7.0.0](https://github.com/action-land/action-land/compare/v6.0.0...v7.0.0) (2019-08-21)
+
+**Note:** Version bump only for package @action-land/match
+
+
+
+
+
+# [6.0.0](https://github.com/action-land/action-land/compare/v5.1.0...v6.0.0) (2019-08-21)
+
+**Note:** Version bump only for package @action-land/match
+
+
+
+
+
 # [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
 
 **Note:** Version bump only for package @action-land/match

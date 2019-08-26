@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/action-land/action-land/compare/v8.0.0...v8.1.0) (2019-08-23)
+
+
+### Features
+
+* **component:** add memoizeWith() ([#56](https://github.com/action-land/action-land/issues/56)) ([8152392](https://github.com/action-land/action-land/commit/8152392))
+
+
+
+
+
+# [8.0.0](https://github.com/action-land/action-land/compare/v7.0.1...v8.0.0) (2019-08-22)
+
+
+### Code Refactoring
+
+* **action:** change signature for the spec function ([92145e2](https://github.com/action-land/action-land/commit/92145e2))
+
+
+### BREAKING CHANGES
+
+* **action:** FoldSpec's callback has the arguments reversed
+
+
+
+
+
+# [7.0.0](https://github.com/action-land/action-land/compare/v6.0.0...v7.0.0) (2019-08-21)
+
+
+### Code Refactoring
+
+* **action:** change the function signature for Action.fold ([7a726b0](https://github.com/action-land/action-land/commit/7a726b0))
+
+
+### BREAKING CHANGES
+
+* **action:** Action.fold now takes the first argument as the action instead of seed.
+
+
+
+
+
+# [6.0.0](https://github.com/action-land/action-land/compare/v5.1.0...v6.0.0) (2019-08-21)
+
+
+### Bug Fixes
+
+* **component:** matchR cb value type infered if action is already handled in matchR or install ([#49](https://github.com/action-land/action-land/issues/49)) ([c1e1868](https://github.com/action-land/action-land/commit/c1e1868))
+
+
+### Features
+
+* **action:** create a fold static method ([#55](https://github.com/action-land/action-land/issues/55)) ([1d7c2b1](https://github.com/action-land/action-land/commit/1d7c2b1))
+
+
+### BREAKING CHANGES
+
+* **action:** removing the \`fold()\` method and adding \`Action.fold()\` static method
+
+* docs(action): fix test statement
+
+
+
+
+
 # [5.1.0](https://github.com/action-land/action-land/compare/v5.0.0...v5.1.0) (2019-08-17)
 
 
