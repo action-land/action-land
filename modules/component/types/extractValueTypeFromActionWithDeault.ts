@@ -6,6 +6,8 @@ import {LActionValueForType} from './extractValueTypeFromAction'
  * @typeparam T Type of action for which value type is to be inferred
  * @typeparam D Fallback type if type T is not present in A set
  * ```typescript
+ * import {Action} from '@action-land/core'
+ *
  * LActionValueForTypeWithDefault<Action<10, 'a'> | Action<{count: 10}, 'b'>, 'c', 'default'> // outputs  'default'
  * ```
  * @category ComponentNext

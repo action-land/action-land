@@ -5,6 +5,8 @@ import {Action} from '@action-land/core'
  * @typeparam A set of actions
  * @typeparam T type of action for which value type is to be inferred
  * ```typescript
+ * import {Action} from '@action-land/core'
+ *
  * LActionValueForType<Action<10, 'a'> | Action<{count: 10}, 'b'>, 'b'> // outputs  {count: string}
  * ```
  * @category ComponentNext

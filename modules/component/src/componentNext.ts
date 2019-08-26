@@ -65,7 +65,10 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Create a new component with provided state as initial state
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.lift({count: 100}) // creates new component with initial state as {count: 100}
    * ```
    * @param state intial state of component
@@ -85,7 +88,10 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Creates a new component with initial state as undefined
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.empty // creates new component with initial state as undefined
    * ```
    */
@@ -98,7 +104,10 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds ability to transform component's state matching action type
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.lift({count: 100})
    *  .matchR('add', (value: number, state) => ({count: state.count + value}))
    *  // Adds behaviour to handle action of type Action<number, 'add'>
@@ -144,7 +153,11 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds ability to return side effect cauasing action matching action type
+   *
    *```typescript
+   * import {ComponentNext} from '@action-land/component'
+   * import {Action} from '@action-land/core'
+   *
    * const component = ComponentNext.lift({count: 100})
    *  .matchC('persist', (value: number, state) => (Action.of('writeCache', value)))
    *  // Adds behaviour to handle action of type Action<number, 'persist'>
@@ -190,7 +203,10 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds child component to a component, this operator does multiple things i.e
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const child1 = ComponentNext.lift({c1: 100})
    * const child2 = ComponentNext.lift({c2: 200})
    * const component = ComponentNext.lift({c: 1000})
@@ -301,12 +317,18 @@ export class ComponentNext<P1 extends ComponentProps> {
   /**
    * Adds presentation logic to the component
    * 1. Create view based on props and state
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component1 = ComponentNext.lift(10).render((_, props: string) => [props, _.state + 1])
    * component._view({}, component._init(), 'Hello') // output: [Hello, 11]
    * ```
    * 2. Can invoke child component's view
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.lift('Hello').install({
    *   child: ComponentNext.lift('World').render((_, p: string) => p)
    * })
@@ -314,7 +336,10 @@ export class ComponentNext<P1 extends ComponentProps> {
    * component._view({}, component._init(), 'Hello') // output: [Hello, World]
    * ```
    * 3. Can emit action
+   *
    * ```typescript
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.lift(10)
    * .matchR('add', (a: number, s) => s + a)
    * .render(_ => _.actions.add(100))
@@ -392,6 +417,9 @@ export class ComponentNext<P1 extends ComponentProps> {
   /**
    * Transform initial state of a component
    * ```typescript
+   *
+   * import {ComponentNext} from '@action-land/component'
+   *
    * const component = ComponentNext.lift({count: 100})
    *  .configure((istate)=> {count: istate.count * 2})
    * const component._init() // output: {count: 200}
