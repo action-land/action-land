@@ -4,6 +4,7 @@ import {ComponentProps} from '../types/componentProps'
 import {LActionTypes} from '../types/extractActionType'
 import {LObjectValues} from '../types/extractValueType'
 import {LActionValueForType} from '../types/extractValueTypeFromAction'
+import {LActionValueForTypeWithDefault} from '../types/extractValueTypeFromActionWithDeault'
 import {mergeProps} from '../types/mergeProps'
 import {iChildren} from '../types/pickChildrenType'
 import {iActions} from '../types/pickIActionsType'
@@ -12,7 +13,6 @@ import {oActions} from '../types/pickOActionType'
 import {oState} from '../types/pickOStateType'
 import {oView} from '../types/pickOutputViewType'
 import {iProps} from '../types/pickPropType'
-import {LActionValueForTypeWithDefault} from '../types/extractValueTypeFromActionWithDeault'
 import {Component} from './component'
 
 /**
@@ -98,16 +98,16 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds ability to transform component's state matching action type
-   * @typeparam T Action type being handled by operator
-   * @typeparam V Value of action being handled by operator
-   * @typeparam oState2 New state returned by the cb function
-   * @param type Action type for which we want to add behaviour
-   * @param cb Function that takes in a action's value and a state and returns a new state
    * ```typescript
    * const component = ComponentNext.lift({count: 100})
    *  .matchR('add', (value: number, state) => ({count: state.count + value}))
    *  // Adds behaviour to handle action of type Action<number, 'add'>
    * ```
+   * @typeparam T Action type being handled by operator
+   * @typeparam V Value of action being handled by operator
+   * @typeparam oState2 New state returned by the cb function
+   * @param type Action type for which we want to add behaviour
+   * @param cb Function that takes in a action's value and a state and returns a new state
    */
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
@@ -144,17 +144,17 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds ability to return side effect cauasing action matching action type
+   *```typescript
+   * const component = ComponentNext.lift({count: 100})
+   *  .matchC('persist', (value: number, state) => (Action.of('writeCache', value)))
+   *  // Adds behaviour to handle action of type Action<number, 'persist'>
+   * ```
    * @typeparam T Action type being handled by operator
    * @typeparam V Type of action value being handled by operator
    * @typeparam T2 Action type fired by cb function
    * @typeparam V2 value of action fired by cb function
    * @param type Action type for which we want to add behaviour
    * @param cb Function that takes in a action's value and a state and returns a new state
-   * ```typescript
-   * const component = ComponentNext.lift({count: 100})
-   *  .matchC('persist', (value: number, state) => (Action.of('writeCache', value)))
-   *  // Adds behaviour to handle action of type Action<number, 'persist'>
-   * ```
    */
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
@@ -190,12 +190,6 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Adds child component to a component, this operator does multiple things i.e
-   * 1. Transform component's state to object having keys i.e `node` and `children`
-   * 2. `node` has component's self state
-   * 3. `children` has all component children's state
-   * 4. Forward all actions with type of child's name to child component update function
-   * @param spec key value pair object of child name and child component
-   *
    * ```typescript
    * const child1 = ComponentNext.lift({c1: 100})
    * const child2 = ComponentNext.lift({c2: 200})
@@ -216,6 +210,12 @@ export class ComponentNext<P1 extends ComponentProps> {
    * // }
    * // All actions of type `child1` will be forwarded to child1 component
    * ```
+   * 1. Transform component's state to object having keys i.e `node` and `children`
+   * 2. `node` has component's self state
+   * 3. `children` has all component children's state
+   * 4. Forward all actions with type of child's name to child component update function
+   * @param spec key value pair object of child name and child component
+   *
    */
   install<
     S extends {
@@ -391,14 +391,14 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Transform initial state of a component
-   * @typeparam S2 State type post transformation
-   * @param fn function to transform the state
-   *
    * ```typescript
    * const component = ComponentNext.lift({count: 100})
    *  .configure((istate)=> {count: istate.count * 2})
    * const component._init() // output: {count: 200}
    * ```
+   * @typeparam S2 State type post transformation
+   * @param fn function to transform the state
+   *
    */
   configure<S2 extends iState<P1>>(
     fn: (a: iState<P1>) => S2
