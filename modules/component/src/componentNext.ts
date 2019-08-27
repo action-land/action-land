@@ -39,8 +39,8 @@ const arg2 = <A, B>(a: A, b: B) => b
  */
 export class ComponentNext<P1 extends ComponentProps> {
   /**
-   * @param _init Function which return initial state of the component
-   * @param _update Funtion which takes action and state, and returns new state
+   * @param _init Function which returns initial state of the component
+   * @param _update Function which takes action and state, and returns new state
    * @param _command Function which takes action and state, and returns new action for causing side effect
    * @param _view Function which returns view based on state and props provided
    */
@@ -203,6 +203,8 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Add component as a child of a given component i.e
+   * 1. Forward all actions with type of child's name to child component update function
+   * 2. maintain self-state and child's state separately
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -212,24 +214,22 @@ export class ComponentNext<P1 extends ComponentProps> {
    * const component = ComponentNext.lift({c: 1000})
    *  .install(
    *  {
-   *    child1,
-   *    child2
+   *    child1, // actions of type `child1` will be forwarded to child1 component
+   *    child2  // actions of type `child2` will be forwarded to child2 component
    *  }
    * )
-   * // Init state becomes
-   * // {
-   * //  node: {c: 1000},
-   * //  children: {
-   * //     child1: {c1: 100},
-   * //     child2: {c2: 200}
-   * //  }
+   *
+   * component._init()
+   * //outputs
+   * //{
+   * // node: {c: 1000},
+   * // children: {
+   * //   child1: {c1: 100},
+   * //   child2: {c2: 200}
    * // }
-   * // All actions of type `child1` will be forwarded to child1 component
+   * //}
+   *
    * ```
-   * 1. Transform component's state to object having keys i.e `node` and `children`
-   * 2. `node` has component's self state
-   * 3. `children` has all component children's state
-   * 4. Forward all actions with type of child's name to child component update function
    * @param spec key value pair object of child name and child component
    *
    */
@@ -323,6 +323,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    *
    * const component1 = ComponentNext.lift(10)
    *   .render((_, props: string) => [props, _.state + 1])
+   *
    * component._view({}, component._init(), 'Hello') // output: [Hello, 11]
    * ```
    * 2. Can invoke child component's view
@@ -335,6 +336,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    *     child: ComponentNext.lift('World').render((_, p: string) => p)
    *   })
    *   .render((_, p: string) => [p, _.children.child('World')]
+   *
    * component._view({}, component._init(), 'Hello') // output: [Hello, World]
    * ```
    * 3. Can emit action
@@ -345,6 +347,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    * const component = ComponentNext.lift(10)
    *   .matchR('add', (a: number, s) => s + a)
    *   .render(_ => _.actions.add(100))
+   *
    * component._view({}, component._init()) // output: Action<100, 'add'> and changes component state to 110
    * ```
    * @typeparam P View prop type
@@ -418,7 +421,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Transform initial state of the component
-   * 
+   *
    * ```typescript
    *
    * import {ComponentNext} from '@action-land/component'
@@ -426,7 +429,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    * ComponentNext.lift({count: 100}).configure(iState => ({
    *  count: iState.count * 2
    * }))
-   * 
+   *
    * const component._init() // output: {count: 200}
    * ```
    * @typeparam S2 State type post transformation

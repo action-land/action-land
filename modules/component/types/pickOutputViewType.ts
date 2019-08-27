@@ -2,7 +2,7 @@ import {PPP} from './pickValueFromComponent'
 
 /**
  * Pick view type from component or component props
- * @typeparam P Either ComponentProp or ComponentNext
+ * @typeparam P Either ComponentProps or ComponentNext
  * @category ComponentNext
  */
 

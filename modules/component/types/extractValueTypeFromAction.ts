@@ -2,7 +2,7 @@ import {Action} from '@action-land/core'
 
 /**
  * Infer type of values from action set given action type's type
- * 
+ *
  * ```typescript
  * import {Action} from '@action-land/core'
  *

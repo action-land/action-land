@@ -2,7 +2,7 @@ import {Action} from '@action-land/core'
 
 /**
  * Component typing signature
- * 1. **iState**: Initial state requiered by component to exist.
+ * 1. **iState**: Initial state required by component to exist.
  * 2. **oState**: Extends iState i.e may contain additional properties.
  * 3. **iActions**: Set of actions handled by component.
  * 4. **oActions**: Set of actions fired by component.
