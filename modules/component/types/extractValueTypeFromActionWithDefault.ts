@@ -1,7 +1,7 @@
 import {LActionValueForType} from './extractValueTypeFromAction'
 
 /**
- * Infer type of values from action set given action type's type with fallback type
+ * Infer type of values from action union type given action type's type with fallback type
  *
  * ```typescript
  * import {Action} from '@action-land/core'
@@ -9,7 +9,7 @@ import {LActionValueForType} from './extractValueTypeFromAction'
  * LActionValueForTypeWithDefault<Action<10, 'a'> | Action<{count: 10}, 'b'>, 'c', 'default'> // outputs  'default'
  * ```
  *
- * @typeparam A Set of actions
+ * @typeparam A Union type of Actions
  * @typeparam T Type of action for which value is to be inferred
  * @typeparam D Fallback type if type T is not present in A set
  * @category ComponentNext

@@ -35,14 +35,14 @@ const defaultComparator: Comparator = () => true
 const arg2 = <A, B>(a: A, b: B) => b
 
 /**
- * Type safe, composable, and view library agnostic component API
+ * API for type safe and composable components that are agnostic of view library
  */
 export class ComponentNext<P1 extends ComponentProps> {
   /**
    * @param _init Function which returns initial state of the component
    * @param _update Function which takes action and state, and returns new state
-   * @param _command Function which takes action and state, and returns new action for causing side effect
-   * @param _view Function which returns view based on state and props provided
+   * @param _command Function which takes action and state, and returns new action
+   * @param _view Function which returns view based on state and props
    */
   private constructor(
     // FIXME: Fix typings for _init, _update, _command
@@ -56,7 +56,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   ) {}
 
   /**
-   * Transform component ComponentNext P1 to ComponentNext P2
+   * Transform ComponentNext P1 to ComponentNext P2
    * @param fn mapper function to transform component
    */
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -64,14 +64,14 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Create new component with provided state as initial state
+   * Create new component with provided value as initial state
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
    *
    * const component = ComponentNext.lift({count: 100})
    * ```
-   * @param state intial state of component
+   * @param state initial state of component
    */
   static lift<S>(state: S): ComponentNext<{iState: S; oView: void}> {
     const i = () => state
@@ -87,7 +87,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Create new component with initial state as undefined
+   * Create new component with state as undefined
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -104,6 +104,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Add transformation of component's state for a given action
+   * p.s: Check out test cases for advanced use cases
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -112,8 +113,8 @@ export class ComponentNext<P1 extends ComponentProps> {
    *  .matchR('add', (value: number, state) => ({count: state.count + value}))
    *  // Adds behaviour to handle action of type Action<number, 'add'>
    * ```
-   * @typeparam T Action type being handled by operator
-   * @typeparam V Value of action being handled by operator
+   * @typeparam T Action type to be handled by component
+   * @typeparam V Value of action to be handled by component
    * @typeparam oState2 New state returned by the cb function
    * @param type Action type for which we want to add behaviour
    * @param cb Transformation function that returns a new state
@@ -162,8 +163,8 @@ export class ComponentNext<P1 extends ComponentProps> {
    *  .matchC('persist', (value: number, state) => (Action.of('writeCache', value)))
    *  // Adds behaviour to handle action of type Action<number, 'persist'>
    * ```
-   * @typeparam T Action type being handled by operator
-   * @typeparam V Type of action value being handled by operator
+   * @typeparam T Action type to be handled by component
+   * @typeparam V Type of action value to be handled by component
    * @typeparam T2 Action type fired by cb function
    * @typeparam V2 value of action fired by cb function
    * @param type Action type for which we want to add behaviour
