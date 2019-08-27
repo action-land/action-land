@@ -4,7 +4,7 @@ import {ComponentProps} from '../types/componentProps'
 import {LActionTypes} from '../types/extractActionType'
 import {LObjectValues} from '../types/extractValueType'
 import {LActionValueForType} from '../types/extractValueTypeFromAction'
-import {LActionValueForTypeWithDefault} from '../types/extractValueTypeFromActionWithDeault'
+import {LActionValueForTypeWithDefault} from '../types/extractValueTypeFromActionWithDefault'
 import {mergeProps} from '../types/mergeProps'
 import {iChildren} from '../types/pickChildrenType'
 import {iActions} from '../types/pickIActionsType'
@@ -35,7 +35,7 @@ const defaultComparator: Comparator = () => true
 const arg2 = <A, B>(a: A, b: B) => b
 
 /**
- * Type safe, composable, and view agnostic component API
+ * Type safe, composable, and view library agnostic component API
  */
 export class ComponentNext<P1 extends ComponentProps> {
   /**
@@ -56,7 +56,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   ) {}
 
   /**
-   * Transforms the component from ComponentNext P1 to ComponentNext P2
+   * Transform component ComponentNext P1 to ComponentNext P2
    * @param fn mapper function to transform component
    */
   lift<P2>(fn: (c: ComponentNext<P1>) => ComponentNext<P2>): ComponentNext<P2> {
@@ -64,12 +64,12 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Create a new component with provided state as initial state
+   * Create new component with provided state as initial state
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
    *
-   * const component = ComponentNext.lift({count: 100}) // creates new component with initial state as {count: 100}
+   * const component = ComponentNext.lift({count: 100})
    * ```
    * @param state intial state of component
    */
@@ -87,12 +87,12 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Creates a new component with initial state as undefined
+   * Create new component with initial state as undefined
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
    *
-   * const component = ComponentNext.empty // creates new component with initial state as undefined
+   * const component = ComponentNext.empty
    * ```
    */
   static get empty(): ComponentNext<{
@@ -103,7 +103,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Adds ability to transform component's state matching action type
+   * Add transformation of component's state for a given action
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -116,7 +116,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    * @typeparam V Value of action being handled by operator
    * @typeparam oState2 New state returned by the cb function
    * @param type Action type for which we want to add behaviour
-   * @param cb Function that takes in a action's value and a state and returns a new state
+   * @param cb Transformation function that returns a new state
    */
   matchR<T extends string | number, V, oState2 extends iState<P1>>(
     type: T,
@@ -152,7 +152,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Adds ability to return side effect cauasing action matching action type
+   * Add ability to return new action on matching action
    *
    *```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -167,7 +167,7 @@ export class ComponentNext<P1 extends ComponentProps> {
    * @typeparam T2 Action type fired by cb function
    * @typeparam V2 value of action fired by cb function
    * @param type Action type for which we want to add behaviour
-   * @param cb Function that takes in a action's value and a state and returns a new state
+   * @param cb Function that returns new action
    */
   matchC<T extends string | number, V, V2, T2 extends string | number>(
     type: T,
@@ -202,7 +202,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Adds child component to a component, this operator does multiple things i.e
+   * Add component as a child of a given component i.e
    *
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
@@ -321,7 +321,8 @@ export class ComponentNext<P1 extends ComponentProps> {
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
    *
-   * const component1 = ComponentNext.lift(10).render((_, props: string) => [props, _.state + 1])
+   * const component1 = ComponentNext.lift(10)
+   *   .render((_, props: string) => [props, _.state + 1])
    * component._view({}, component._init(), 'Hello') // output: [Hello, 11]
    * ```
    * 2. Can invoke child component's view
@@ -329,10 +330,11 @@ export class ComponentNext<P1 extends ComponentProps> {
    * ```typescript
    * import {ComponentNext} from '@action-land/component'
    *
-   * const component = ComponentNext.lift('Hello').install({
-   *   child: ComponentNext.lift('World').render((_, p: string) => p)
-   * })
-   * .render((_, p: string) => [p, _.children.child('World')]
+   * const component = ComponentNext.lift('Hello')
+   *   .install({
+   *     child: ComponentNext.lift('World').render((_, p: string) => p)
+   *   })
+   *   .render((_, p: string) => [p, _.children.child('World')]
    * component._view({}, component._init(), 'Hello') // output: [Hello, World]
    * ```
    * 3. Can emit action
@@ -341,13 +343,13 @@ export class ComponentNext<P1 extends ComponentProps> {
    * import {ComponentNext} from '@action-land/component'
    *
    * const component = ComponentNext.lift(10)
-   * .matchR('add', (a: number, s) => s + a)
-   * .render(_ => _.actions.add(100))
+   *   .matchR('add', (a: number, s) => s + a)
+   *   .render(_ => _.actions.add(100))
    * component._view({}, component._init()) // output: Action<100, 'add'> and changes component state to 110
    * ```
    * @typeparam P View prop type
    * @typeparam V View representation data structure type
-   * @param cb Function which return component view representation based on props and state
+   * @param cb Function which return view based on props and state
    */
   render<P = never, V = unknown>(
     cb: (
@@ -415,13 +417,16 @@ export class ComponentNext<P1 extends ComponentProps> {
   }
 
   /**
-   * Transform initial state of a component
+   * Transform initial state of the component
+   * 
    * ```typescript
    *
    * import {ComponentNext} from '@action-land/component'
    *
-   * const component = ComponentNext.lift({count: 100})
-   *  .configure((istate)=> {count: istate.count * 2})
+   * ComponentNext.lift({count: 100}).configure(iState => ({
+   *  count: iState.count * 2
+   * }))
+   * 
    * const component._init() // output: {count: 200}
    * ```
    * @typeparam S2 State type post transformation
@@ -444,7 +449,7 @@ export class ComponentNext<P1 extends ComponentProps> {
 
   /**
    * Memoize component view based on comparator passed
-   * @param fn Comparator function which decides wheather to return cached view or calculate new view
+   * @param fn Comparator function which decides whether to return cached view or calculate new view
    */
   memoizeWith(
     fn: (

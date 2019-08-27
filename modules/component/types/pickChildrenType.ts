@@ -1,7 +1,7 @@
 import {PPP} from './pickValueFromComponent'
 
 /**
- * Picks component children type from component or component props
+ * Pick component children type from component or component props
  * @typeparam P Either ComponentProp or ComponentNext
  * @category ComponentNext
  */

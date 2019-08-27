@@ -1,13 +1,13 @@
 import {Action} from '@action-land/core'
 
 /**
- * Infers type of action type provided action or action set
- * @typeparam A Action set
+ * Infer type of action for given action or action set
  * ```typescript
  * import {Action} from '@action-land/core'
  *
  * LActionTypes<Action<10, 't1'> | Action<20, 't2'>> // outputs 't1' | 't2'
  * ```
+ * @typeparam A Action set
  * @category ComponentNext
  */
 export type LActionTypes<A> = A extends Action<any, infer T> ? T : never
