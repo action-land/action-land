@@ -420,6 +420,19 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
+  list(): iComponentNext<
+    P1,
+    {
+      iState: {[k in number]?: iState<P1>}
+      oState: {[k in number]?: oState<P1>}
+      iActions: Action<iActions<P1>, number>
+      oActions: Action<oActions<P1>, number>
+      iProps: {params: iProps<P1>; key: number}
+    }
+  > {
+    throw 'Not Implemented '
+  }
+
   /**
    * Transform initial state of the component
    *

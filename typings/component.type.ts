@@ -214,3 +214,48 @@ ComponentNext.lift({color: 'red'})
 
     return true
   })
+
+// $ExpectType { [x: number]: { a: string; } | undefined; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchC('action2', (value: string, state) => action('output', value))
+    .render((_, p: {propVal: string}) => p.propVal)
+    .list()
+).iState
+
+// $ExpectType { [x: number]: { b: string; a: string; } | undefined; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchC('action2', (value: string, state) => action('output', value))
+    .render((_, p: {propVal: string}) => p.propVal)
+    .list()
+).oState
+
+// $ExpectType Action<Action<unknown, "action1"> | Action<string, "action2">, number>
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchC('action2', (value: string, state) => action('output', value))
+    .render((_, p: {propVal: string}) => p.propVal)
+    .list()
+).iActions
+
+// $ExpectType Action<Action<string, "output">, number>
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchC('action2', (value: string, state) => action('output', value))
+    .render((_, p: {propVal: string}) => p.propVal)
+    .list()
+).oActions
+
+// $ExpectType { params: { propVal: string; }; key: number; }
+$(
+  ComponentNext.lift({a: ''})
+    .matchR('action1', (value, state) => ({...state, b: ''}))
+    .matchC('action2', (value: string, state) => action('output', value))
+    .render((_, p: {propVal: string}) => p.propVal)
+    .list()
+).iProps
