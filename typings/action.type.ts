@@ -88,3 +88,20 @@ Action.fold(
     }
   }
 )
+Action.fold(
+  ID<Action<Action<1, 'B1'> | Action<2, 'B2'>, string>>(),
+  {count: 10},
+  {
+    A: {
+      B1: (a, s) => {
+        // $ExpectType 1
+        a
+
+        // $ExpectType { count: number; }
+        s
+
+        return {count: s.count + a}
+      }
+    }
+  }
+)

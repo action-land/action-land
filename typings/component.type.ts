@@ -215,47 +215,38 @@ ComponentNext.lift({color: 'red'})
     return true
   })
 
-// $ExpectType { [x: number]: { a: string; } | undefined; }
+// $ExpectType { [x: string]: { a: string; } | undefined; }
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
     .render((_, p: {propVal: string}) => p.propVal)
-    .list()
+    .toList((props: {propVal: string}) => props.propVal)
 ).iState
 
-// $ExpectType { [x: number]: { b: string; a: string; } | undefined; }
+// $ExpectType { [x: string]: { b: string; a: string; } | undefined; }
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
     .render((_, p: {propVal: string}) => p.propVal)
-    .list()
+    .toList((props: {propVal: string}) => props.propVal)
 ).oState
 
-// $ExpectType Action<Action<unknown, "action1"> | Action<string, "action2">, number>
+// $ExpectType Action<Action<unknown, "action1"> | Action<string, "action2">, string>
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
     .render((_, p: {propVal: string}) => p.propVal)
-    .list()
+    .toList((props: {propVal: string}) => props.propVal)
 ).iActions
 
-// $ExpectType Action<Action<string, "output">, number>
+// $ExpectType Action<Action<string, "output">, string>
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
     .render((_, p: {propVal: string}) => p.propVal)
-    .list()
+    .toList((props: {propVal: string}) => props.propVal)
 ).oActions
-
-// $ExpectType { params: { propVal: string; }; key: number; }
-$(
-  ComponentNext.lift({a: ''})
-    .matchR('action1', (value, state) => ({...state, b: ''}))
-    .matchC('action2', (value: string, state) => action('output', value))
-    .render((_, p: {propVal: string}) => p.propVal)
-    .list()
-).iProps

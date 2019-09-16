@@ -399,4 +399,43 @@ describe('ComponentNext', () => {
       assert.notStrictEqual(a, b)
     })
   })
+  describe('list', () => {
+    it('should add key in action hierarchy based on keying function and props', () => {
+      const listComponent = ComponentNext.lift({a: ''})
+        .matchR('action1', (value, state) => ({...state, b: ''}))
+        .matchC('action2', (value: string, state) => action('output', value))
+        .render((_, p: {propVal: string}) => {
+          return _.actions.action1(null)
+        })
+        .toList(prop => prop.propVal)
+      listComponent._view(
+        create(a => {
+          assert.deepEqual(a, action('action1', null).lift('ab'))
+          return a
+        }),
+        listComponent._init(),
+        {propVal: 'ab'}
+      )
+    })
+    it('should return lifted state on accepting lifted action', () => {
+      const listComponent = ComponentNext.lift({a: ''})
+        .matchR('action1', (value, state) => ({...state, b: ''}))
+        .matchC('action2', (value: string, state) => action('output', value))
+        .render((_, p: {propVal: string}) => {
+          return _.actions.action1(null)
+        })
+        .toList(prop => prop.propVal)
+      const actual = listComponent._update(
+        action('action1', null).lift('ab'),
+        listComponent._init()
+      )
+      const expected = {
+        ab: {
+          a: '',
+          b: ''
+        }
+      }
+      assert.deepEqual(actual, expected)
+    })
+  })
 })

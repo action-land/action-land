@@ -420,19 +420,6 @@ export class ComponentNext<P1 extends ComponentProps> {
     )
   }
 
-  list(): iComponentNext<
-    P1,
-    {
-      iState: {[k in number]?: iState<P1>}
-      oState: {[k in number]?: oState<P1>}
-      iActions: Action<iActions<P1>, number>
-      oActions: Action<oActions<P1>, number>
-      iProps: {params: iProps<P1>; key: number}
-    }
-  > {
-    throw 'Not Implemented '
-  }
-
   /**
    * Transform initial state of the component
    *
@@ -496,6 +483,46 @@ export class ComponentNext<P1 extends ComponentProps> {
       }
     )
   }
+  toList(
+    fn: (p: iProps<P1>) => string
+  ): iComponentNext<
+    P1,
+    {
+      iState: {[k in string]?: iState<P1>}
+      oState: {[k in string]?: oState<P1>}
+      iActions: Action<iActions<P1>, string>
+      oActions: Action<oActions<P1>, string>
+    }
+  > {
+    return new ComponentNext(
+      () => ({}),
+      (inputAction: any, state: any) => {
+        return {
+          ...state,
+          [inputAction.type]: this._update(
+            inputAction.value,
+            state[inputAction.type] ? state[inputAction.type] : this._init()
+          )
+        }
+      },
+      (inputAction: any, state: any) => {
+        return action(
+          inputAction.type,
+          this._command(
+            inputAction.value,
+            state[inputAction.type] ? state[inputAction.type] : this._init()
+          )
+        )
+      },
+      (e: any, s: any, p: any) => {
+        return this._view(e.of(fn(p)), s[fn(p)] ? s[fn(p)] : this._init(), p)
+      },
+      this._children,
+      this._iActions,
+      this._comparator
+    )
+  }
+
   /**
    * Method to convert old component API to ComponentNext
    * @typeparam A state
