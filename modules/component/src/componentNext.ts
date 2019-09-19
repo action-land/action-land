@@ -483,15 +483,15 @@ export class ComponentNext<P1 extends ComponentProps> {
       }
     )
   }
-  toList(
-    fn: (p: iProps<P1>) => string
+  toList<T extends string>(
+    fn: (p: iProps<P1>) => T
   ): iComponentNext<
     P1,
     {
       iState: {[k in string]?: iState<P1>}
       oState: {[k in string]?: oState<P1>}
-      iActions: Action<iActions<P1>, string>
-      oActions: Action<oActions<P1>, string>
+      iActions: Action<iActions<P1>, T>
+      oActions: Action<oActions<P1>, T>
     }
   > {
     return new ComponentNext(
@@ -515,10 +515,11 @@ export class ComponentNext<P1 extends ComponentProps> {
         )
       },
       (e: any, s: any, p: any) => {
-        return this._view(e.of(fn(p)), s[fn(p)] ? s[fn(p)] : this._init(), p)
+        const key = fn(p)
+        return this._view(e.of(key), s[key] ? s[key] : this._init(), p)
       },
-      this._children,
-      this._iActions,
+      {},
+      LinkedList.empty,
       this._comparator
     )
   }
