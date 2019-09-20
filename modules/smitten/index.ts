@@ -5,7 +5,15 @@
 import {action} from '@action-land/core'
 
 export interface Smitten<T extends string | number = string | number> {
+  /**
+   * Return a new instance of Smitten
+   * @param type
+   */
   of<S extends string | number>(type: T): Smitten<S>
+  /**
+   * Dispatch an action based on type hierarchy
+   * @param obj Value to be set in a leaf action of the action dispatched
+   */
   emit(obj: any): void
 }
 
@@ -24,6 +32,10 @@ class DefaultEmitter implements Smitten {
     }
     node.emit(act)
   }
+  /**
+   * Return a new instance of Smitten
+   * @param type
+   */
   of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }
@@ -31,7 +43,10 @@ class DefaultEmitter implements Smitten {
 
 class RootEmitter implements Smitten {
   constructor(public readonly emit: (obj: any) => void) {}
-
+  /**
+   * Return a new instance of Smitten
+   * @param type
+   */
   of(type: string | number): Smitten {
     return new DefaultEmitter(type, this)
   }

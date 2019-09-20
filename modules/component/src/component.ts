@@ -18,6 +18,8 @@ export class Component<S1, P1, I1 extends unknown[], V> {
   ) {}
 
   /**
+   * Perform transformation on component based on fn
+   * @param fn Higher order component
    * @deprecated Use Component.lift() instead
    */
   map<S2, P2, I2 extends any[]>(
@@ -25,7 +27,10 @@ export class Component<S1, P1, I1 extends unknown[], V> {
   ): Component<S2, P2, I2, V> {
     return this.lift(fn)
   }
-
+  /**
+   * Perform transformation on component based on fn
+   * @param fn Higher order component
+   */
   lift<S2, P2, I2 extends any[]>(
     fn: (component: Component<S1, P1, I1, V>) => Component<S2, P2, I2, V>
   ): Component<S2, P2, I2, V> {
