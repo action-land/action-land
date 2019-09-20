@@ -16,6 +16,14 @@
     "quotemark": [true, "single", "avoid-escape"],
     "semicolon": [true, "never"],
     "triple-equals": [true, "allow-null-check"],
+    "completed-docs": [
+      true,
+      {
+        "classes": {"visibilities": ["exported"]},
+        "function": {"visibilities": ["exported"]},
+        "methods": {"privacies": ["public"]}
+      }
+    ],
     "typedef-whitespace": [
       true,
       {
