@@ -14,6 +14,7 @@ import {oState} from '../types/pickOStateType'
 import {oView} from '../types/pickOutputViewType'
 import {iProps} from '../types/pickPropType'
 import {Component} from './component'
+import {ListComponentState} from './listComponentState'
 
 /**
  * Creates a new component-type with the overridden props
@@ -488,35 +489,38 @@ export class ComponentNext<P1 extends ComponentProps> {
   ): iComponentNext<
     P1,
     {
-      iState: {[k in string]?: iState<P1>}
-      oState: {[k in string]?: oState<P1>}
+      iState: ListComponentState<iState<P1>>
+      oState: ListComponentState<oState<P1>>
       iActions: Action<iActions<P1>, T>
       oActions: Action<oActions<P1>, T>
     }
   > {
     return new ComponentNext(
-      () => ({}),
+      () => ListComponentState.of(this._init as () => iState<P1>),
       (inputAction: any, state: any) => {
-        return {
-          ...state,
-          [inputAction.type]: this._update(
-            inputAction.value,
-            state[inputAction.type] ? state[inputAction.type] : this._init()
-          )
-        }
+        return state.update(
+          (s: iState<P1>) => this._update(inputAction.value, s),
+          inputAction.type
+        )
       },
       (inputAction: any, state: any) => {
         return action(
           inputAction.type,
           this._command(
             inputAction.value,
-            state[inputAction.type] ? state[inputAction.type] : this._init()
+            state.getItem(inputAction.type)
+              ? state.getItem(inputAction.type)
+              : this._init()
           )
         )
       },
       (e: any, s: any, p: any) => {
         const key = fn(p)
-        return this._view(e.of(key), s[key] ? s[key] : this._init(), p)
+        return this._view(
+          e.of(key),
+          s.getItem[key] ? s.getItem[key] : this._init(),
+          p
+        )
       },
       {},
       LinkedList.empty,

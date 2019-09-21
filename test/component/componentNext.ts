@@ -1,4 +1,5 @@
 import {ComponentNext} from '@action-land/component'
+import {ListComponentState} from '@action-land/component/src/listComponent'
 import {action, Action, List, Nil} from '@action-land/core'
 import {create, Smitten} from '@action-land/smitten'
 import * as assert from 'assert'
@@ -400,6 +401,13 @@ describe('ComponentNext', () => {
     })
   })
   describe('list', () => {
+    it('should do add empty item object and empty key array in state on init', () => {
+      const baseComponent = ComponentNext.lift({a: ''})
+      const listComponent = baseComponent.toList(prop => prop)
+      const actual = listComponent._init()
+      const expected = ListComponentState.of(baseComponent._init)
+      assert.deepEqual(actual, expected)
+    })
     it('should add key in action hierarchy based on keying function and props', () => {
       const listComponent = ComponentNext.lift({a: ''})
         .matchR('action1', (value, state) => ({...state, b: ''}))
@@ -417,24 +425,34 @@ describe('ComponentNext', () => {
         {propVal: 'ab'}
       )
     })
-    it('should return lifted state on accepting lifted action', () => {
-      const listComponent = ComponentNext.lift({a: ''})
+    it('should return update respective state on accepting lifted action', () => {
+      const component = ComponentNext.lift({a: ''})
         .matchR('action1', (value, state) => ({...state, b: ''}))
-        .matchC('action2', (value: string, state) => action('output', value))
         .render((_, p: {propVal: string}) => {
           return _.actions.action1(null)
         })
-        .toList(prop => prop.propVal)
-      const actual = listComponent._update(
-        action('action1', null).lift('ab'),
+      const listComponent = component.toList(prop => prop.propVal)
+      const actual = listComponent
+        ._update(action('action1', null).lift('ab'), listComponent._init())
+        .getItem('ab')
+      const expected = {
+        a: '',
+        b: ''
+      }
+      assert.deepEqual(actual, expected)
+    })
+    it('should return lifted action respective state on accepting lifted action', () => {
+      const component = ComponentNext.lift({a: ''})
+        .matchC('action2', (value: string, state) => action('output', value))
+        .render((_, p: {propVal: string}) => {
+          return _.actions.action2('val')
+        })
+      const listComponent = component.toList(prop => prop.propVal)
+      const actual = listComponent._command(
+        action('action2', 'hello').lift('ab'),
         listComponent._init()
       )
-      const expected = {
-        ab: {
-          a: '',
-          b: ''
-        }
-      }
+      const expected = Action.of('output', 'hello').lift('ab')
       assert.deepEqual(actual, expected)
     })
   })
