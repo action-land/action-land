@@ -1,4 +1,4 @@
-import {ListComponentState} from '@action-land/component/src/listComponent'
+import {ListComponentState} from '@action-land/component/src/listComponentState'
 import * as assert from 'assert'
 describe('listComponentState', () => {
   const state = ListComponentState.of(() => ({
