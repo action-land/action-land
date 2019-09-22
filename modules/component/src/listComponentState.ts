@@ -24,6 +24,11 @@ export class ListComponentState<S> {
   static of<T>(baseInit: () => T) {
     return new ListComponentState(baseInit)
   }
+  clone() {
+    return new ListComponentState(this.baseInit, [...this.items], {
+      ...this.lookUp
+    })
+  }
   getItem(k: string) {
     const index = this.lookUp[k]
     return this.items[index !== undefined ? (index as number) : 0]

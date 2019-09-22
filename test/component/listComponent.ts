@@ -48,12 +48,23 @@ describe('listComponentState', () => {
       assert.strictEqual(actual, 0)
     })
     it('should reduce to a value based on function passed', () => {
-        const updatedComponent = state
+      const updatedComponent = state
         .update(a => ({count: a.count + 10}), 'j')
         .update(a => ({count: a.count + 20}), 'k')
         .update(a => ({count: a.count + 30}), 'l')
       const actual = updatedComponent.fold(0, (a, s) => a + s.count)
       assert.strictEqual(actual, 90)
+    })
+  })
+  describe('clone', () => {
+    it('should reduce to a value based on function passed', () => {
+      const updatedComponent = state
+        .update(a => ({count: a.count + 10}), 'j')
+        .update(a => ({count: a.count + 20}), 'k')
+        .update(a => ({count: a.count + 30}), 'l')
+      const actual = updatedComponent.clone()
+      assert.deepEqual(actual, updatedComponent)
+      assert.notStrictEqual(actual, updatedComponent)
     })
   })
 })
