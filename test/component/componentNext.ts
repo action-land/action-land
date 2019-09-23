@@ -425,20 +425,39 @@ describe('ComponentNext', () => {
         {propVal: 'ab'}
       )
     })
-    it('should return update respective state on accepting lifted action', () => {
-      const component = ComponentNext.lift({a: ''})
-        .matchR('action1', (value, state) => ({...state, b: ''}))
+    it('should add respective state on accepting lifted action for first time', () => {
+      const component = ComponentNext.lift({count: 10})
+        .matchR('action1', (value: number, state) => ({
+          count: state.count + value
+        }))
         .render((_, p: {propVal: string}) => {
-          return _.actions.action1(null)
+          return _.actions.action1(20)
         })
       const listComponent = component.toList(prop => prop.propVal)
       const actual = listComponent
-        ._update(action('action1', null).lift('ab'), listComponent._init())
+        ._update(action('action1', 10).lift('ab'), listComponent._init())
         .getItem('ab')
-      const expected = {
-        a: '',
-        b: ''
-      }
+      const expected = {count: 20}
+      assert.deepEqual(actual, expected)
+    })
+    it('should update respective state on accepting lifted action', () => {
+      const component = ComponentNext.lift({count: 10})
+        .matchR('action1', (value: number, state) => ({
+          count: state.count + value
+        }))
+        .render((_, p: {propVal: string}) => {
+          return _.actions.action1(20)
+        })
+      const listComponent = component.toList(prop => prop.propVal)
+      const actual = listComponent
+        ._update(
+          action('action1', 10).lift('ab'),
+          ListComponentState.of(listComponent._init).insertItem('ab', {
+            count: 20
+          })
+        )
+        .getItem('ab')
+      const expected = {count: 30}
       assert.deepEqual(actual, expected)
     })
     it('should return lifted action respective state on accepting lifted action', () => {

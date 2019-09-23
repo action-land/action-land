@@ -1,53 +1,33 @@
+import {List} from 'standard-data-structures'
+
+type keyType = string | number
+type ListItem<S> = {state: S; key: keyType}
 export class ListComponentState<S> {
   private constructor(
     private baseInit: () => S,
-    /**
-     * @todo
-     * Figure out better data structure here
-     */
-    private items: S[] = [],
-    private lookUp: {[k in string]?: number} = {}
+    private readonly items: List<ListItem<S>> = List.empty(),
+    private readonly lookUp: {[k in keyType]?: List<ListItem<S>>} = {}
   ) {}
-  fold<T>(s: T, fn: (acc: T, current: S) => T): T {
-    if (this.items.length === 0) {
-      return s
-    } else {
-      let calc: T = fn(s, this.items[0])
-      this.items.forEach((item, i) => {
-        if (i > 0) {
-          calc = fn(calc, item)
-        }
-      })
-      return calc
-    }
-  }
   static of<T>(baseInit: () => T) {
     return new ListComponentState(baseInit)
   }
-  clone() {
-    return new ListComponentState(this.baseInit, [...this.items], {
-      ...this.lookUp
+  insertItem(k: keyType, value: S = this.baseInit()) {
+    const items = this.items.prepend({state: value, key: k})
+    return new ListComponentState(this.baseInit, items, {
+      ...this.lookUp,
+      [k]: items
     })
   }
-  getItem(k: string) {
-    const index = this.lookUp[k]
-    return this.items[index !== undefined ? (index as number) : 0]
+  getItem(k: keyType): S | null {
+    const node = this.lookUp[k]
+    return node ? node.head.state : null
   }
-  update<T extends S>(fn: (a: S) => T, k: string) {
-    if (this.lookUp[k] === undefined) {
-      const items = [...this.items, fn(this.baseInit())]
-      const lookUp = {
-        ...this.lookUp,
-        [k]: items.length - 1
-      }
-      return new ListComponentState(this.baseInit, items, lookUp)
-    } else {
-      const items = Array.from(this.items)
-      items[this.lookUp[k] as number] = fn(items[this.lookUp[k] as number])
-      return new ListComponentState(this.baseInit, items, this.lookUp)
-    }
+  getItems(): S[] {
+    return this.items.isEmpty
+      ? []
+      : this.items.map(a => a.state).map(i => i).asArray
   }
-  getItems() {
-    return this.items
+  fold<T>(s: T, fn: (current: ListItem<S>, acc: T) => T): T {
+    return this.items.fold(s, fn)
   }
 }

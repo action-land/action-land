@@ -484,7 +484,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       }
     )
   }
-  toList<T extends string>(
+  toList<T extends string | number>(
     fn: (p: iProps<P1>) => T
   ): iComponentNext<
     P1,
@@ -498,9 +498,24 @@ export class ComponentNext<P1 extends ComponentProps> {
     return new ComponentNext(
       () => ListComponentState.of(this._init as () => iState<P1>),
       (inputAction: any, state: any) => {
-        return state.update(
-          (s: iState<P1>) => this._update(inputAction.value, s),
-          inputAction.type
+        const typedState = state as ListComponentState<iState<P1>>
+        const itemState = state.getItem(inputAction.type)
+        if (!itemState) {
+          return typedState.insertItem(
+            inputAction.type,
+            this._update(inputAction.value, this._init())
+          )
+        }
+        return typedState.fold(
+          ListComponentState.of(this._init as () => iState<P1>),
+          (current, acc) => {
+            return current.state === itemState
+              ? acc.insertItem(
+                  current.key,
+                  this._update(inputAction.value, current.state)
+                )
+              : acc.insertItem(current.key, current.state)
+          }
         )
       },
       (inputAction: any, state: any) => {
@@ -518,7 +533,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         const key = fn(p)
         return this._view(
           e.of(key),
-          s.getItem[key] ? s.getItem[key] : this._init(),
+          s.getItem(key) ? s.getItem(key) : this._init(),
           p
         )
       },
