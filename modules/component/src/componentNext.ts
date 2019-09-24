@@ -499,22 +499,24 @@ export class ComponentNext<P1 extends ComponentProps> {
       () => ListComponentState.of(this._init as () => iState<P1>),
       (inputAction: any, state: any) => {
         const typedState = state as ListComponentState<iState<P1>>
-        const itemState = state.getItem(inputAction.type)
-        if (!itemState) {
-          return typedState.insertItem(
-            inputAction.type,
-            this._update(inputAction.value, this._init())
-          )
-        }
-        return typedState.fold(
-          ListComponentState.of(this._init as () => iState<P1>),
-          (current, acc) => {
-            return current.state === itemState
-              ? acc.insertItem(
-                  current.key,
-                  this._update(inputAction.value, current.state)
-                )
-              : acc.insertItem(current.key, current.state)
+        const itemState = typedState.get(inputAction.type)
+        return itemState.fold(
+          typedState,
+          (l, s) => {
+            return s.set(
+              inputAction.type,
+              this._update(inputAction.value, this._init())
+            )
+          },
+          (r, s) => {
+            return s.fold(
+              ListComponentState.of(this._init as () => iState<P1>),
+              (current, key, acc) => {
+                return current === r
+                  ? acc.set(key, this._update(inputAction.value, current))
+                  : acc.set(key, current)
+              }
+            )
           }
         )
       },
@@ -523,9 +525,13 @@ export class ComponentNext<P1 extends ComponentProps> {
           inputAction.type,
           this._command(
             inputAction.value,
-            state.getItem(inputAction.type)
-              ? state.getItem(inputAction.type)
-              : this._init()
+            state
+              .get(inputAction.type)
+              .fold(
+                this._init(),
+                (l: null, s: iState<P1>) => s,
+                (r: iState<P1>, s: iState<P1>) => r
+              )
           )
         )
       },
@@ -533,11 +539,23 @@ export class ComponentNext<P1 extends ComponentProps> {
         const key = fn(p)
         return this._view(
           e.of(key),
-          s.getItem(key) ? s.getItem(key) : this._init(),
+          s
+            .get(key)
+            .fold(
+              this._init(),
+              (l: null, s: iState<P1>) => s,
+              (r: iState<P1>, s: iState<P1>) => r
+            ),
           p
         )
       },
+      /**
+       * @todo: Need to re-look this
+       */
       {},
+      /**
+       * @todo: Need to re-look this
+       */
       LinkedList.empty,
       this._comparator
     )

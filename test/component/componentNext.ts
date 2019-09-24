@@ -436,7 +436,8 @@ describe('ComponentNext', () => {
       const listComponent = component.toList(prop => prop.propVal)
       const actual = listComponent
         ._update(action('action1', 10).lift('ab'), listComponent._init())
-        .getItem('ab')
+        .get('ab')
+        .getRightOrElse({count: 10})
       const expected = {count: 20}
       assert.deepEqual(actual, expected)
     })
@@ -452,11 +453,12 @@ describe('ComponentNext', () => {
       const actual = listComponent
         ._update(
           action('action1', 10).lift('ab'),
-          ListComponentState.of(listComponent._init).insertItem('ab', {
+          ListComponentState.of(listComponent._init).set('ab', {
             count: 20
           })
         )
-        .getItem('ab')
+        .get('ab')
+        .getRightOrElse({count: 10})
       const expected = {count: 30}
       assert.deepEqual(actual, expected)
     })

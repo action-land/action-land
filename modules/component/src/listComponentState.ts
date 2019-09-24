@@ -1,33 +1,44 @@
-import {List} from 'standard-data-structures'
+import {Either, List} from 'standard-data-structures'
 
-type keyType = string | number
-type ListItem<S> = {state: S; key: keyType}
+type ListKey = string | number
+
 export class ListComponentState<S> {
   private constructor(
     private baseInit: () => S,
-    private readonly items: List<ListItem<S>> = List.empty(),
-    private readonly lookUp: {[k in keyType]?: List<ListItem<S>>} = {}
+    private readonly items: List<ListKey> = List.empty(),
+    private readonly lookUp: {[k in ListKey]?: S} = {}
   ) {}
   static of<T>(baseInit: () => T) {
     return new ListComponentState(baseInit)
   }
-  insertItem(k: keyType, value: S = this.baseInit()) {
-    const items = this.items.prepend({state: value, key: k})
+  set(k: ListKey, value: S = this.baseInit()) {
+    const itemState = this.lookUp[k]
+    if (itemState) {
+      return new ListComponentState(this.baseInit, this.items, {
+        ...this.lookUp,
+        [k]: value
+      })
+    }
+    const items = this.items.prepend(k)
     return new ListComponentState(this.baseInit, items, {
       ...this.lookUp,
-      [k]: items
+      [k]: value
     })
   }
-  getItem(k: keyType): S | null {
+
+  get(k: ListKey): Either<null, S> {
     const node = this.lookUp[k]
-    return node ? node.head.state : null
+    return node ? Either.right(node) : Either.left(null)
   }
-  getItems(): S[] {
-    return this.items.isEmpty
-      ? []
-      : this.items.map(a => a.state).map(i => i).asArray
-  }
-  fold<T>(s: T, fn: (current: ListItem<S>, acc: T) => T): T {
-    return this.items.fold(s, fn)
+
+  fold<T>(s: T, fn: (current: S, k: ListKey, acc: T) => T): T {
+    return this.items.fold(s, (currentItem, accumulator) => {
+      const currentState = this.lookUp[currentItem]
+      return fn(
+        currentState ? currentState : this.baseInit(),
+        currentItem,
+        accumulator
+      )
+    })
   }
 }
