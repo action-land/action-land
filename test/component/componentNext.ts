@@ -481,5 +481,18 @@ describe('ComponentNext', () => {
       const expected = Action.of('output', 'hello').lift('ab')
       assert.deepEqual(actual, expected)
     })
+    /**
+     * @todo: fix this test
+     * */
+    it.skip('should be able to call render on list component', () => {
+      const component = ComponentNext.lift({a: ''}).matchC(
+        'action2',
+        (value: string, state) => action('output', value)
+      )
+      const listComponent = component
+        .toList((prop: {propVal: string}) => prop.propVal)
+        .render((_, prop: string) => _.actions.s(action('action2', 'hello')))
+      assert.ifError(listComponent._view(() => {}, listComponent._init(), 'a'))
+    })
   })
 })
