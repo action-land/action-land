@@ -233,8 +233,7 @@ $(
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
-    .render((_, p: {propVal: string}) => p.propVal)
-    .toList(props => props.propVal)
+    .toList((props: {propVal: string}) => props.propVal)
 ).oState
 
 // iActions of a component should be lifted to action of type of return value of keying function
@@ -243,7 +242,6 @@ $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
-    .render((_, p: {propVal: string}) => p.propVal)
     .toList((props: {propVal: string}) => props.propVal)
 ).iActions
 
@@ -251,8 +249,6 @@ $(
 // $ExpectType Action<Action<string, "output">, string>
 $(
   ComponentNext.lift({a: ''})
-    .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchC('action2', (value: string, state) => action('output', value))
-    .render((_, p: {propVal: string}) => p.propVal)
     .toList((props: {propVal: string}) => props.propVal)
 ).oActions
