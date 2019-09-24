@@ -215,6 +215,7 @@ ComponentNext.lift({color: 'red'})
     return true
   })
 
+// iState of a component should be lifted to ListComponentState
 // $ExpectType ListComponentState<{ a: string; }>
 $(
   ComponentNext.lift({a: ''})
@@ -227,6 +228,7 @@ $(
     })
 ).iState
 
+// oState of a component should be lifted to ListComponentState
 // $ExpectType ListComponentState<{ b: string; a: string; }>
 $(
   ComponentNext.lift({a: ''})
@@ -235,6 +237,7 @@ $(
     .toList(props => props.propVal)
 ).oState
 
+// iActions of a component should be lifted to action of type of return value of keying function
 // $ExpectType Action<Action<unknown, "action1"> | Action<string, "action2">, string>
 $(
   ComponentNext.lift({a: ''})
@@ -244,6 +247,7 @@ $(
     .toList((props: {propVal: string}) => props.propVal)
 ).iActions
 
+// iActions of a component should be lifted to action of type of return value of keying function
 // $ExpectType Action<Action<string, "output">, string>
 $(
   ComponentNext.lift({a: ''})

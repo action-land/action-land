@@ -498,10 +498,10 @@ export class ComponentNext<P1 extends ComponentProps> {
     return new ComponentNext(
       () => ListComponentState.of(this._init as () => iState<P1>),
       (inputAction: any, state: any) => {
-        const typedState = state as ListComponentState<iState<P1>>
-        const itemState = typedState.get(inputAction.type)
+        const lisComponentState = state as ListComponentState<iState<P1>>
+        const itemState = lisComponentState.get(inputAction.type)
         return itemState.fold(
-          typedState,
+          lisComponentState,
           (l, s) => {
             return s.set(
               inputAction.type,

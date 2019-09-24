@@ -11,6 +11,11 @@ describe('listComponentState', () => {
       const actual = state.get('key1')
       assert.deepEqual(actual, Either.left(null))
     })
+    it('should return 0 if the state is 0', () => {
+      const state = ListComponentState.of(() => 10).set('key1', 0)
+      const actual = state.get('key1')
+      assert.deepEqual(actual, Either.right(0))
+    })
   })
   describe('fold', () => {
     it('should fold to seed value of the list is empty', () => {
@@ -30,6 +35,15 @@ describe('listComponentState', () => {
         .set('l', {count: 30})
       const actual = updatedState.fold(0, (c, k, acc) => acc + c.count)
       assert.strictEqual(actual, 60)
+    })
+    it('should reduce to a value based on function even if one of the state in list is 0', () => {
+      const state = ListComponentState.of(() => 10)
+      const updatedState = state
+        .set('j', 0)
+        .set('k', 20)
+        .set('l', 30)
+      const actual = updatedState.fold(0, (c, k, acc) => acc + c)
+      assert.strictEqual(actual, 50)
     })
   })
   describe('update list', () => {
@@ -67,7 +81,7 @@ describe('listComponentState', () => {
       const expected = [{count: 30}, {count: 20}]
       assert.deepEqual(actual, expected)
     })
-    it('should override the item state when set callled multiple time', () => {
+    it('should override the item state when set called multiple time', () => {
       const state = ListComponentState.of(() => ({
         count: 10
       }))
@@ -78,6 +92,16 @@ describe('listComponentState', () => {
         (current, key, acc) => acc.concat([current])
       )
       const expected = [{count: 30}]
+      assert.deepEqual(actual, expected)
+    })
+    it('should override the item state when set called multiple time and initial state is 0', () => {
+      const state = ListComponentState.of(() => 0)
+      const updatedState = state.set('j', 0)
+      const updatedState2 = updatedState.set('j', 1)
+      const actual = updatedState2.fold([] as number[], (current, key, acc) =>
+        acc.concat([current])
+      )
+      const expected = [1]
       assert.deepEqual(actual, expected)
     })
   })

@@ -400,7 +400,7 @@ describe('ComponentNext', () => {
       assert.notStrictEqual(a, b)
     })
   })
-  describe('list', () => {
+  describe('toList', () => {
     it('should do add empty item object and empty key array in state on init', () => {
       const baseComponent = ComponentNext.lift({a: ''})
       const listComponent = baseComponent.toList(prop => prop)
@@ -416,24 +416,27 @@ describe('ComponentNext', () => {
           return _.actions.action1(null)
         })
         .toList(prop => prop.propVal)
+      let emittedAction: any
       listComponent._view(
         create(a => {
-          assert.deepEqual(a, action('action1', null).lift('ab'))
+          emittedAction = a
           return a
         }),
         listComponent._init(),
         {propVal: 'ab'}
       )
+      assert.deepEqual(emittedAction, action('action1', null).lift('ab'))
     })
     it('should add respective state on accepting lifted action for first time', () => {
-      const component = ComponentNext.lift({count: 10})
-        .matchR('action1', (value: number, state) => ({
+      const component = ComponentNext.lift({count: 10}).matchR(
+        'action1',
+        (value: number, state) => ({
           count: state.count + value
-        }))
-        .render((_, p: {propVal: string}) => {
-          return _.actions.action1(20)
         })
-      const listComponent = component.toList(prop => prop.propVal)
+      )
+      const listComponent = component.toList(
+        (prop: {propVal: string}) => prop.propVal
+      )
       const actual = listComponent
         ._update(action('action1', 10).lift('ab'), listComponent._init())
         .get('ab')
@@ -442,14 +445,15 @@ describe('ComponentNext', () => {
       assert.deepEqual(actual, expected)
     })
     it('should update respective state on accepting lifted action', () => {
-      const component = ComponentNext.lift({count: 10})
-        .matchR('action1', (value: number, state) => ({
+      const component = ComponentNext.lift({count: 10}).matchR(
+        'action1',
+        (value: number, state) => ({
           count: state.count + value
-        }))
-        .render((_, p: {propVal: string}) => {
-          return _.actions.action1(20)
         })
-      const listComponent = component.toList(prop => prop.propVal)
+      )
+      const listComponent = component.toList(
+        (prop: {propVal: string}) => prop.propVal
+      )
       const actual = listComponent
         ._update(
           action('action1', 10).lift('ab'),
@@ -463,12 +467,13 @@ describe('ComponentNext', () => {
       assert.deepEqual(actual, expected)
     })
     it('should return lifted action respective state on accepting lifted action', () => {
-      const component = ComponentNext.lift({a: ''})
-        .matchC('action2', (value: string, state) => action('output', value))
-        .render((_, p: {propVal: string}) => {
-          return _.actions.action2('val')
-        })
-      const listComponent = component.toList(prop => prop.propVal)
+      const component = ComponentNext.lift({a: ''}).matchC(
+        'action2',
+        (value: string, state) => action('output', value)
+      )
+      const listComponent = component.toList(
+        (prop: {propVal: string}) => prop.propVal
+      )
       const actual = listComponent._command(
         action('action2', 'hello').lift('ab'),
         listComponent._init()
