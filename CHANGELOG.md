@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/action-land/action-land/compare/v8.1.1...v8.2.0) (2019-09-25)
+
+
+### Features
+
+* **component:** add support for list component ([#59](https://github.com/action-land/action-land/issues/59)) ([300c69e](https://github.com/action-land/action-land/commit/300c69e))
+
+
+### Reverts
+
+* **component:** revert 8152392ed4e748cf6e33d299dce4fc34b7d1735e (add memoizeWith()) ([#63](https://github.com/action-land/action-land/issues/63)) ([df229d0](https://github.com/action-land/action-land/commit/df229d0))
+
+
+
+
+
 ## [8.1.1](https://github.com/action-land/action-land/compare/v8.1.0...v8.1.1) (2019-08-29)
 
 
