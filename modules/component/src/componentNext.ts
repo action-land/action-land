@@ -14,6 +14,7 @@ import {oState} from '../types/pickOStateType'
 import {oView} from '../types/pickOutputViewType'
 import {iProps} from '../types/pickPropType'
 import {Component} from './component'
+import {ListComponentState} from './listComponentState'
 
 /**
  * Creates a new component-type with the overridden props
@@ -420,6 +421,53 @@ export class ComponentNext<P1 extends ComponentProps> {
       this._iActions
     )
   }
+  toList<T extends string | number>(
+    fn: (p: iProps<P1>) => T
+  ): iComponentNext<
+    P1,
+    {
+      iState: ListComponentState<iState<P1>>
+      oState: ListComponentState<oState<P1>>
+      iActions: Action<iActions<P1>, T>
+      oActions: Action<oActions<P1>, T>
+    }
+  > {
+    return new ComponentNext(
+      () => ListComponentState.of(this._init as () => iState<P1>),
+      (inputAction: any, state: any) => {
+        const listComponentState = state as ListComponentState<iState<P1>>
+
+        const updatedState = this._update(
+          inputAction.value,
+          listComponentState.get(inputAction.type).getOrElse(this._init())
+        )
+
+        return listComponentState.set(inputAction.type, updatedState)
+      },
+      (inputAction: any, state: any) => {
+        return action(
+          inputAction.type,
+          this._command(
+            inputAction.value,
+            state.get(inputAction.type).getOrElse(this._init())
+          )
+        )
+      },
+      (e: any, s: any, p: any) => {
+        const key = fn(p)
+        return this._view(e.of(key), s.get(key).getOrElse(this._init()), p)
+      },
+      /**
+       * @todo: Need to re-look this
+       */
+      {},
+      /**
+       * @todo: Need to re-look this
+       */
+      LinkedList.empty
+    )
+  }
+
   /**
    * Method to convert old component API to ComponentNext
    * @typeparam A state

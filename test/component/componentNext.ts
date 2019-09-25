@@ -1,4 +1,5 @@
 import {ComponentNext} from '@action-land/component'
+import {ListComponentState} from '@action-land/component/src/listComponentState'
 import {action, Action, List, Nil} from '@action-land/core'
 import {create, Smitten} from '@action-land/smitten'
 import * as assert from 'assert'
