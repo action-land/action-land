@@ -498,32 +498,27 @@ export class ComponentNext<P1 extends ComponentProps> {
     return new ComponentNext(
       () => ListComponentState.of(this._init as () => iState<P1>),
       (inputAction: any, state: any) => {
-        const lisComponentState = state as ListComponentState<iState<P1>>
-        const itemState = lisComponentState.get(inputAction.type)
-        const updatedState = itemState.fold(
-          this._update(inputAction.value, this._init()),
-          some => this._update(inputAction.value, some)
+        const listComponentState = state as ListComponentState<iState<P1>>
+
+        const updatedState = this._update(
+          inputAction.value,
+          listComponentState.get(inputAction.type).getOrElse(this._init())
         )
-        return lisComponentState.set(inputAction.type, updatedState)
+
+        return listComponentState.set(inputAction.type, updatedState)
       },
       (inputAction: any, state: any) => {
         return action(
           inputAction.type,
           this._command(
             inputAction.value,
-            state
-              .get(inputAction.type)
-              .fold(this._init(), (some: iState<P1>) => some)
+            state.get(inputAction.type).getOrElse(this._init())
           )
         )
       },
       (e: any, s: any, p: any) => {
         const key = fn(p)
-        return this._view(
-          e.of(key),
-          s.get(key).fold(this._init(), (some: iState<P1>) => some),
-          p
-        )
+        return this._view(e.of(key), s.get(key).getOrElse(this._init()), p)
       },
       /**
        * @todo: Need to re-look this
