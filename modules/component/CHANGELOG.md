@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.3.0](https://github.com/action-land/action-land/compare/v8.2.0...v8.3.0) (2019-09-25)
+
+
+### Features
+
+* **listComponentState:** add asArray() ([548cf38](https://github.com/action-land/action-land/commit/548cf38))
+
+
+
+
+
 # [8.2.0](https://github.com/action-land/action-land/compare/v8.1.1...v8.2.0) (2019-09-25)
 
 

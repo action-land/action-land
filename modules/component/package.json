@@ -1,6 +1,6 @@
 {
   "name": "@action-land/component",
-  "version": "8.2.0",
+  "version": "8.3.0",
   "description": "Basic interface for a component",
   "main": "index.js",
   "repository": {
