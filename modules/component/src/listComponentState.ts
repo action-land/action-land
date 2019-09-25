@@ -5,32 +5,34 @@ type ListKey = string | number
 export class ListComponentState<S> {
   private constructor(
     private baseInit: () => S,
-    private readonly items: List<ListKey>,
-    private readonly lookUp: HashMap<ListKey, S>
+    private readonly keys: List<ListKey>,
+    private readonly hashMap: HashMap<ListKey, S>
   ) {}
+
   static of<S>(baseInit: () => S): ListComponentState<S> {
     return new ListComponentState(baseInit, List.empty(), HashMap.of())
   }
+
   set(k: ListKey, value: S = this.baseInit()): ListComponentState<S> {
-    const items = this.lookUp.has(k) ? this.items : this.items.prepend(k)
+    const items = this.hashMap.has(k) ? this.keys : this.keys.prepend(k)
     return new ListComponentState(
       this.baseInit,
       items,
-      this.lookUp.set(k, value)
+      this.hashMap.set(k, value)
     )
   }
 
   get(k: ListKey): Option<S> {
-    return this.lookUp.get(k)
+    return this.hashMap.get(k)
   }
 
   fold<T>(s: T, fn: (current: S, k: ListKey, acc: T) => T): T {
-    return this.items.fold(s, (currentItem, accumulator) => {
-      return fn(
-        this.lookUp.get(currentItem).getOrElse(this.baseInit()),
-        currentItem,
-        accumulator
-      )
-    })
+    return this.keys.fold(s, (key, acc) =>
+      fn(this.hashMap.get(key).getOrElse(this.baseInit()), key, acc)
+    )
+  }
+
+  has(k: ListKey): boolean {
+    return this.hashMap.has(k)
   }
 }
