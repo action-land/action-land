@@ -1,6 +1,6 @@
 import {ListComponentState} from '@action-land/component/src/listComponentState'
 import * as assert from 'assert'
-import {Either} from 'standard-data-structures'
+import {Option} from 'standard-data-structures'
 
 describe('listComponentState', () => {
   describe('getItem', () => {
@@ -9,12 +9,12 @@ describe('listComponentState', () => {
         count: 10
       }))
       const actual = state.get('key1')
-      assert.deepEqual(actual, Either.left(null))
+      assert.deepEqual(actual, Option.none())
     })
     it('should return 0 if the state is 0', () => {
       const state = ListComponentState.of(() => 10).set('key1', 0)
       const actual = state.get('key1')
-      assert.deepEqual(actual, Either.right(0))
+      assert.deepEqual(actual, Option.some(0))
     })
   })
   describe('fold', () => {
@@ -52,7 +52,7 @@ describe('listComponentState', () => {
         count: 10
       }))
       const updatedState = state.set('k', {count: 20})
-      const actual = updatedState.get('k').getRightOrElse({count: 10})
+      const actual = updatedState.get('k').getOrElse({count: 10})
       const expected = {count: 20}
       assert.deepEqual(actual, expected)
     })

@@ -440,7 +440,7 @@ describe('ComponentNext', () => {
       const actual = listComponent
         ._update(action('action1', 10).lift('ab'), listComponent._init())
         .get('ab')
-        .getRightOrElse({count: 10})
+        .getOrElse({count: 10})
       const expected = {count: 20}
       assert.deepEqual(actual, expected)
     })
@@ -462,7 +462,7 @@ describe('ComponentNext', () => {
           })
         )
         .get('ab')
-        .getRightOrElse({count: 10})
+        .getOrElse({count: 10})
       const expected = {count: 30}
       assert.deepEqual(actual, expected)
     })

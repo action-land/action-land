@@ -88,6 +88,8 @@ Action.fold(
     }
   }
 )
+
+// Action.fold should allow any types at a level where action type is string
 Action.fold(
   ID<Action<Action<1, 'B1'> | Action<2, 'B2'>, string>>(),
   {count: 10},

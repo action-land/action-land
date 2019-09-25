@@ -500,25 +500,11 @@ export class ComponentNext<P1 extends ComponentProps> {
       (inputAction: any, state: any) => {
         const lisComponentState = state as ListComponentState<iState<P1>>
         const itemState = lisComponentState.get(inputAction.type)
-        return itemState.fold(
-          lisComponentState,
-          (l, s) => {
-            return s.set(
-              inputAction.type,
-              this._update(inputAction.value, this._init())
-            )
-          },
-          (r, s) => {
-            return s.fold(
-              ListComponentState.of(this._init as () => iState<P1>),
-              (current, key, acc) => {
-                return current === r
-                  ? acc.set(key, this._update(inputAction.value, current))
-                  : acc.set(key, current)
-              }
-            )
-          }
+        const updatedState = itemState.fold(
+          this._update(inputAction.value, this._init()),
+          some => this._update(inputAction.value, some)
         )
+        return lisComponentState.set(inputAction.type, updatedState)
       },
       (inputAction: any, state: any) => {
         return action(
@@ -527,11 +513,7 @@ export class ComponentNext<P1 extends ComponentProps> {
             inputAction.value,
             state
               .get(inputAction.type)
-              .fold(
-                this._init(),
-                (l: null, s: iState<P1>) => s,
-                (r: iState<P1>, s: iState<P1>) => r
-              )
+              .fold(this._init(), (some: iState<P1>) => some)
           )
         )
       },
@@ -539,13 +521,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         const key = fn(p)
         return this._view(
           e.of(key),
-          s
-            .get(key)
-            .fold(
-              this._init(),
-              (l: null, s: iState<P1>) => s,
-              (r: iState<P1>, s: iState<P1>) => r
-            ),
+          s.get(key).fold(this._init(), (some: iState<P1>) => some),
           p
         )
       },

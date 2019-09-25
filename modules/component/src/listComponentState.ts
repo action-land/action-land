@@ -1,4 +1,4 @@
-import {Either, List} from 'standard-data-structures'
+import {HashMap, List, Option} from 'standard-data-structures'
 
 type ListKey = string | number
 
@@ -6,36 +6,28 @@ export class ListComponentState<S> {
   private constructor(
     private baseInit: () => S,
     private readonly items: List<ListKey>,
-    private readonly lookUp: {[k in ListKey]?: S}
+    private readonly lookUp: HashMap<ListKey, S>
   ) {}
   static of<T>(baseInit: () => T) {
-    return new ListComponentState(baseInit, List.empty(), {})
+    return new ListComponentState(baseInit, List.empty(), HashMap.of())
   }
   set(k: ListKey, value: S = this.baseInit()) {
-    const itemState = this.lookUp[k]
-    if (itemState !== undefined) {
-      return new ListComponentState(this.baseInit, this.items, {
-        ...this.lookUp,
-        [k]: value
-      })
-    }
-    const items = this.items.prepend(k)
-    return new ListComponentState(this.baseInit, items, {
-      ...this.lookUp,
-      [k]: value
-    })
+    const items = this.lookUp.has(k) ? this.items : this.items.prepend(k)
+    return new ListComponentState(
+      this.baseInit,
+      items,
+      this.lookUp.set(k, value)
+    )
   }
 
-  get(k: ListKey): Either<null, S> {
-    const node = this.lookUp[k]
-    return node !== undefined ? Either.right(node) : Either.left(null)
+  get(k: ListKey): Option<S> {
+    return this.lookUp.get(k)
   }
 
   fold<T>(s: T, fn: (current: S, k: ListKey, acc: T) => T): T {
     return this.items.fold(s, (currentItem, accumulator) => {
-      const currentState = this.lookUp[currentItem]
       return fn(
-        currentState !== undefined ? currentState : this.baseInit(),
+        this.lookUp.get(currentItem).getOrElse(this.baseInit()),
         currentItem,
         accumulator
       )

@@ -4828,9 +4828,9 @@ stack-trace@0.0.x:
   integrity sha1-VHxws0fo0ytOEI6hoqFZ5f3eGcA=
 
 standard-data-structures@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/standard-data-structures/-/standard-data-structures-2.0.0.tgz#5bfbe3b4372de31395ceb7bd4ef65f15e0072b7e"
-  integrity sha512-Nu6L2Gn5KCQVhrU38BGHo51QpdvIWei42Hfl8XUo50IiouBRPUp2ifPI8IzzyKVMOGfxIzEqB4pmnAk3+IO50Q==
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/standard-data-structures/-/standard-data-structures-2.5.2.tgz#8e9d1fc2e6ac9d803f02882a3e6754b5cb1539b7"
+  integrity sha512-goiAXgKnk95Rai5OPI+vJQ+T137k3R/bcyLmqqjMfaLuIGBlIqTyPlbkMgdM7/PU6ASVeaTfd0T1Jxm5gLYVUg==
 
 static-extend@^0.1.1:
   version "0.1.2"
