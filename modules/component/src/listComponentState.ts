@@ -8,10 +8,10 @@ export class ListComponentState<S> {
     private readonly items: List<ListKey>,
     private readonly lookUp: HashMap<ListKey, S>
   ) {}
-  static of<T>(baseInit: () => T) {
+  static of<S>(baseInit: () => S): ListComponentState<S> {
     return new ListComponentState(baseInit, List.empty(), HashMap.of())
   }
-  set(k: ListKey, value: S = this.baseInit()) {
+  set(k: ListKey, value: S = this.baseInit()): ListComponentState<S> {
     const items = this.lookUp.has(k) ? this.items : this.items.prepend(k)
     return new ListComponentState(
       this.baseInit,
