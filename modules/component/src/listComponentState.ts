@@ -35,4 +35,9 @@ export class ListComponentState<S> {
   has(k: ListKey): boolean {
     return this.hashMap.has(k)
   }
+
+  get asArray(): Array<[ListKey, S]> {
+    return this.fold(List.empty<[ListKey, S]>(), (S, L, A) => A.prepend([L, S]))
+      .asArray
+  }
 }
