@@ -27,9 +27,21 @@ export class ListComponentState<S> {
   }
 
   fold<T>(s: T, fn: (current: S, k: ListKey, acc: T) => T): T {
-    return this.keys.fold(s, (key, acc) =>
-      fn(this.hashMap.get(key).getOrElse(this.baseInit()), key, acc)
+    return ListComponentState.fold(this, s, fn)
+  }
+
+  static fold<L extends ListComponentState<S>, T, S>(
+    L: L,
+    T: T,
+    fn: (current: S, k: ListKey, acc: T) => T
+  ): T {
+    return L.keys.fold(T, (key, acc) =>
+      fn(L.hashMap.get(key).getOrElse(L.baseInit()), key, acc)
     )
+  }
+
+  static toArray<S>(L: ListComponentState<S>): Array<[ListKey, S]> {
+    return L.asArray
   }
 
   has(k: ListKey): boolean {
