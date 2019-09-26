@@ -1,5 +1,5 @@
 import {Action, action, isAction, List, Nil} from '@action-land/core'
-import {LinkedList} from '../internals/linkedList'
+import {List as LinkedList} from 'standard-data-structures'
 import {ComponentProps} from '../types/componentProps'
 import {LActionTypes} from '../types/extractActionType'
 import {LObjectValues} from '../types/extractValueType'
@@ -73,7 +73,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       Nil,
       () => undefined,
       {},
-      LinkedList.empty
+      LinkedList.empty()
     )
   }
 
@@ -374,7 +374,7 @@ export class ComponentNext<P1 extends ComponentProps> {
           }
         }
 
-        const actions = this._iActions.reduce({}, (key, actions) => ({
+        const actions = this._iActions.fold({}, (key, actions) => ({
           ...actions,
           [key]: (ev: any) => e.of(key).emit(ev)
         }))
@@ -464,7 +464,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       /**
        * @todo: Need to re-look this
        */
-      LinkedList.empty
+      LinkedList.empty()
     )
   }
 
@@ -490,7 +490,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       component.command,
       component.view as any,
       {},
-      LinkedList.empty
+      LinkedList.empty()
     )
   }
   /**
