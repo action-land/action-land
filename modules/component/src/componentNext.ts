@@ -10,7 +10,6 @@ import {iChildren} from '../types/pickChildrenType'
 import {iActions} from '../types/pickIActionsType'
 import {iState} from '../types/pickIStateType'
 import {oActions} from '../types/pickOActionType'
-import {oState} from '../types/pickOStateType'
 import {oView} from '../types/pickOutputViewType'
 import {iProps} from '../types/pickPropType'
 import {Component} from './component'
@@ -106,23 +105,21 @@ export class ComponentNext<P1 extends ComponentProps> {
    * ```
    * @typeparam T Action type to be handled by component
    * @typeparam V Value of action to be handled by component
-   * @typeparam oState2 New state returned by the cb function
    * @param type Action type for which we want to add behaviour
    * @param cb Transformation function that returns a new state
    */
-  matchR<T extends string | number, V, oState2 extends iState<P1>>(
+  matchR<T extends string | number, V, S extends iState<P1>>(
     type: T,
     cb: (
       value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
-      state: iState<P1>
-    ) => oState2
+      state: S
+    ) => S
   ): iComponentNext<
     P1,
     {
       iActions:
         | Action<LActionValueForTypeWithDefault<iActions<P1>, T, V>, T>
         | iActions<P1>
-      oState: oState2 | oState<P1>
     }
   > {
     return new ComponentNext(
@@ -236,10 +233,6 @@ export class ComponentNext<P1 extends ComponentProps> {
         node: iState<P1>
         children: {[k in keyof typeof spec]: iState<typeof spec[k]>}
       }
-      oState: {
-        node: oState<P1>
-        children: {[k in keyof typeof spec]: oState<typeof spec[k]>}
-      }
       iChildren: S
       iActions:
         | iActions<P1>
@@ -351,7 +344,7 @@ export class ComponentNext<P1 extends ComponentProps> {
             e: LActionValueForType<iActions<P1>, k>
           ) => unknown
         }
-        state: oState<P1> | iState<P1>
+        state: iState<P1>
         children: {
           [k in keyof iChildren<P1>]: iProps<iChildren<P1>[k]> extends never
             ? () => oView<iChildren<P1>[k]>
@@ -427,7 +420,6 @@ export class ComponentNext<P1 extends ComponentProps> {
     P1,
     {
       iState: ListComponentState<iState<P1>>
-      oState: ListComponentState<oState<P1>>
       iActions: Action<iActions<P1>, T>
       oActions: Action<oActions<P1>, T>
     }
@@ -483,7 +475,7 @@ export class ComponentNext<P1 extends ComponentProps> {
       view: (e: any, s: any, p: P) => V
     },
     ...initParams: I
-  ): ComponentNext<{iState: A; oState: A; oView: V; iProps: P}> {
+  ): ComponentNext<{iState: A; oView: V; iProps: P}> {
     return new ComponentNext(
       () => component.init(...initParams),
       component.update,
@@ -496,7 +488,7 @@ export class ComponentNext<P1 extends ComponentProps> {
   /**
    * Method to convert componentNext to old component API
    */
-  get component(): Component<oState<P1>, iProps<P1>, [], oView<P1>> {
+  get component(): Component<iState<P1>, iProps<P1>, [], oView<P1>> {
     return {
       init: this._init,
       update: this._update,

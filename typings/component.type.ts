@@ -17,14 +17,6 @@ $(
   }))
 ).iActions
 
-// $ExpectType { count: number; action: string; }
-$(
-  ComponentNext.lift({count: 0}).matchR('inc', (e, s) => ({
-    count: s.count + 1,
-    action: 'inc'
-  }))
-).oState
-
 // iAction should be union of action types if action type is repeated
 // $ExpectType Action<number, "dec"> | Action<string, "inc">
 $(
@@ -33,17 +25,6 @@ $(
     .matchR('inc', (e: string, s) => s)
     .matchR('inc', (e, s) => s)
 ).iActions
-
-// Should infer value types in callback of match
-// $ExpectType { count: number; } | { value: string; count: number; }
-$(
-  ComponentNext.lift({count: 0})
-    .matchR('inc', (e: string, s) => s)
-    .matchR('inc', (e, s) => ({
-      ...s,
-      value: e
-    }))
-).oState
 
 // $ExpectType Action<{ url: string; }, "HTTP"> | Action<{ data: string; }, "Write">
 $(
@@ -69,14 +50,6 @@ $(
     .matchC('inc', (e: string, s) => Nil())
     .matchC('inc', (e, s) => action('output', e))
 ).oActions
-
-// $ExpectType { node: never; children: { child1: never; child2: never; }; }
-$(
-  ComponentNext.lift({count: 0}).install({
-    child1: ComponentNext.lift({i: true}),
-    child2: ComponentNext.lift({i: 'Hi'})
-  })
-).oState
 
 // $ExpectType { node: { count: number; }; children: { child1: { i: boolean; }; child2: { i: string; }; }; }
 $(
@@ -160,7 +133,7 @@ $(
 // $ExpectType { color: string; count: number; }
 $(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
 
-// $ExpectType ComponentNext<{ iState: number; oState: number; oView: string[]; iProps: Date; }>
+// $ExpectType ComponentNext<{ iState: number; oView: string[]; iProps: Date; }>
 ComponentNext.from(
   {
     init: (a: string, b: number) => 10,
@@ -177,14 +150,7 @@ ComponentNext.from(
 // $ExpectType ComponentNext<{ iState: undefined; oView: void; }>
 ComponentNext.empty
 
-// $ExpectType { b: string; a: string; } | { c: string; a: string; }
-$(
-  ComponentNext.lift({a: ''})
-    .matchR('action1', (value, state) => ({...state, b: ''}))
-    .matchR('action2', (value, state) => ({...state, c: ''}))
-).oState
-
-// $ExpectType { a: string; } | { b: string; a: string; } | { c: string; a: string; }
+// $ExpectType { a: string; }
 $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
