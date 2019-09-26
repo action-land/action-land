@@ -108,12 +108,12 @@ export class ComponentNext<P1 extends ComponentProps> {
    * @param type Action type for which we want to add behaviour
    * @param cb Transformation function that returns a new state
    */
-  matchR<T extends string | number, V, S extends iState<P1>>(
+  matchR<T extends string | number, V>(
     type: T,
     cb: (
       value: LActionValueForTypeWithDefault<iActions<P1>, T, V>,
-      state: S
-    ) => S
+      state: iState<P1>
+    ) => iState<P1>
   ): iComponentNext<
     P1,
     {

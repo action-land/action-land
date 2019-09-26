@@ -32,7 +32,7 @@
     "prettier": "^1.18.2",
     "ramda": "^0.26.1",
     "tslint": "^5.19.0",
-    "typescript": "^3.5.3",
+    "typescript": "^3.6.2",
     "typings-checker": "^2.0.0"
   },
   "workspaces": [
