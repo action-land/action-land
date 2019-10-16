@@ -23,7 +23,7 @@
     "@tusharmathur/typedoc": "^1.0.0",
     "@types/benchmark": "^1.0.31",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.11.1",
     "@types/ramda": "^0.26.21",
     "benchmark": "^2.1.4",
     "cz-lerna-changelog": "^2.0.2",
