@@ -175,6 +175,16 @@ describe('ComponentNext', () => {
       const expected = List(action('X', 'X'), action('X', action('Y', 'Y')))
       assert.deepStrictEqual(actual, expected)
     })
+    it('should pass original component state to command', () => {
+      const component = ComponentNext.lift({countA: 0})
+        .matchC('a', (v, s) => Action.of('b', s))
+        .install({
+          childB: ComponentNext.lift({countB: 100})
+        })
+      const actual = component._command(Action.of('a', null), component._init())
+      const expected = Action.of('b', {countA: 0})
+      assert.deepEqual(actual, expected)
+    })
   })
 
   describe('render', () => {
