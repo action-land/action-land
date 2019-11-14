@@ -281,7 +281,7 @@ export class ComponentNext<P1 extends ComponentProps> {
         return {node, children}
       },
       (a: any, s: any) => {
-        const a1 = this._command(a, s) as Action<unknown>
+        const a1 = this._command(a, s.node) as Action<unknown>
 
         if (spec[a.type]) {
           return List(
