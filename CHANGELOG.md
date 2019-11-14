@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.4.2](https://github.com/action-land/action-land/compare/v8.4.1...v8.4.2) (2019-11-14)
+
+
+### Bug Fixes
+
+* **command:** pass node state to the parent command function ([#75](https://github.com/action-land/action-land/issues/75)) ([97b6fc2](https://github.com/action-land/action-land/commit/97b6fc2))
+
+
+
+
+
 ## [8.4.1](https://github.com/action-land/action-land/compare/v8.4.0...v8.4.1) (2019-09-26)
 
 **Note:** Version bump only for package action-land
