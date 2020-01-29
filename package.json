@@ -22,7 +22,7 @@
   "devDependencies": {
     "@tusharmathur/typedoc": "^1.0.0",
     "@types/benchmark": "^1.0.31",
-    "@types/mocha": "^5.2.7",
+    "@types/mocha": "^7.0.1",
     "@types/node": "^12.7.2",
     "@types/ramda": "^0.26.21",
     "benchmark": "^2.1.4",
