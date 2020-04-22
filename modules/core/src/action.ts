@@ -1,4 +1,5 @@
 import {check} from 'checked-exceptions'
+import {extname} from 'path'
 import {curry2} from 'ts-curry'
 
 export type AType = string | number
@@ -20,11 +21,31 @@ const hasOwnProperty = <P extends string | number>(
   return typeof obj === 'object' && obj !== null && obj.hasOwnProperty(prop)
 }
 
+abstract class BaseAction {
+  public abstract readonly type: unknown
+  public abstract readonly value: unknown
+  lift(t: unknown): BaseAction {
+    return new BVAction(t, this)
+  }
+  static of(type?: unknown, value?: unknown): BaseAction {
+    return new BVAction(type, value)
+  }
+}
+
+class BVAction extends BaseAction {
+  constructor(
+    public readonly type: unknown = '@@baseAction',
+    public readonly value: unknown = '@@baseValue'
+  ) {
+    super()
+  }
+}
+
 /**
  * Action
  * @class
  */
-export abstract class Action<V, T = AType> {
+export abstract class Action<V, T = AType> extends BaseAction {
   public abstract readonly type: T
   public abstract readonly value: V
   static of<T extends AType, V>(type: T, value: V): Action<V, T> {
@@ -41,6 +62,10 @@ export abstract class Action<V, T = AType> {
 
   static nil(): Nil {
     return new Nil()
+  }
+
+  static baseAction(): BaseAction {
+    return BaseAction.of()
   }
 
   static fold<S, A extends Action<unknown, unknown>>(
