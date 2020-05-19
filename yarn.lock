@@ -904,12 +904,12 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
   integrity sha512-dyYO+f6ihZEtNPDcWNR1fkoTDf3zAK3lAABDze3mz6POyIercH0lEUawUFXlG8xaQZmm1yEBON/4TsYv/laDYg==
 
-"@types/ramda@^0.26.21":
-  version "0.26.21"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.21.tgz#cfd552c679453d153a9e2fd89ffc5dd5aa93d2c9"
-  integrity sha512-zMYtIZMceA6BvH+or6LmewLBgojbXg5+FGCwjO8K+Z+d/ZWxILmhhASXkehW0PqJL+V0QbyDeeAHix0dvEKXfQ==
+"@types/ramda@^0.27.6":
+  version "0.27.6"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.27.6.tgz#5b914266cb73ea61fe3778949ef9b0aa455804b4"
+  integrity sha512-ephagb0ZIAJSoS5I/qMS4Mqo1b/Nd50pWM+o1QO/dz8NF//GsCGPTLDVRqgXlVncy74KShfHzE5rPZXTeek4PA==
   dependencies:
-    ts-toolbelt "^3.8.4"
+    ts-toolbelt "^6.3.3"
 
 "@zkochan/cmd-shim@^3.1.0":
   version "3.1.0"
@@ -5125,10 +5125,10 @@ ts-curry@^1.0.4:
   resolved "https://registry.yarnpkg.com/ts-curry/-/ts-curry-1.0.4.tgz#cf677765e0dd4dbb21cf989d6a7586b5d5e175e1"
   integrity sha512-mJGJ6jcY6gm+tYUcw5gBqHaSkb1Mw3w28PbRJAZP+kraalEv6MpMHy+y3fsTBhQpcR7BpcqDmRcvdC4sn/6U5A==
 
-ts-toolbelt@^3.8.4:
-  version "3.8.63"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-3.8.63.tgz#ee5a94a5d870f437bc6811f7428ea24c78821f6a"
-  integrity sha512-OlsFC8uF1mpN2O7DlvSkgnXzOvubO790eFhTvZBFI+WLge2BYzkQk73Q3yF0R8usxhkqbemLomqRhCGWasoIKw==
+ts-toolbelt@^6.3.3:
+  version "6.8.5"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.8.5.tgz#c40177aea14edb35daa0b6df3298069d774b195a"
+  integrity sha512-0uqJ/8EJ+r5ryOl1cWX4xXnUyG7vA9Vde4cq1+VWhqnl2k9vbasQoKfWWAcIY2Ni83tFnK4na4CZLFR9kUhgYg==
 
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
