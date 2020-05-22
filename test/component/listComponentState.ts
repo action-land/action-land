@@ -104,5 +104,23 @@ describe('listComponentState', () => {
       const expected = [1]
       assert.deepEqual(actual, expected)
     })
+    it('should accept an `Option` as input', () => {
+      const state = ListComponentState.of(() => ({
+        count: 10
+      }))
+      const updatedState = state.set('k', Option.some({count: 20}))
+      const actual = updatedState.get('k').getOrElse({count: 10})
+      const expected = {count: 20}
+      assert.deepEqual(actual, expected)
+    })
+    it('should accept an `Option.none` as input', () => {
+      const state = ListComponentState.of(() => ({
+        count: 10
+      }))
+      const updatedState = state.set('k', Option.none())
+      const actual = updatedState.get('k').getOrElse({count: 5})
+      const expected = {count: 10}
+      assert.deepEqual(actual, expected)
+    })
   })
 })

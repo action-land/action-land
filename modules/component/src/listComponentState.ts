@@ -13,12 +13,19 @@ export class ListComponentState<S> {
     return new ListComponentState(baseInit, List.empty(), HashMap.of())
   }
 
-  set(k: ListKey, value: S = this.baseInit()): ListComponentState<S> {
+  set(
+    k: ListKey,
+    value: S | Option<S> = this.baseInit()
+  ): ListComponentState<S> {
     const items = this.hashMap.has(k) ? this.keys : this.keys.prepend(k)
+
     return new ListComponentState(
       this.baseInit,
       items,
-      this.hashMap.set(k, value)
+      this.hashMap.set(
+        k,
+        value instanceof Option ? value.getOrElse(this.baseInit()) : value
+      )
     )
   }
 
