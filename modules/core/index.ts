@@ -1,6 +1,6 @@
 import {Action} from './src/action'
 
-export {action, Action} from './src/action'
+export {action, Action, AType} from './src/action'
 export {isList} from './src/isList'
 export {List} from './src/list'
 
