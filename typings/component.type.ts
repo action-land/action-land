@@ -13,7 +13,7 @@ $(ComponentNext.lift({count: 0}))
 // $ExpectType Action<number, "inc">
 $(
   ComponentNext.lift({count: 0}).matchR('inc', (e: number, s) => ({
-    count: s.count + 1
+    count: s.count + 1,
   }))
 ).iActions
 
@@ -55,7 +55,7 @@ $(
 $(
   ComponentNext.lift({count: 0}).install({
     child1: ComponentNext.lift({i: true}),
-    child2: ComponentNext.lift({i: 'Hi'})
+    child2: ComponentNext.lift({i: 'Hi'}),
   })
 ).iState
 
@@ -65,14 +65,14 @@ $(
     .matchR('X', (e, s) => s)
     .install({
       childA: ComponentNext.lift({i: true}).matchR('A', (e, s) => s),
-      childB: ComponentNext.lift({i: true}).matchR('B', (e, s) => s)
+      childB: ComponentNext.lift({i: true}).matchR('B', (e, s) => s),
     })
 ).iActions
 
 // $ExpectType { childA: ComponentNext<{ iState: number; oView: void; }>; }
 $(
   ComponentNext.lift(0).install({
-    childA: ComponentNext.lift(10)
+    childA: ComponentNext.lift(10),
   })
 ).iChildren
 
@@ -83,7 +83,7 @@ $(
     .install({
       childA: ComponentNext.lift({i: true}).matchC('A', (e, s) =>
         action('A', null)
-      )
+      ),
     })
 ).oActions
 
@@ -108,7 +108,7 @@ $(ComponentNext.lift(0).render((_, p: boolean) => _.actions)).oView
 $(
   ComponentNext.lift(0)
     .install({
-      childA: ComponentNext.lift(10).render((_, p: Date) => ['DONE'])
+      childA: ComponentNext.lift(10).render((_, p: Date) => ['DONE']),
     })
     .render((_, p: boolean) => _.children)
 ).oView
@@ -117,7 +117,7 @@ $(
 $(
   ComponentNext.lift(0)
     .install({
-      childA: ComponentNext.lift(10).render(() => ['DONE'])
+      childA: ComponentNext.lift(10).render(() => ['DONE']),
     })
     .render((_, p: boolean) => _.children)
 ).oView
@@ -131,7 +131,8 @@ $(
 ).oView
 
 // $ExpectType { color: string; count: number; }
-$(ComponentNext.lift({count: 10}).configure(s => ({...s, color: 'red'}))).iState
+$(ComponentNext.lift({count: 10}).configure((s) => ({...s, color: 'red'})))
+  .iState
 
 // $ExpectType ComponentNext<{ iState: number; oView: string[]; iProps: Date; }>
 ComponentNext.from(
@@ -141,7 +142,7 @@ ComponentNext.from(
     command: (a: Action<unknown>, b: number) => Nil(),
     view: (e: Smitten, m: number, s: Date) => {
       return ['Hello']
-    }
+    },
   },
   'hello',
   10
@@ -155,8 +156,8 @@ $(
   ComponentNext.lift({a: ''})
     .matchR('action1', (value, state) => ({...state, b: ''}))
     .matchR('action2', (value, state) => ({...state, c: ''}))
-    .render(_ => _.state)
+    .render((_) => _.state)
 ).oView
 
 // $ExpectType { a: string; }
-$(ComponentNext.lift({a: ''}).render(_ => _.state)).oView
+$(ComponentNext.lift({a: ''}).render((_) => _.state)).oView

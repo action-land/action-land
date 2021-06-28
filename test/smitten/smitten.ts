@@ -31,14 +31,12 @@ describe('hoe', () => {
   })
   it('should nested actions', () => {
     const {actions, listener} = testListener()
-    const e = create(listener)
-      .of('A')
-      .of('B')
+    const e = create(listener).of('A').of('B')
     e.emit(100)
     e.emit(200)
     assert.deepEqual(actions, [
       action('A', action('B', 100)),
-      action('A', action('B', 200))
+      action('A', action('B', 200)),
     ])
   })
 

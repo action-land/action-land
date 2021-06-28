@@ -33,7 +33,7 @@ Action.fold(Action.nil().lift('T'), 0, {
     // $ExpectType 0
     s
     return s
-  }
+  },
 })
 
 // Action.fold should handle union of actions
@@ -49,7 +49,7 @@ Action.fold(
       s
 
       return {count: s.count + a}
-    }
+    },
   }
 )
 
@@ -66,7 +66,7 @@ Action.fold(
       s
 
       return {count: s.count + a.value}
-    }
+    },
   }
 )
 
@@ -84,8 +84,8 @@ Action.fold(
         s
 
         return {count: s.count + a}
-      }
-    }
+      },
+    },
   }
 )
 
@@ -103,7 +103,7 @@ Action.fold(
         s
 
         return {count: s.count + a}
-      }
-    }
+      },
+    },
   }
 )

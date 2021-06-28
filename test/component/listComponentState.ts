@@ -6,7 +6,7 @@ describe('listComponentState', () => {
   describe('getItem', () => {
     it('should return undefined on trying to access any item of the empty list', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const actual = state.get('key1')
       assert.deepEqual(actual, Option.none())
@@ -20,14 +20,14 @@ describe('listComponentState', () => {
   describe('fold', () => {
     it('should fold to seed value of the list is empty', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const actual = state.fold(0, (c, k, acc) => acc + c.count)
       assert.strictEqual(actual, 0)
     })
     it('should reduce to a value based on function passed', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const updatedState = state
         .set('j', {count: 10})
@@ -38,10 +38,7 @@ describe('listComponentState', () => {
     })
     it('should reduce to a value based on function even if one of the state in list is 0', () => {
       const state = ListComponentState.of(() => 10)
-      const updatedState = state
-        .set('j', 0)
-        .set('k', 20)
-        .set('l', 30)
+      const updatedState = state.set('j', 0).set('k', 20).set('l', 30)
       const actual = updatedState.fold(0, (c, k, acc) => acc + c)
       assert.strictEqual(actual, 50)
     })
@@ -49,7 +46,7 @@ describe('listComponentState', () => {
   describe('update list', () => {
     it('should add initialize on Kth key if not present', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const updatedState = state.set('k', {count: 20})
       const actual = updatedState.get('k').getOrElse({count: 10})
@@ -58,7 +55,7 @@ describe('listComponentState', () => {
     })
     it('should add item to the list if not present', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const updatedState = state.set('k', {count: 20})
       const actual = updatedState.fold(
@@ -70,7 +67,7 @@ describe('listComponentState', () => {
     })
     it('should prepend item to the list', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const updatedState = state.set('j', {count: 20})
       const updatedState2 = updatedState.set('k', {count: 30})
@@ -83,7 +80,7 @@ describe('listComponentState', () => {
     })
     it('should override the item state when set called multiple time', () => {
       const state = ListComponentState.of(() => ({
-        count: 10
+        count: 10,
       }))
       const updatedState = state.set('j', {count: 20})
       const updatedState2 = updatedState.set('j', {count: 30})

@@ -46,10 +46,7 @@ describe('action', () => {
 
     it('should fold over any level of nested actions', () => {
       const actual = Action.fold(
-        action('A', 50)
-          .lift('B')
-          .lift('C')
-          .lift('D'),
+        action('A', 50).lift('B').lift('C').lift('D'),
         100,
 
         (a, s) => s + a.value.value.value.value
@@ -61,12 +58,7 @@ describe('action', () => {
 
     it('should fold using a nested spec', () => {
       const actual = Action.fold(
-        action('A', 50)
-          .lift('B')
-          .lift('C')
-          .lift('D')
-          .lift('E')
-          .lift('F'),
+        action('A', 50).lift('B').lift('C').lift('D').lift('E').lift('F'),
         {count: 100},
         {F: {E: {D: {C: {B: {A: (a, s) => ({count: s.count + a})}}}}}}
       )

@@ -12,10 +12,8 @@ import {ReducerFunction} from './reducerFunction'
 export const concatR = <State>(
   ...t: Array<ReducerFunction<State>>
 ): CurriedFunction2<any, State, State> =>
-  curry2(
-    (a: any, b: State): State => {
-      let result: State = b
-      for (let i = 0; i < t.length; i++) result = t[i](a, result)
-      return result
-    }
-  )
+  curry2((a: any, b: State): State => {
+    let result: State = b
+    for (let i = 0; i < t.length; i++) result = t[i](a, result)
+    return result
+  })

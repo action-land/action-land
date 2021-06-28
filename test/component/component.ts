@@ -58,47 +58,45 @@ describe('COM', () => {
   })
 
   describe('map', () => {
-    const AUTO_CRAZY = (val: boolean) => <
-      State,
-      Params,
-      Init extends any[],
-      VNode
-    >(
-      component: Component<State, Params, Init, VNode>
-    ) => {
-      type Crazy = {crazy: boolean}
+    const AUTO_CRAZY =
+      (val: boolean) =>
+      <State, Params, Init extends any[], VNode>(
+        component: Component<State, Params, Init, VNode>
+      ) => {
+        type Crazy = {crazy: boolean}
 
-      const InitType = <Args extends any[], R>(
-        fn0: (...t: Args) => R
-      ): ((...t: Args) => R & Crazy) => (...t: Args): R & Crazy =>
-        Object.assign(fn0(...t), {crazy: val})
+        const InitType =
+          <Args extends any[], R>(
+            fn0: (...t: Args) => R
+          ): ((...t: Args) => R & Crazy) =>
+          (...t: Args): R & Crazy =>
+            Object.assign(fn0(...t), {crazy: val})
 
-      const UpdateType = <A, S>(fn: (a: A, s: S) => S) => (
-        a: A,
-        s: S & Crazy
-      ): S & Crazy => fn(a, s) as S & Crazy
+        const UpdateType =
+          <A, S>(fn: (a: A, s: S) => S) =>
+          (a: A, s: S & Crazy): S & Crazy =>
+            fn(a, s) as S & Crazy
 
-      const CommandType = <A, B, S>(fn: (a: A, s: S) => B) => (
-        a: A,
-        s: S & Crazy
-      ): B => fn(a, s)
+        const CommandType =
+          <A, B, S>(fn: (a: A, s: S) => B) =>
+          (a: A, s: S & Crazy): B =>
+            fn(a, s)
 
-      const ViewType = <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) => (
-        e: Smitten,
-        m: S & Crazy,
-        p: P
-      ): VNode => fn(e, m, p)
+        const ViewType =
+          <A, S, P>(fn: (e: Smitten, m: S, p: P) => VNode) =>
+          (e: Smitten, m: S & Crazy, p: P): VNode =>
+            fn(e, m, p)
 
-      return COM(
-        InitType(component.init),
-        UpdateType(component.update),
-        CommandType(component.command),
-        ViewType(component.view)
-      )
-    }
+        return COM(
+          InitType(component.init),
+          UpdateType(component.update),
+          CommandType(component.command),
+          ViewType(component.view)
+        )
+      }
 
     it('should keep the component as is', () => {
-      const newComponent = component.map(component => component)
+      const newComponent = component.map((component) => component)
       const state = newComponent.init('100')
       assert.deepStrictEqual(state, {count: 100})
     })
@@ -108,7 +106,7 @@ describe('COM', () => {
 
       assert.deepStrictEqual(newComponent.init('100'), {
         count: 100,
-        crazy: true
+        crazy: true,
       })
     })
   })

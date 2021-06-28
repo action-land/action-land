@@ -10,7 +10,7 @@ type FoldSpec<A, S> =
   | (A extends Action<infer V, infer T>
       ? T extends string | number | symbol
         ? {[k in T]: FoldSpec<V, S>}
-        : ((value: A, seed: S) => S)
+        : (value: A, seed: S) => S
       : never)
 
 const hasOwnProperty = <P extends string | number>(

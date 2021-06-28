@@ -48,7 +48,7 @@ describe('AutoForward', () => {
     const expected = {
       A: 1,
       child: {C: 5},
-      '@@forward': {keys: ['child']}
+      '@@forward': {keys: ['child']},
     }
     assert.deepEqual(actual, expected)
   })
@@ -67,8 +67,8 @@ describe('AutoForward', () => {
     const expected = {
       ...parent.init(),
       '@@forward': {
-        keys: ['child']
-      }
+        keys: ['child'],
+      },
     }
     assert.deepEqual(actual, expected)
   })
